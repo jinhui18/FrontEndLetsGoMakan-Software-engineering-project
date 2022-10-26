@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Application</string>
+
+    <string name="transport_mode">Transport Mode</string>
+    <string name="mode_of_transport">Transport</string>
+    <string-array name="transportMode">
+        <item>Walking</item>
+        <item>Public Transport</item>
+        <item>Car</item>
+    </string-array>
+    <string name="maximum_travel_time">Maximum Travel Time</string>
+    <string-array name="travelTime">
+        <item>0.5 hour</item>
+        <item>1 hour</item>
+        <item>1.5 hours</item>
+        <item>2 hours</item>
+    </string-array>
+    <string name="dietary_requirements">Dietary Requirements</string>
+    <string-array name="diet">
+        <item>None</item>
+        <item>Halal</item>
+        <item>Vegetarian</item>
+        <item>Both</item>
+    </string-array>
 </resources>

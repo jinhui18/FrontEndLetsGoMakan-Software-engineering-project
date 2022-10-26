@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8EFE4"
+    tools:context=".CreateNewAccount"
     >
     <TextView
         android:id="@+id/textView1"
@@ -38,12 +39,13 @@
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginTop="232dp"
         android:src="@drawable/bg_create_account"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView3"
@@ -203,6 +205,8 @@
         app:layout_constraintHorizontal_bias="0.553"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

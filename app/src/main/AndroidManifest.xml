@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.application">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,8 +25,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginUser"
+            tools:ignore="Instantiatable" />
         <activity android:name=".CreateNewAccount"
             android:parentActivityName=".MainActivity"
+            />
+        <activity android:name=".CreateUser"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".InputPreferences"
+            android:parentActivityName=".CreateNewAccountVerifyEmail"
             />
         <activity android:name=".ResetPassword"
             android:parentActivityName=".MainActivity"
@@ -34,6 +44,11 @@
         <activity android:name=".ResetPasswordEnterNewPassword"
             android:parentActivityName=".ResetPasswordVerifyOTP"
             />
+        <activity android:name=".SignOut" />
+        <activity android:name=".CreateNewAccountVerifyEmail" />
+
+
+
 
 
 

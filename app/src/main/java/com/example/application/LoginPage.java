@@ -11,28 +11,14 @@ import android.widget.TextView;
 import android.widget.Button;
 
 public class LoginPage extends MainActivity implements View.OnClickListener {
-    TextView textView_hp1;
-    TextView textView_hp2;
-    TextView textView_hp3;
-    TextView textView_hp4;
-    TextView textView_hp5;
-    TextView textView_hp6;
-    TextView textView_hp7;
-    TextView textView_hp8;
-    TextView textView_hp9;
+    private TextView textView_hp1,textView_hp2,textView_hp3,textView_hp4,textView_hp5,textView_hp6,textView_hp7,textView_hp8,textView_hp9;
+    private ImageView imageView_hp1,imageView_hp2,imageView_hp3,imageView_hp4,imageView_hp5,imageView_hp6;
 
 
-    ImageView imageView_hp1;
-    ImageView imageView_hp2;
-    ImageView imageView_hp3;
-    ImageView imageView_hp4;
-    ImageView imageView_hp5;
-    ImageView imageView_hp6;
+    private EditText email;
+    private EditText password;
 
-    EditText email;
-    EditText password;
-
-    Button loginButton;
+    private Button loginButton;
     Button button22;
     private int counter =5;
 

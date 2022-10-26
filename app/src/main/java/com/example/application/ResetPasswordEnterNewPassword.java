@@ -23,7 +23,6 @@ public class ResetPasswordEnterNewPassword extends AppCompatActivity {
 
      Button buttonResetPassword;
 
-
     @SuppressLint("CutPasteId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
