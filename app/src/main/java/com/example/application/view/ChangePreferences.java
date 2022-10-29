@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.application.CreateNewAccount;
+import com.example.application.LoginPage;
 import com.example.application.PreferredMaximumTravelTime;
 import com.example.application.PreferredModeOfTransport;
 import com.example.application.Profile;
@@ -82,6 +85,9 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         //Update database
         Controller changePreferencesController = new ChangePreferencesController(changePreferencesModel, newProfile);
         changePreferencesController.handleEvent();
+        Intent i = new Intent(ChangePreferences.this, LoginPage.class); //Change to HomePage class
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ChangePreferences.this.startActivity(i);
     }
 
     private void createProfile() {

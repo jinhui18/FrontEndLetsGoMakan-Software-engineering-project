@@ -85,7 +85,7 @@ public class LoginUser{
                     if (task.isSuccessful()) {
                         if (mAuth.getCurrentUser().isEmailVerified() ) {
                             Toast.makeText(context, "User logged in successfully", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(context, CreateNewAccount.class);
+                            Intent i = new Intent(context, CreateNewAccount.class); //Should this part be in the View class (MainActivity) instead?
                             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(i);
                         }

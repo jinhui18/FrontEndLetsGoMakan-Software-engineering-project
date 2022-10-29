@@ -25,26 +25,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".LoginUser"
-            tools:ignore="Instantiatable" />
+            tools:ignore="Instantiatable"
+            />
+
         <activity android:name=".CreateNewAccount"
             android:parentActivityName=".MainActivity"
             />
+
         <activity android:name=".CreateUser"
-            tools:ignore="Instantiatable" />
+            tools:ignore="Instantiatable"
+            />
+
         <activity android:name=".InputPreferences"
             android:parentActivityName=".CreateNewAccountVerifyEmail"
             />
+
+        <activity android:name=".view.ChangePreferences"
+            tools:ignore="Instantiatable"
+            />
+
         <activity android:name=".ResetPassword"
             android:parentActivityName=".MainActivity"
             />
+
         <activity android:name=".ResetPasswordVerifyOTP"
             android:parentActivityName=".ResetPassword"
             />
+
         <activity android:name=".ResetPasswordEnterNewPassword"
             android:parentActivityName=".ResetPasswordVerifyOTP"
             />
+
         <activity android:name=".SignOut" />
+
         <activity android:name=".CreateNewAccountVerifyEmail" />
 
 
