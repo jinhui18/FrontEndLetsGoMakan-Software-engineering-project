@@ -15,5 +15,5 @@ public abstract class Model extends Observable{
         this.mAuth=mAuth; this.mDatabase=mDatabase; this.context=context;
     }
     public abstract void service();
-    public abstract void addAttribute(Object object);
+    public abstract void addAttribute(Object object); //pls make email and password in one single LoginInformation Object
 }
