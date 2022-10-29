@@ -85,9 +85,6 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         //Update database
         Controller changePreferencesController = new ChangePreferencesController(changePreferencesModel, newProfile);
         changePreferencesController.handleEvent();
-        Intent i = new Intent(ChangePreferences.this, LoginPage.class); //Change to HomePage class
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ChangePreferences.this.startActivity(i);
     }
 
     private void createProfile() {

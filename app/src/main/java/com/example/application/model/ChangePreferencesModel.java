@@ -1,13 +1,16 @@
 package com.example.application.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.LoginPage;
 import com.example.application.Profile;
 import com.example.application.view.ChangePreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +37,14 @@ public class ChangePreferencesModel extends Model {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, LoginPage.class); //Change to HomePage class
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "What a failure in life\nKeep trying or press back", Toast.LENGTH_SHORT).show();
             }
         });
     }
