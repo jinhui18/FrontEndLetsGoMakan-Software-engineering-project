@@ -63,7 +63,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v){
         createProfile();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
         mDatabase.child("Account").child(userID).child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
@@ -73,14 +73,15 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
                 /*TESTING UPDATE
                 Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
                 Map<String, Object> map = new HashMap<>();
-                map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
-                map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
-                map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
+                map.put("Profile", newProfile);
+                //map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
+                //map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
+                //map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
 
                 //Update database
-                mDatabase.child("Account").child(userID).child("Profile").updateChildren(map);
+                mDatabase.child("Account").child(userID).updateChildren(map);
                 Toast.makeText(InputPreferences.this, "HELLOOOO", Toast.LENGTH_SHORT);
-                */
+                 */
 
                 startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
             } else {

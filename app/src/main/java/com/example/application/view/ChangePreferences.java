@@ -14,6 +14,8 @@ import com.example.application.PreferredModeOfTransport;
 import com.example.application.Profile;
 import com.example.application.R;
 import com.example.application.TypesOfDietaryRequirements;
+import com.example.application.controller.ChangePreferencesController;
+import com.example.application.controller.Controller;
 import com.example.application.model.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,19 +25,21 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 
 public class ChangePreferences extends AppCompatActivity implements View.OnClickListener{
+    //Widgets
     private Spinner transportMode;
     private Spinner dietRequirement;
     private Spinner travelTime;
-
     private Button confirmChanges;
-
+    //Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    //MVC
     private Profile newProfile;
-
     private Model changePreferencesModel;
 
     @Override
@@ -43,35 +47,31 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_preferences);
 
-        //New profile
-        newProfile = new Profile();
+
 
         //Instantiating widgets
         transportMode = findViewById(R.id.transportSpinner);
         dietRequirement = findViewById(R.id.dietSpinner);
         travelTime = findViewById(R.id.travelSpinner);
-
         confirmChanges = (Button) findViewById(R.id.confirmChanges);
         confirmChanges.setOnClickListener(this);
-
         ArrayAdapter<CharSequence> transportAdapter = ArrayAdapter.createFromResource(this, R.array.transportMode, android.R.layout.simple_spinner_item);
         transportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         transportMode.setAdapter(transportAdapter);
-
         ArrayAdapter<CharSequence> travelAdapter = ArrayAdapter.createFromResource(this, R.array.travelTime, android.R.layout.simple_spinner_item);
         travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         travelTime.setAdapter(travelAdapter);
-
         ArrayAdapter<CharSequence> dietAdapter = ArrayAdapter.createFromResource(this, R.array.diet, android.R.layout.simple_spinner_item);
         dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dietRequirement.setAdapter(dietAdapter);
 
-        //Instantiating model
-        changePreferencesModel = new ChangePreferencesModel();
-
         //Firebase
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
+
+        //MVC related
+        newProfile = new Profile();
+        changePreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, ChangePreferences.this);
     }
 
     @Override
@@ -79,19 +79,9 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         createProfile();
 
-        //Hash Map to store string data
-        Map<String, Object> map = new HashMap<>();
-        map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
-        map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
-        map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
-
         //Update database
-        mDatabase.child("Account").child(userID).child("Profile").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(ChangePreferences.this, "Preferrences updated!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Controller changePreferencesController = new ChangePreferencesController(changePreferencesModel, newProfile);
+        changePreferencesController.handleEvent();
     }
 
     private void createProfile() {
@@ -141,3 +131,5 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         }
     }
 }
+
+//NOTE: No observer pattern for this
