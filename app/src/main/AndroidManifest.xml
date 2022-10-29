@@ -43,8 +43,9 @@
             />
 
         <activity android:name=".view.ChangePreferences"
-            tools:ignore="Instantiatable"
+            android:parentActivityName=".MainActivity" /> <!--Change to HomePage class-->
             />
+
 
         <activity android:name=".ResetPassword"
             android:parentActivityName=".MainActivity"
