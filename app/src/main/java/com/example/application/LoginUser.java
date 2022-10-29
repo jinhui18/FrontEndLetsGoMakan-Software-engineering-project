@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginUser extends MainActivity{
+public class LoginUser{
 
     private String email;
     private String password;
@@ -68,7 +68,7 @@ public class LoginUser extends MainActivity{
     public void handleEvent(String email, String password, TextInputLayout textInputEmail, TextInputLayout textInputPassword) {
         if (counter <0){
             counter = 5;
-            Toast toast = Toast.makeText(getApplicationContext(), "Please reset your password", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, "Please reset your password", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.show();
         }

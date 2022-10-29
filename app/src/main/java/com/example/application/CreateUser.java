@@ -3,10 +3,12 @@ package com.example.application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Patterns;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.view.ChangePreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -15,8 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class CreateUser extends CreateNewAccount {
+import java.util.HashMap;
+import java.util.Map;
 
+public class CreateUser extends CreateNewAccount {
+    private static final String TAG = "CreateUser";
     private String name;
     private String email;
     private String password;
@@ -65,7 +70,7 @@ public class CreateUser extends CreateNewAccount {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                LoginInformation loginInformation = new LoginInformation(email, password);
+                                //LoginInformation loginInformation = new LoginInformation(email, password);
                                 Profile profile = new Profile(TypesOfDietaryRequirements.NONE,PreferredMaximumTravelTime.HALF_HOUR,PreferredModeOfTransport.CAR);
                                 Account account = new Account(name, email, password, profile);
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -95,6 +100,15 @@ public class CreateUser extends CreateNewAccount {
                                         }
                                         else{
                                             Toast.makeText(context, "Failed to create an account", Toast.LENGTH_SHORT).show();
+                                            //delete user here if he fails
+                                            mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Log.d(TAG, "User account deleted");
+                                                    }
+                                                }
+                                            });
                                         }
                                     }
                                 });
@@ -103,13 +117,21 @@ public class CreateUser extends CreateNewAccount {
                             } else {
                                 Toast.makeText(context, "Failed to create an account", Toast.LENGTH_LONG).show();
                                 //Toast.makeText(CreateNewAccount.this, "Registration Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                // delete user here if he fails
+                                mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.d(TAG, "User account deleted");
+                                        }
+                                    }
+                                });
                             }
                         }
 
-                    });
+                    }); //There was a dot there before, i removed it
 
         }
-
     }
 
 

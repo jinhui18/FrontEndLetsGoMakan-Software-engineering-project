@@ -17,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner transportMode;
@@ -66,11 +69,26 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         mDatabase.child("Account").child(userID).child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
                 Toast.makeText(InputPreferences.this, "Account successfully updated!", Toast.LENGTH_SHORT).show();
+
+                /*TESTING UPDATE
+                Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
+                Map<String, Object> map = new HashMap<>();
+                map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
+                map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
+                map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
+
+                //Update database
+                mDatabase.child("Account").child(userID).child("Profile").updateChildren(map);
+                Toast.makeText(InputPreferences.this, "HELLOOOO", Toast.LENGTH_SHORT);
+                */
+
                 startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
             } else {
                 Toast.makeText(InputPreferences.this, "Failed to create account, please try again!", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void createProfile() {
