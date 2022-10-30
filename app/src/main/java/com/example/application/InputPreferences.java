@@ -66,7 +66,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-        mDatabase.child("Account").child(userID).child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
+        mDatabase.child(userID).child("Account").child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
                 Toast.makeText(InputPreferences.this, "Account successfully updated!", Toast.LENGTH_SHORT).show();
 

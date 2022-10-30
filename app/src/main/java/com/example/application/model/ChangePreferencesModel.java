@@ -33,7 +33,7 @@ public class ChangePreferencesModel extends Model {
         //Get UserID
         String userID = mAuth.getCurrentUser().getUid();
         //Update database (This means update "Profile" key in "Account" child)
-        mDatabase.child("Account").child(userID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();

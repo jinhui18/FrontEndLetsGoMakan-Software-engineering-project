@@ -76,7 +76,7 @@ public class CreateUser extends CreateNewAccount {
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 mDataBase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
-                                mDataBase.child("Account").child(userID).setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                mDataBase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task1) {
                                         if (task1.isSuccessful()){
