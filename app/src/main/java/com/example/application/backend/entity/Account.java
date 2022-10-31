@@ -1,5 +1,7 @@
 package com.example.application.backend.entity;
 
+import java.util.ArrayList;
+
 public class Account {
 
         /**
@@ -11,13 +13,13 @@ public class Account {
          * The profile of the user
          */
         private Profile profile;
-
-        public Account () {
-        }
+        private ArrayList<Restaurant> fullRestaurantList;
+        private ArrayList<Restaurant> recommendedList;
 
         public Account(String name,  Profile profile) {
             this.name = name;
             this.profile = profile;
+            this.fullRestaurantList = this.recommendedList = null;
         }
 
         /**

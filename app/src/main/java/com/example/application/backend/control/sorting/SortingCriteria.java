@@ -1,4 +1,4 @@
-package com.example.application.backend.sorting;
+package com.example.application.backend.control.sorting;
 
 import com.example.application.backend.entity.Restaurant;
 import java.util.ArrayList;
