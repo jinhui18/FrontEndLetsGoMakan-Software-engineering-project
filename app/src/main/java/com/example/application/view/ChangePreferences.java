@@ -1,35 +1,24 @@
 package com.example.application.view;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.application.CreateNewAccount;
-import com.example.application.LoginPage;
-import com.example.application.PreferredMaximumTravelTime;
-import com.example.application.PreferredModeOfTransport;
-import com.example.application.Profile;
+import com.example.application.backend.enums.PreferredMaximumTravelTime;
+import com.example.application.backend.enums.PreferredModeOfTransport;
+import com.example.application.backend.entity.Profile;
 import com.example.application.R;
-import com.example.application.TypesOfDietaryRequirements;
+import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.ChangePreferencesController;
 import com.example.application.controller.Controller;
 import com.example.application.model.*;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
 
 public class ChangePreferences extends AppCompatActivity implements View.OnClickListener{

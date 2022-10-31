@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.backend.entity;
 
 public class Account {
 

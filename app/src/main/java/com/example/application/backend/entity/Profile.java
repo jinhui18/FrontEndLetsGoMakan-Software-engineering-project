@@ -1,6 +1,8 @@
-package com.example.application;
+package com.example.application.backend.entity;
 
-import java.util.ArrayList;
+import com.example.application.backend.enums.PreferredMaximumTravelTime;
+import com.example.application.backend.enums.PreferredModeOfTransport;
+import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
 public class Profile {
     /**

@@ -10,15 +10,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.application.PreferredMaximumTravelTime;
-import com.example.application.PreferredModeOfTransport;
-import com.example.application.TypesOfDietaryRequirements;
+import com.example.application.backend.entity.Profile;
+import com.example.application.backend.enums.PreferredMaximumTravelTime;
+import com.example.application.backend.enums.PreferredModeOfTransport;
+import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
 

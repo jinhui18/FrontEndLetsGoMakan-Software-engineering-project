@@ -1,10 +1,7 @@
 package com.example.application.controller;
 
-import com.example.application.Profile;
-import com.example.application.model.ChangePreferencesModel;
+import com.example.application.backend.entity.Profile;
 import com.example.application.model.Model;
-import java.util.Map;
-import android.content.Context;
 
 public class ChangePreferencesController extends Controller{
     private Profile newProfile;

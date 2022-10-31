@@ -7,8 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.LoginPage;
-import com.example.application.Profile;
-import com.example.application.view.ChangePreferences;
+import com.example.application.backend.entity.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
