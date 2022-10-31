@@ -10,11 +10,11 @@ public class Restaurant {
     private float crowdLevel;
     private int ratings;
     private float travellingTime;
+    private String name;
     private String address;
     private String description;
     private String image;
     private String availableDietaryRequirements;
-    private String availableCuisine;
     ArrayList<LocalTime> openCloseTimings;
 
     public Restaurant() {}
@@ -34,10 +34,6 @@ public class Restaurant {
     // Bookmark
     public boolean isBookmark() {
         return bookmark;
-    }
-
-    public String getAvailableCuisine(){
-        return this.availableCuisine;
     }
 
     public String getAvailableDietaryRequirements(){
@@ -67,13 +63,18 @@ public class Restaurant {
     }
 
     //TravelTime
-    public float getTravelingTime() {
+    public float getTravellingTime() {
         return travellingTime;
     }
 
-    public void setTravelingTime(float travelTime) {
+    public void setTravellingTime(float travelTime) {
         this.travellingTime = travelTime;
     }
+
+    //Name
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
 
     //Address
     public String getAddress() {
