@@ -73,7 +73,7 @@ public class CreateUser extends CreateNewAccount {
                             if (task.isSuccessful()) {
                                 //LoginInformation loginInformation = new LoginInformation(email, password);
                                 Profile profile = new Profile(TypesOfDietaryRequirements.NONE, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
-                                Account account = new Account(name, profile);
+                                Account account = new Account(name, email, profile);
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 mDataBase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 

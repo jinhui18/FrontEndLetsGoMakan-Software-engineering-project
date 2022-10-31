@@ -8,6 +8,7 @@ public class Account {
          * The name of the user.
          */
         private String name;
+        private String email;
 
         /**
          * The profile of the user
@@ -16,10 +17,19 @@ public class Account {
         private ArrayList<Restaurant> fullRestaurantList;
         private ArrayList<Restaurant> recommendedList;
 
-        public Account(String name,  Profile profile) {
+        public Account(String name, String email, Profile profile) {
             this.name = name;
+            this.email = email;
             this.profile = profile;
             this.fullRestaurantList = this.recommendedList = null;
+        }
+        /**
+         * name getter
+         * @return name
+         */
+
+        public String getName() {
+            return this.name;
         }
 
         /**
@@ -30,12 +40,6 @@ public class Account {
             this.name = name;
         }
 
-        /**
-         * name getter
-         * @return name
-         */
-
-        public String getName() {
-            return this.name;
-        }
+        public String getEmail() {return email;}
+        public void setEmail(String email) {this.email=email;}
 }
