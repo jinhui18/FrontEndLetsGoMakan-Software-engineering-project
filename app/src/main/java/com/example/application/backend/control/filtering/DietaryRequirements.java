@@ -7,31 +7,15 @@ import java.util.ArrayList;
 
 public class DietaryRequirements extends FilteringCriteria{
 
-    private TypesOfDietaryRequirements reqs;
-    public DietaryRequirements() {};
-
-    /**
-     * Overloaded constructor.
-     * DietaryEnum is an enum of dietary requirements.
-     * @param reqs
-     */
-
-    public DietaryRequirements(TypesOfDietaryRequirements reqs) {
-        this.reqs = reqs;
-    }
     @Override
     public ArrayList<Restaurant> filter(ArrayList<Restaurant>restaurantList){
         ArrayList<Restaurant>filteredList = new ArrayList<Restaurant>();
+        TypesOfDietaryRequirements reqs = (TypesOfDietaryRequirements) super.criteria;
         for(int i=0; i<restaurantList.size(); i++) {
             if(reqs.toString().equals(restaurantList.get(i).getAvailableDietaryRequirements())) {
                 filteredList.add(restaurantList.get(i));
             }
         }
         return filteredList;
-    }
-
-    @Override
-    public void addCriteria(Object object) {
-        this.reqs = (TypesOfDietaryRequirements) object;
     }
 }

@@ -15,11 +15,11 @@ public class Restaurant {
     private String description;
     private String image;
     private String availableDietaryRequirements;
-    ArrayList<LocalTime> openCloseTimings;
+    //ArrayList<LocalTime> openCloseTimings;
 
     public Restaurant() {}
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(boolean bm, float cl, int rtngs, float tt, String adrs, String des, String img, ArrayList<LocalTime> timings, String cuisine, TypesOfDietaryRequirements dreqs) {
+    public Restaurant(boolean bm, float cl, int rtngs, float tt, String adrs, String des, String img, ArrayList<LocalTime> timings, TypesOfDietaryRequirements dreqs) {
         this.bookmark = bm;
         this.crowdLevel = cl;
         this.ratings = rtngs;
@@ -27,7 +27,7 @@ public class Restaurant {
         this.address = adrs;
         this.description = des;
         this.image = img;
-        this.openCloseTimings = timings;
+        //this.openCloseTimings = timings;
         this.availableDietaryRequirements = dreqs.toString();
     }
 
@@ -103,6 +103,7 @@ public class Restaurant {
         this.image = image;
     }
 
+    /*
     //Opening and Closing time in array
     public ArrayList<LocalTime> getOpenCloseTimings() {
         return openCloseTimings;
@@ -111,4 +112,5 @@ public class Restaurant {
     public void setOpenCloseTimings(ArrayList<LocalTime> openCloseTimings) {
         this.openCloseTimings = openCloseTimings;
     }
+    */
 }

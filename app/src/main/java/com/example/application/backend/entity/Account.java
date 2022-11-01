@@ -16,12 +16,14 @@ public class Account {
         private Profile profile;
         private ArrayList<Restaurant> fullRestaurantList;
         private ArrayList<Restaurant> recommendedList;
+        private Restaurant testRest;
 
-        public Account(String name, String email, Profile profile) {
+        public Account(String name, String email, Profile profile, Restaurant rest) {
             this.name = name;
-            this.email = email;
+            this.email = "email test";
             this.profile = profile;
-            this.fullRestaurantList = this.recommendedList = null;
+            //this.fullRestaurantList = this.recommendedList = null;
+            this.testRest = rest;
         }
         /**
          * name getter
@@ -42,4 +44,17 @@ public class Account {
 
         public String getEmail() {return email;}
         public void setEmail(String email) {this.email=email;}
+
+    public ArrayList<Restaurant> getFullRestaurantList() {return this.fullRestaurantList;}
+    public void setFullRestaurantList(ArrayList<Restaurant> fullRestaurantList) {
+        this.fullRestaurantList = fullRestaurantList;
+    }
+
+    public ArrayList<Restaurant> getRecommendedList(){return this.recommendedList;}
+    public void setRecommendedList(ArrayList<Restaurant> recommendedList) {
+        this.recommendedList = recommendedList;
+    }
+
+    public Restaurant getRestaurant() {return this.testRest;}
+    public void setTestRest(Restaurant res){this.testRest = res;}
 }
