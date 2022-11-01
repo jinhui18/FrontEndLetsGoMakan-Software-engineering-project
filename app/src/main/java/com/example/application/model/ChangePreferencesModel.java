@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.LoginPage;
+import com.example.application.LoginUser;
 import com.example.application.backend.entity.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,7 +37,7 @@ public class ChangePreferencesModel extends Model {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(context, LoginPage.class); //Change to HomePage class
+                Intent i = new Intent(context, LoginUser.class); //Change to HomePage class
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }

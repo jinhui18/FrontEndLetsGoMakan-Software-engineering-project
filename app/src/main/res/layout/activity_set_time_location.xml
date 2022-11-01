@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8EFE4"
+    tools:context=".SetTimeLocation">
+
+    <TextView
+        android:id="@+id/setTimeLocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center"
+        android:text="@string/looking_for_a_restaurant"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06" />
+
+    <ImageView
+        android:id="@+id/whiteBox"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/rounded_box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.61" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLocation"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toTopOf="@+id/whiteBox"
+        app:layout_constraintVertical_bias="0.727" />
+
+    <ImageView
+        android:id="@+id/greyBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/whiteBox"
+        app:srcCompat="@drawable/rectangle_box"
+        tools:ignore="ImageContrastCheck" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutLocation"
+        android:layout_width="270dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        app:boxBackgroundMode="none"
+        app:errorContentDescription="hello"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/whiteBox">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="-17dp"
+            tools:layout="@layout/places_autocomplete_fragment" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/useCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/use_current_location"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/timeText"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toBottomOf="@+id/greyBox1"
+        app:layout_constraintVertical_bias="0.066" />
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="233dp"
+        android:text="@string/time"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/greyBox2"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLocation" />
+
+    <ImageView
+        android:id="@+id/greyBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="220dp"
+        android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toBottomOf="@+id/whiteBox"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:srcCompat="@drawable/rectangle_box" />
+
+    <Button
+        android:id="@+id/changeTimeButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/transparent"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:onClick="popTimePicker"
+        android:text="@string/enter_a_different_time"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textColorHint="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/greyBox2"
+        app:layout_constraintEnd_toEndOf="@+id/greyBox2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/greyBox2"
+        app:layout_constraintTop_toTopOf="@+id/greyBox2"
+        app:layout_constraintVertical_bias="0.0"
+        app:rippleColor="#FBFBFB" />
+
+    <ImageView
+        android:id="@+id/orangeBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/orange_box"
+        app:layout_constraintBottom_toBottomOf="@+id/whiteBox"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toBottomOf="@+id/greyBox2"
+        app:layout_constraintVertical_bias="0.464" />
+
+    <Button
+        android:id="@+id/timeLocToList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/transparent"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/let_s_go_makan"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/orangeBox"
+        app:layout_constraintEnd_toEndOf="@+id/orangeBox"
+        app:layout_constraintStart_toStartOf="@+id/orangeBox"
+        app:layout_constraintTop_toTopOf="@+id/orangeBox" />
+
+    <CheckBox
+        android:id="@+id/useCurrentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/use_current_time"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/orangeBox"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toBottomOf="@+id/greyBox2"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

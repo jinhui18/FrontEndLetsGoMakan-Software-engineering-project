@@ -87,7 +87,6 @@ public class CreateUser extends CreateNewAccount {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()){
-                                                        Toast.makeText(context, "Account added successfully, please verify your email address", Toast.LENGTH_SHORT).show();
                                                         Intent i = new Intent(context, InputPreferences.class);
                                                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         context.startActivity(i);

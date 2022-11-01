@@ -22,4 +22,18 @@
         <item>Vegetarian</item>
         <item>Both</item>
     </string-array>
+    <string name="looking_for_a_restaurant">Looking for a \nRestaurant?</string>
+    <string name="location">LOCATION</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="time">TIME</string>
+    <string name="enter_a_different_time">Enter a different time</string>
+    <string name="use_current_time">Use Current Time</string>
+    <string name="let_s_go_makan">Let\'s Go Makan!</string>
+    <string name="use_current_location">Use current location</string>
+    <string name="map">map</string>
+    <string name="get_recommendations">Get Recommendations</string>
+    <string name="todo">todo</string>
+    <string name="create_account">Create Account</string>
+    <string name="setting_up_new_profile">Setting up new profile</string>
+    <string name="todo1">TODO</string>
 </resources>
