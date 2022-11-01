@@ -25,5 +25,10 @@ public class MaximumTravelTime extends FilteringCriteria{
         }
         return filteredList;
     }
+
+    @Override
+    public void addCriteria(Object object) {
+        this.maxTravelTime = (float) maxTravelTime;
+    }
 }
 

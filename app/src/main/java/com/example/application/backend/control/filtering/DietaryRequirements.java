@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DietaryRequirements extends FilteringCriteria{
 
-    private String reqs;
+    private TypesOfDietaryRequirements reqs;
     public DietaryRequirements() {};
 
     /**
@@ -17,16 +17,21 @@ public class DietaryRequirements extends FilteringCriteria{
      */
 
     public DietaryRequirements(TypesOfDietaryRequirements reqs) {
-        this.reqs = reqs.toString();
+        this.reqs = reqs;
     }
     @Override
     public ArrayList<Restaurant> filter(ArrayList<Restaurant>restaurantList){
         ArrayList<Restaurant>filteredList = new ArrayList<Restaurant>();
         for(int i=0; i<restaurantList.size(); i++) {
-            if(reqs.equals(restaurantList.get(i).getAvailableDietaryRequirements())) {
+            if(reqs.toString().equals(restaurantList.get(i).getAvailableDietaryRequirements())) {
                 filteredList.add(restaurantList.get(i));
             }
         }
         return filteredList;
+    }
+
+    @Override
+    public void addCriteria(Object object) {
+        this.reqs = (TypesOfDietaryRequirements) object;
     }
 }
