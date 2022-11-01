@@ -66,7 +66,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
         mDatabase.child(userID).child("Account").child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
-                Toast.makeText(InputPreferences.this, "Account successfully updated!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputPreferences.this, "Account added successfully, please verify your email address!", Toast.LENGTH_SHORT).show();
 
                 /*TESTING UPDATE
                 Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);

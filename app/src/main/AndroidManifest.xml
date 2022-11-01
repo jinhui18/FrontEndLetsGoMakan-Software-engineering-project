@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.application">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +19,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Application"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".SetTimeLocation"
+            android:parentActivityName=".ShowMap"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ShowMap"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -25,49 +52,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".LoginUser"
-            tools:ignore="Instantiatable"
-            />
-
-        <activity android:name=".CreateNewAccount"
-            android:parentActivityName=".MainActivity"
-            />
-
-        <activity android:name=".CreateUser"
-            tools:ignore="Instantiatable"
-            />
-
-        <activity android:name=".InputPreferences"
-            android:parentActivityName=".CreateNewAccountVerifyEmail"
-            />
-
-        <activity android:name=".view.ChangePreferences"
-            android:parentActivityName=".MainActivity" /> <!--Change to HomePage class-->
-            />
-
-
-        <activity android:name=".ResetPassword"
-            android:parentActivityName=".MainActivity"
-            />
-
-        <activity android:name=".ResetPasswordVerifyOTP"
-            android:parentActivityName=".ResetPassword"
-            />
-
-        <activity android:name=".ResetPasswordEnterNewPassword"
-            android:parentActivityName=".ResetPasswordVerifyOTP"
-            />
-
+        <activity
+            android:name=".LoginUser"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".CreateNewAccount"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CreateUser"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name=".InputPreferences"
+            android:parentActivityName=".CreateNewAccountVerifyEmail" />
+        <activity
+            android:name=".view.ChangePreferences"
+            android:parentActivityName=".MainActivity" /> <!-- Change to HomePage class -->
+        <activity
+            android:name=".ResetPassword"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ResetPasswordVerifyOTP"
+            android:parentActivityName=".ResetPassword" />
+        <activity
+            android:name=".ResetPasswordEnterNewPassword"
+            android:parentActivityName=".ResetPasswordVerifyOTP" />
         <activity android:name=".SignOut" />
-
         <activity android:name=".CreateNewAccountVerifyEmail" />
-
-
-
-
-
-
     </application>
 
 </manifest>

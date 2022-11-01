@@ -38,9 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="240dp"
-        android:text="Sign in to continue"
+        android:text="Please sign in to continue"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -107,7 +107,8 @@
             android:layout_width="270dp"
             android:layout_height="53dp"
             android:layout_marginLeft="0dp"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -161,7 +162,8 @@
             android:layout_height="54dp"
             android:layout_marginLeft="0dp"
             android:hint=""
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
@@ -189,7 +191,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.778"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -210,7 +213,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
-        android:text="Don't have account?"
+        android:text="Don't have an account?"
         android:textColor="@color/black"
         android:textSize="14dp"
         android:textStyle="bold"
@@ -232,5 +235,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.764"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
