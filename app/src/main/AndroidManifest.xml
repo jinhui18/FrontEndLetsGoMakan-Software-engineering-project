@@ -52,9 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".controller.LoginUserController"
-            tools:ignore="Instantiatable" />
+
         <activity
             android:name=".CreateNewAccount"
             android:parentActivityName=".view.LoginUI" />

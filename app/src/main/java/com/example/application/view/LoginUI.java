@@ -13,7 +13,6 @@ import com.example.application.CreateNewAccount;
 import com.example.application.DisplayRestaurantsList;
 import com.example.application.R;
 import com.example.application.controller.Controller;
-import com.example.application.controller.LoginUserController;
 import com.example.application.model.LoginUserModel;
 import com.example.application.model.Model;
 import com.google.android.material.textfield.TextInputEditText;

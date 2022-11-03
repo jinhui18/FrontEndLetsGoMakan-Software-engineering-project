@@ -6,15 +6,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.controller.LoginUserController;
-import com.example.application.backend.entity.Profile;
+import com.example.application.view.LoginUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +36,7 @@ public class ChangePreferencesModel extends Model {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(context, LoginUserController.class); //Change to HomePage class
+                Intent i = new Intent(context, LoginUI.class); //Change to HomePage class
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
