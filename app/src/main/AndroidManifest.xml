@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginUser"
+            android:name=".controller.LoginUserController"
             tools:ignore="Instantiatable" />
         <activity
             android:name=".CreateNewAccount"

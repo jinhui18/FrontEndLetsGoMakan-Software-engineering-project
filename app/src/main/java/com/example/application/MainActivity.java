@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.controller.LoginUserController;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialise all
+        //Instantiating widgets
         textView_hp1 = findViewById(R.id.textView1);
         textView_hp2 = findViewById(R.id.textView2);
         textView_hp3 = findViewById(R.id.textView3);
@@ -52,22 +53,18 @@ public class MainActivity extends AppCompatActivity {
         textView_hp5 = findViewById(R.id.textView5);
         textView_hp6 = findViewById(R.id.textView6);
         textView_hp7 = findViewById(R.id.textView7);
-
-
         imageView_hp1 = findViewById(R.id.imageView1);
         imageView_hp2 = findViewById(R.id.imageView2);
         imageView_hp3 = findViewById(R.id.imageView3);
         imageView_hp4 = findViewById(R.id.imageView4);
-
-
         textInputEmail = findViewById(R.id.textInputLayoutEmailAddress);
         email = findViewById(R.id.TextInputEditEmail);
-
         textInputPassword = findViewById(R.id.textInputLayoutPassword);
         password = findViewById(R.id.TextInputEditPassword);
-
         buttonLogin = findViewById(R.id.buttonLogin);
 
+
+        //Firebase
         mAuth = FirebaseAuth.getInstance();
 
         // below line is used to get the
@@ -86,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //LoginUser.handleEvent()
                 //loginUser(email.getText().toString(), password.getText().toString(),textInputEmail,textInputPassword );
-                LoginUser loginUser = new LoginUser(email.getText().toString(),password.getText().toString(),MainActivity.this);
+                LoginUserController loginUser = new LoginUserController(email.getText().toString(),password.getText().toString(),MainActivity.this);
                 loginUser.handleEvent(email.getText().toString(), password.getText().toString(),textInputEmail,textInputPassword);
             }
         });

@@ -4,12 +4,18 @@ import android.content.Context;
 
 import com.example.application.model.Model;
 
-public abstract class Controller {
-   protected Model model;
+import java.util.ArrayList;
 
-    public Controller(Model model){
-        this.model = model;
+public class Controller {
+   protected Model model;
+   protected ArrayList<Object> list;
+
+    public Controller(Model model, ArrayList<Object> list){
+        this.model = model; this.list = list;
     }
 
-    public abstract void handleEvent();
+    public void handleEvent(){
+        model.addAttributeList(list);
+        model.service();
+    }
 }

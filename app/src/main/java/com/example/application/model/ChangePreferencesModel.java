@@ -6,8 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.LoginPage;
-import com.example.application.LoginUser;
+import com.example.application.controller.LoginUserController;
 import com.example.application.backend.entity.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,11 +14,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChangePreferencesModel extends Model {
-    private Profile newProfile;
 
     public ChangePreferencesModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
@@ -29,7 +28,7 @@ public class ChangePreferencesModel extends Model {
     public void service() {
         //Hash Map to store string data
         Map<String, Object> map = new HashMap<>();
-        map.put("Profile", newProfile);
+        map.put("Profile", super.attributeList.get(0));
 
         //Get UserID
         String userID = mAuth.getCurrentUser().getUid();
@@ -39,7 +38,7 @@ public class ChangePreferencesModel extends Model {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(context, LoginUser.class); //Change to HomePage class
+                Intent i = new Intent(context, LoginUserController.class); //Change to HomePage class
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
@@ -49,10 +48,6 @@ public class ChangePreferencesModel extends Model {
                 Toast.makeText(context, "Failed to change preferences", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void addAttribute(Object profile){
-        this.newProfile = (Profile) profile;
     }
 }
 

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredMaximumTravelTime;
@@ -68,7 +69,7 @@ public class CreateUser extends CreateNewAccount {
     public void handleEvent(String name, String email, String password, TextInputLayout textInputEmail, TextInputLayout textInputPassword) {
 
 
-        if (validateEmail(email, textInputEmail) && isValidPassword(password, textInputPassword)) {
+        if (FormatChecker.isValidEmail(email, textInputEmail) && FormatChecker.isValidPassword(password, textInputPassword)) {
             mAuth = FirebaseAuth.getInstance();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -126,70 +127,4 @@ public class CreateUser extends CreateNewAccount {
                     });
         }
     }
-
-
-    private boolean validateEmail(String email, TextInputLayout textInputEmail) {
-
-        if (email.isEmpty()) {
-            textInputEmail.setError("Field can't be empty");
-            textInputEmail.requestFocus();
-            return false;
-        }
-        // use function to check email address pattern
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            textInputEmail.setError("Enter valid Email address !");
-            textInputEmail.requestFocus();
-            return false;
-        } else {
-            textInputEmail.setError(null);
-            return true;
-        }
-    }
-
-
-    public boolean isValidPassword(String password, TextInputLayout textInputPassword)
-    {
-        boolean isValid = true;
-        if (password.length() > 15 || password.length() < 8)
-        {
-            textInputPassword.setError("Password must be less than 20 and more than 8 characters in length.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String upperCaseChars = "(.*[A-Z].*)";
-        if (!password.matches(upperCaseChars ))
-        {
-            textInputPassword.setError("Password must have at least one uppercase character.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String lowerCaseChars = "(.*[a-z].*)";
-        if (!password.matches(lowerCaseChars ))
-        {
-            textInputPassword.setError("Password must have at least one lowercase character.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String numbers = "(.*[0-9].*)";
-        if (!password.matches(numbers ))
-        {
-            textInputPassword.setError("Password must have at least one number.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String specialChars = "(.*[@,#,$,%,!,&,*].*$)";
-        if (!password.matches(specialChars ))
-        {
-            textInputPassword.setError("Password must have at least one special character");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        return isValid;
-    }
-
 }

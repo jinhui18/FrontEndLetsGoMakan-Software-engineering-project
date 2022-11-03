@@ -13,12 +13,13 @@ import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.entity.Profile;
 import com.example.application.R;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
-import com.example.application.controller.ChangePreferencesController;
 import com.example.application.controller.Controller;
 import com.example.application.model.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 
 public class ChangePreferences extends AppCompatActivity implements View.OnClickListener{
@@ -72,7 +73,9 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
         createProfile();
 
         //Update database
-        Controller changePreferencesController = new ChangePreferencesController(changePreferencesModel, newProfile);
+        ArrayList<Object> list = new ArrayList<Object>();
+        list.add(newProfile);
+        Controller changePreferencesController = new Controller(changePreferencesModel, list);
         changePreferencesController.handleEvent();
     }
 

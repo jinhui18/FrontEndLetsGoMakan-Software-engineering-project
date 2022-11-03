@@ -1,22 +1,22 @@
-package com.example.application;
+package com.example.application.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Patterns;
 import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.ShowMap;
+import com.example.application.backend.control.others.FormatChecker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginUser{
+public class LoginUserController {
 
     private String email;
     private String password;
@@ -25,7 +25,7 @@ public class LoginUser{
     private Context context;
 
 
-    public LoginUser(String email,  String password, Context context) {
+    public LoginUserController(String email, String password, Context context) {
         this.email = email;
         this.password = password;
         this.context = context;
@@ -74,7 +74,7 @@ public class LoginUser{
         }
 
         // check email and password to make sure the formatting is correct before checking with database
-        if (isValidEmail(email, textInputEmail) && isValidPassword(password, textInputPassword) )
+        if (FormatChecker.isValidEmail(email, textInputEmail) && FormatChecker.isValidPassword(password, textInputPassword) )
         {
             FirebaseAuth mAuth;
             mAuth = FirebaseAuth.getInstance();
@@ -114,78 +114,4 @@ public class LoginUser{
         }
         counter--;
     }
-
-
-
-
-
-
-    private boolean isValidEmail(String email, TextInputLayout textInputEmail) {
-
-        if (email.isEmpty()) {
-            textInputEmail.setError("Field can't be empty");
-            textInputEmail.requestFocus();
-            return false;
-        }
-        // use function to check email address pattern
-        if ( !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            textInputEmail.setError("Enter valid Email address !");
-            textInputEmail.requestFocus();
-            return false;
-        }
-        else {
-            textInputEmail.setError(null);
-            return true;
-        }
-    }
-
-
-
-    public boolean isValidPassword(String password, TextInputLayout textInputPassword)
-    {
-        boolean isValid = true;
-        if ( password.length() < 8)
-        {
-            textInputPassword.setError("Invalid password.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String upperCaseChars = "(.*[A-Z].*)";
-        if (!password.matches(upperCaseChars ))
-        {
-            textInputPassword.setError("Invalid password.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String lowerCaseChars = "(.*[a-z].*)";
-        if (!password.matches(lowerCaseChars ))
-        {
-            textInputPassword.setError("Invalid password.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String numbers = "(.*[0-9].*)";
-        if (!password.matches(numbers ))
-        {
-            textInputPassword.setError("Invalid password.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        String specialChars = "(.*[@,#,$,%,!,&,*].*$)";
-        if (!password.matches(specialChars ))
-        {
-            textInputPassword.setError("Invalid password.");
-            textInputPassword.requestFocus();
-            isValid = false;
-            return isValid;
-        }
-        return isValid;
-    }
-
-
-
 }
