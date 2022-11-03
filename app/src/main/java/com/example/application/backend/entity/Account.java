@@ -11,7 +11,7 @@ public class Account {
         private ArrayList<Restaurant> recommendedList;
 
 
-        public Account(String name, String email, Profile profile, Restaurant rest) {
+        public Account(String name, String email, Profile profile) {
             this.name = name;
             this.email = "email test";
             this.profile = profile;
