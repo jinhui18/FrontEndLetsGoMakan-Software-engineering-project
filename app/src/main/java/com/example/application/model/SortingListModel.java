@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SortingListModel extends Model{
-    private SortingCriteria sortingCriteria;
 
     public SortingListModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
@@ -25,8 +24,11 @@ public class SortingListModel extends Model{
 
     @Override
     public void service() {
+        // FORMAT: attributeList = [filteringCriteria]
+
         //Retrieve account object and sort recommended list
         Account account = this.getAccountObject();
+        SortingCriteria sortingCriteria = (SortingCriteria) super.attributeList.get(0);
         sortingCriteria.sort(account.getRecommendedList());
 
         //Hash Map to store string data
@@ -52,10 +54,5 @@ public class SortingListModel extends Model{
         //Informing observers to update
         setChanged();
         notifyObservers();
-    }
-
-    @Override
-    public void addAttribute(Object object) {
-        this.sortingCriteria = (SortingCriteria) object;
     }
 }

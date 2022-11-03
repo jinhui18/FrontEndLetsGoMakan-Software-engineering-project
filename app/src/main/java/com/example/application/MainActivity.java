@@ -19,22 +19,17 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Widgets
     private TextView textView_hp1, textView_hp2, textView_hp3, textView_hp4,textView_hp5 ,textView_hp6, textView_hp7;
     private ImageView imageView_hp1, imageView_hp2, imageView_hp3, imageView_hp4;
-
-
     private Button buttonLogin;
-
     private TextInputLayout textInputEmail;
     private TextInputEditText email;
-
     private TextInputLayout textInputPassword;
     private TextInputEditText password;
-
+    //Firebase
     private FirebaseAuth mAuth;
-
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
+    private DatabaseReference mDatabase;
 
 
     private int counter = 5;
@@ -66,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
+
 
         // below line is used to get the
         // instance of our Firebase database.

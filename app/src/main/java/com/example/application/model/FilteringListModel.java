@@ -25,10 +25,10 @@ public class FilteringListModel extends Model{
     @Override
     public void service() {
         // FORMAT: attributeList = [filteringCriteria]
-        
+
         //Retrieve account object and sort recommended list
         Account account = this.getAccountObject();
-        FilteringCriteria filteringCriteria = (FilteringCriteria) this.attributeList.get(0);
+        FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
         account.setRecommendedList(filteringCriteria.filter(account.getRecommendedList()));
 
         //Hash Map to store string data

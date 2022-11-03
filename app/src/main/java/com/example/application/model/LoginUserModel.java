@@ -24,13 +24,13 @@ public class LoginUserModel extends Model{
 
     @Override
     public void service() {
-        // FORMAT: attributeList = [email, textInputEmail, password, textInputPassword, failCounter]
+        // FORMAT: attributeList = [email, textInputEmail, password, textInputPassword]
 
         //Getting necessary variables
-        String email = (String) attributeList.get(0);
-        TextInputLayout textInputEmail = (TextInputLayout) attributeList.get(1);
-        String password = (String) attributeList.get(2);
-        TextInputLayout textInputPassword = (TextInputLayout) attributeList.get(3);
+        String email = (String) super.attributeList.get(0);
+        TextInputLayout textInputEmail = (TextInputLayout) super.attributeList.get(1);
+        String password = (String) super.attributeList.get(2);
+        TextInputLayout textInputPassword = (TextInputLayout) super.attributeList.get(3);
 
         //Login in process
         if (FormatChecker.isValidEmail(email, textInputEmail) && FormatChecker.isValidPassword(password, textInputPassword) )
@@ -57,8 +57,6 @@ public class LoginUserModel extends Model{
                 public void onFailure(@NonNull Exception e) {
                     if (e.getMessage().equals("The password is invalid or the user does not have a password.")){
                         Toast.makeText(context, "That's not the right password! Please try again or click on \"Forgot password\". ", Toast.LENGTH_SHORT).show();
-                        int counter = (int) attributeList.get(4);
-                        counter++;
                     }
                     else{
                         Toast.makeText(context, "Invalid account. Please try a new email address or create a new account.", Toast.LENGTH_SHORT).show();
