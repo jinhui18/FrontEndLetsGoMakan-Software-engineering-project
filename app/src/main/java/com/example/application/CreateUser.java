@@ -14,12 +14,16 @@ import com.example.application.backend.enums.PreferredMaximumTravelTime;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateUser extends CreateNewAccount {
     private static final String TAG = "CreateUser";
@@ -76,7 +80,6 @@ public class CreateUser extends CreateNewAccount {
                                 Account account = new Account(name, email, profile);
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 mDataBase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
-
                                 mDataBase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task1) {
@@ -99,7 +102,7 @@ public class CreateUser extends CreateNewAccount {
                                             //Toast.makeText(CreateNewAccount.this, "Account added successfully", Toast.LENGTH_SHORT).show();
                                         }
                                         else{
-                                            Toast.makeText(context, "Failed to create an account", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Failed to create an account 1", Toast.LENGTH_SHORT).show();
                                             //delete user here if he fails
                                             mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -115,13 +118,12 @@ public class CreateUser extends CreateNewAccount {
 
                                 //startActivity(new Intent(CreateNewAccount.this, MainActivity.class));
                             } else { //when user account was already created before
-                                Toast.makeText(context, "Failed to create an account", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Failed to create an account 2", Toast.LENGTH_LONG).show();
                                 //Toast.makeText(CreateNewAccount.this, "Registration Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
-                    }); //There was a dot there before, i removed it
-
+                    });
         }
     }
 

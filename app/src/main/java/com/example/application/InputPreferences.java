@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner transportMode;
@@ -68,7 +71,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
             if (task1.isSuccessful()) {
                 Toast.makeText(InputPreferences.this, "Account added successfully, please verify your email address!", Toast.LENGTH_SHORT).show();
 
-                /*TESTING UPDATE
+              /*  //TESTING UPDATE
                 Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
                 Map<String, Object> map = new HashMap<>();
                 map.put("Profile", newProfile);
@@ -77,9 +80,9 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
                 //map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
 
                 //Update database
-                mDatabase.child("Account").child(userID).updateChildren(map);
+                mDatabase.child(userID).child("Account").updateChildren(map);
                 Toast.makeText(InputPreferences.this, "HELLOOOO", Toast.LENGTH_SHORT);
-                 */
+                //END OF TESTING */
 
                 startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
             } else {

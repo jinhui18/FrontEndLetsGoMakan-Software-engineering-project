@@ -1,12 +1,10 @@
 package com.example.application.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.LoginUser;
 import com.example.application.backend.control.sorting.SortingCriteria;
 import com.example.application.backend.entity.Account;
 import com.google.android.gms.tasks.OnCompleteListener;
