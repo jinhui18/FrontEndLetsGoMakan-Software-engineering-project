@@ -15,7 +15,7 @@ public class Restaurant {
     private String description;
     private String image;
     private String availableDietaryRequirements;
-    //ArrayList<LocalTime> openCloseTimings;
+    ArrayList<LocalTime> openCloseTimings;
 
     public Restaurant() {}
     //JSON control class will extract relevant attribute information and convert them into their correct form.
@@ -27,17 +27,13 @@ public class Restaurant {
         this.address = adrs;
         this.description = des;
         this.image = img;
-        //this.openCloseTimings = timings;
+        this.openCloseTimings = timings;
         this.availableDietaryRequirements = dreqs.toString();
     }
 
     // Bookmark
     public boolean isBookmark() {
         return bookmark;
-    }
-
-    public String getAvailableDietaryRequirements(){
-        return this.availableDietaryRequirements;
     }
 
     public void setBookmark(boolean bookmark) {
@@ -48,7 +44,6 @@ public class Restaurant {
     public float getCrowdLevel() {
         return crowdLevel;
     }
-
     public void setCrowdLevel(float crowdLevel) {
         this.crowdLevel = crowdLevel;
     }
@@ -57,7 +52,6 @@ public class Restaurant {
     public int getRatings() {
         return ratings;
     }
-
     public void setRatings(int ratings) {
         this.ratings = ratings;
     }
@@ -66,21 +60,18 @@ public class Restaurant {
     public float getTravellingTime() {
         return travellingTime;
     }
-
     public void setTravellingTime(float travelTime) {
         this.travellingTime = travelTime;
     }
 
     //Name
     public String getName() {return name;}
-
     public void setName(String name) {this.name = name;}
 
     //Address
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -89,7 +80,6 @@ public class Restaurant {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -98,19 +88,15 @@ public class Restaurant {
     public String getImage() {
         return image;
     }
-
     public void setImage(String image) {
         this.image = image;
     }
 
-    /*
-    //Opening and Closing time in array
-    public ArrayList<LocalTime> getOpenCloseTimings() {
-        return openCloseTimings;
-    }
+    //Available dietary requirements
+    public String getAvailableDietaryRequirements(){return this.availableDietaryRequirements;}
+    public void setAvailableDietaryRequirements(TypesOfDietaryRequirements typesOfDietaryRequirements){this.availableDietaryRequirements = typesOfDietaryRequirements.toString();}
 
-    public void setOpenCloseTimings(ArrayList<LocalTime> openCloseTimings) {
-        this.openCloseTimings = openCloseTimings;
-    }
-    */
+    //Opening and Closing time in array
+    public ArrayList<LocalTime> getOpenCloseTimings() {return openCloseTimings;}
+    public void setOpenCloseTimings(ArrayList<LocalTime> openCloseTimings) {this.openCloseTimings = openCloseTimings;}
 }

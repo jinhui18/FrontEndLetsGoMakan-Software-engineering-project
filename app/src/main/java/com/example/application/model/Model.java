@@ -24,6 +24,8 @@ public abstract class Model extends Observable{
     }
     public abstract void service();
     public abstract void addAttribute(Object object);
+
+    //Used to retrieve the account object from the database
     public Account getAccountObject(){
         final Account[] account = {null};
         String userID = mAuth.getCurrentUser().getUid();
