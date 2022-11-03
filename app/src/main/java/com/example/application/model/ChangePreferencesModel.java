@@ -29,9 +29,11 @@ public class ChangePreferencesModel extends Model {
     public void service() {
         //Hash Map to store string data
         Map<String, Object> map = new HashMap<>();
-        map.put("Profile", newProfile.getDietaryRequirements().toString());
+        map.put("Profile", newProfile);
+
         //Get UserID
         String userID = mAuth.getCurrentUser().getUid();
+
         //Update database (This means update "Profile" key in "Account" child)
         mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -44,7 +46,7 @@ public class ChangePreferencesModel extends Model {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "What a failure in life\nKeep trying or press back", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Failed to change preferences", Toast.LENGTH_SHORT).show();
             }
         });
     }
