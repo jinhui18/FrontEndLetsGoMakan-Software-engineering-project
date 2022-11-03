@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 
-public class ChangePreferences extends AppCompatActivity implements View.OnClickListener{
+public class ChangePreferencesUI extends AppCompatActivity implements View.OnClickListener{
     //Widgets
     private Spinner transportMode;
     private Spinner dietRequirement;
@@ -39,8 +39,6 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_preferences);
-
-
 
         //Instantiating widgets
         transportMode = findViewById(R.id.transportSpinner);
@@ -64,7 +62,7 @@ public class ChangePreferences extends AppCompatActivity implements View.OnClick
 
         //MVC related
         newProfile = new Profile();
-        changePreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, ChangePreferences.this);
+        changePreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, ChangePreferencesUI.this);
     }
 
     @Override

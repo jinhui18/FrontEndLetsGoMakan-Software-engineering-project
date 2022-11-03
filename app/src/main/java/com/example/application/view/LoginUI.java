@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.CreateNewAccount;
+import com.example.application.DisplayRestaurantsList;
+import com.example.application.R;
+import com.example.application.controller.Controller;
 import com.example.application.controller.LoginUserController;
+import com.example.application.model.LoginUserModel;
+import com.example.application.model.Model;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,7 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class LoginUI extends AppCompatActivity {
 
     //Widgets
     private TextView textView_hp1, textView_hp2, textView_hp3, textView_hp4,textView_hp5 ,textView_hp6, textView_hp7;
@@ -30,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     //Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    //MVC
+    private Model loginUserModel;
 
-
-    private int counter = 5;
 
 
     @Override
@@ -58,30 +66,21 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.TextInputEditPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
-
         //Firebase
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
 
+        //MVC
+        loginUserModel = new LoginUserModel(mAuth, mDatabase, LoginUI.this);
 
-        // below line is used to get the
-        // instance of our Firebase database.
-        firebaseDatabase = FirebaseDatabase.getInstance();
-
-        // below line is used to get reference for our database.
-        databaseReference = firebaseDatabase.getReference("Account");
-
-
-        //When login button is clicked
+        //CLicking of buttons
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //startActivity(new Intent(MainActivity.this, CreateNewAccount.class));
-
-                //LoginUser.handleEvent()
-                //loginUser(email.getText().toString(), password.getText().toString(),textInputEmail,textInputPassword );
-                LoginUserController loginUser = new LoginUserController(email.getText().toString(),password.getText().toString(),MainActivity.this);
-                loginUser.handleEvent(email.getText().toString(), password.getText().toString(),textInputEmail,textInputPassword);
+                ArrayList<Object> list = new ArrayList<Object>();
+                list.add(email); list.add(textInputEmail); list.add(password); list.add(textInputPassword);
+                Controller loginController = new Controller(loginUserModel,list);
+                loginController.handleEvent();
             }
         });
 
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         textView_hp5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DisplayRestaurantsList.class);
+                Intent intent = new Intent(LoginUI.this, DisplayRestaurantsList.class);
                 startActivity(intent);
             }
         });
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         textView_hp7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CreateNewAccount.class);
+                Intent intent = new Intent(LoginUI.this, CreateNewAccount.class);
                 startActivity(intent);
             }
         });

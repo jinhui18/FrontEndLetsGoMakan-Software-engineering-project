@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.view.LoginUI;
+
 public class SignOut extends AppCompatActivity {
 
     Button signOutButton;
@@ -22,7 +24,7 @@ public class SignOut extends AppCompatActivity {
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SignOut.this, MainActivity.class));
+                startActivity(new Intent(SignOut.this, LoginUI.class));
             }
         });
 

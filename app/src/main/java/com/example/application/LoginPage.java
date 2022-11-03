@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 
-public class LoginPage extends MainActivity implements View.OnClickListener {
+import com.example.application.view.LoginUI;
+
+public class LoginPage extends LoginUI implements View.OnClickListener {
     private TextView textView_hp1,textView_hp2,textView_hp3,textView_hp4,textView_hp5,textView_hp6,textView_hp7,textView_hp8,textView_hp9;
     private ImageView imageView_hp1,imageView_hp2,imageView_hp3,imageView_hp4,imageView_hp5,imageView_hp6;
 

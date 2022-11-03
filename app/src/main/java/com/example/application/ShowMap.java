@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -23,7 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.application.view.ChangePreferences;
+import com.example.application.view.ChangePreferencesUI;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationCallback;
@@ -109,7 +108,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                 break;
             }
             case R.id.settings: {
-                startActivity(new Intent(this, ChangePreferences.class));
+                startActivity(new Intent(this, ChangePreferencesUI.class));
             }
         }
     }

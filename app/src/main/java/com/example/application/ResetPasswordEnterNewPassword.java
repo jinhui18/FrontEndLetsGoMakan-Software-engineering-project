@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.view.LoginUI;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -51,11 +52,11 @@ public class ResetPasswordEnterNewPassword extends AppCompatActivity {
         buttonResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ResetPasswordEnterNewPassword.this, MainActivity.class  );
+                Intent i = new Intent(ResetPasswordEnterNewPassword.this, LoginUI.class  );
                 startActivity(i);
                 if (validatePassword(password1.getText().toString()) && validatePassword(password2.getText().toString())){
                     if (password1.getText().toString().equals(password2.getText().toString())){
-                        Intent intent = new Intent(ResetPasswordEnterNewPassword.this, MainActivity.class  );
+                        Intent intent = new Intent(ResetPasswordEnterNewPassword.this, LoginUI.class  );
                         startActivity(intent);
                     }
                 }

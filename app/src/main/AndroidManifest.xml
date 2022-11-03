@@ -44,7 +44,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.LoginUI"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +57,7 @@
             tools:ignore="Instantiatable" />
         <activity
             android:name=".CreateNewAccount"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.LoginUI" />
         <activity
             android:name=".CreateUser"
             tools:ignore="Instantiatable" />
@@ -65,11 +65,11 @@
             android:name=".InputPreferences"
             android:parentActivityName=".CreateNewAccountVerifyEmail" />
         <activity
-            android:name=".view.ChangePreferences"
-            android:parentActivityName=".MainActivity" /> <!-- Change to HomePage class -->
+            android:name=".view.ChangePreferencesUI"
+            android:parentActivityName=".view.LoginUI" /> <!-- Change to HomePage class -->
         <activity
             android:name=".ResetPassword"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.LoginUI" />
         <activity
             android:name=".ResetPasswordVerifyOTP"
             android:parentActivityName=".ResetPassword" />
