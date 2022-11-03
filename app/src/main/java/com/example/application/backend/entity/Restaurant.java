@@ -2,9 +2,6 @@ package com.example.application.backend.entity;
 
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-
 public class Restaurant {
     private boolean bookmark;
     private float crowdLevel;
@@ -15,11 +12,12 @@ public class Restaurant {
     private String description;
     private String image;
     private String availableDietaryRequirements;
-    ArrayList<LocalTime> openCloseTimings;
+    //ArrayList<LocalTime> openCloseTimings;
+    private int openCloseTimings;
 
     public Restaurant() {}
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(boolean bm, float cl, int rtngs, float tt, String adrs, String des, String img, ArrayList<LocalTime> timings, TypesOfDietaryRequirements dreqs) {
+    public Restaurant(boolean bm, float cl, int rtngs, float tt, String adrs, String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
         this.bookmark = bm;
         this.crowdLevel = cl;
         this.ratings = rtngs;
@@ -97,6 +95,6 @@ public class Restaurant {
     public void setAvailableDietaryRequirements(TypesOfDietaryRequirements typesOfDietaryRequirements){this.availableDietaryRequirements = typesOfDietaryRequirements.toString();}
 
     //Opening and Closing time in array
-    public ArrayList<LocalTime> getOpenCloseTimings() {return openCloseTimings;}
-    public void setOpenCloseTimings(ArrayList<LocalTime> openCloseTimings) {this.openCloseTimings = openCloseTimings;}
+    public int getOpenCloseTimings() {return openCloseTimings;}
+    public void setOpenCloseTimings(int openCloseTimings) {this.openCloseTimings = openCloseTimings;}
 }

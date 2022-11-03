@@ -10,15 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.application.backend.entity.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
-    ArrayList<String> arrayList;
+    Context context;
+    ArrayList<Restaurant> arrayList;
 
-    public MyAdapter(ArrayList<String> arrayList) {
+    public MyAdapter(Context context, ArrayList<Restaurant> arrayList) {
+        this.context = context;
         this.arrayList = arrayList;
     }
 
@@ -28,7 +31,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        //Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View v = layoutInflater.inflate(R.layout.card_restaurant,parent,false);
         return new MyViewHolder(v);
@@ -37,9 +40,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
 
-        holder.textView_restaurant_name1.setText(arrayList.get(position).toString());
+        Restaurant restaurant = arrayList.get(position);
+
+        holder.textView_restaurant_name1.setText(restaurant.getName());
+        holder.textView_restaurant_address1.setText(restaurant.getAddress());
+
+        holder.textView_restaurant_time1.setText(( restaurant.getTravellingTime() + " mins") );
+
         Picasso.get()
-                .load("https://www.greendot.sg/wp-content/themes/Greendot/images/banner-connect-mobile.jpg")
+                .load(restaurant.getImage())
                 .fit()
                 .into(holder.imageView_restaurant1);
 
@@ -54,6 +63,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
         private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1;
         private ImageView imageView_bg1,imageView_restaurant1;
+        String restaurant_url;
 
 
         public MyViewHolder(@NonNull View itemView) {
