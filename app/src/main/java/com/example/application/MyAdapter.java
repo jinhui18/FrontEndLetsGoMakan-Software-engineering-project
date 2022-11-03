@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
@@ -36,6 +38,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     public void onBindViewHolder(@NonNull MyAdapter.MyViewHolder holder, int position) {
 
         holder.textView_restaurant_name1.setText(arrayList.get(position).toString());
+        Picasso.get()
+                .load("https://www.greendot.sg/wp-content/themes/Greendot/images/banner-connect-mobile.jpg")
+                .fit()
+                .into(holder.imageView_restaurant1);
 
     }
 

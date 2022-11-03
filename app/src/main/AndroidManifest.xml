@@ -78,6 +78,8 @@
             android:parentActivityName=".ResetPasswordVerifyOTP" />
         <activity android:name=".SignOut" />
         <activity android:name=".CreateNewAccountVerifyEmail" />
+        <activity android:name=".DisplayRestaurantsList" />
+
     </application>
 
 </manifest>

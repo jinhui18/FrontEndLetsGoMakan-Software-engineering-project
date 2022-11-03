@@ -45,6 +45,7 @@ public class DisplayRestaurantsList extends AppCompatActivity {
 
         buttonSortBy = findViewById(R.id.buttonSortBy);
         buttonFilterBy = findViewById(R.id.buttonFilterBy);
+        recyclerView = findViewById(R.id.recycler_id);
 
         selectedFilteringCriteria = new boolean[filteringCriteriaArray.length];
 
@@ -200,7 +201,7 @@ public class DisplayRestaurantsList extends AppCompatActivity {
 
 
 
-        recyclerView = findViewById(R.id.recycler_id);
+        //recyclerView = findViewById(R.id.recycler_id);
         button = findViewById(R.id.button6);
         arrayList = new ArrayList <String> ();
         arrayList.add("Hello world");
