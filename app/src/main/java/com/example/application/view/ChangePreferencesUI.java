@@ -61,7 +61,7 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
 
         //MVC related
-        newProfile = new Profile();
+        newProfile = new Profile(); //the new profile object
         changePreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, ChangePreferencesUI.this);
     }
 

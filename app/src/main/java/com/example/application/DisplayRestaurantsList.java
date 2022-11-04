@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.entity.Restaurant;
+import com.example.application.model.FilteringListModel;
+import com.example.application.model.Model;
+import com.example.application.model.SortingListModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,40 +26,61 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
 
-public class DisplayRestaurantsList extends AppCompatActivity {
-
+public class DisplayRestaurantsList extends AppCompatActivity implements Observer {
+    //Widgets and associated stuff
     //private TextView textView;
     private Button button, buttonSortBy, buttonFilterBy;
     private RecyclerView recyclerView;
-    private ArrayList<Restaurant> arrayList;
-
-    // creating a variable for
-    // our Firebase Database.
-    private FirebaseDatabase firebaseDatabase;
-    private FirebaseAuth firebaseAuth;
-
-    // creating a variable for our
-    // Database Reference for Firebase.
-    private DatabaseReference databaseReference;
-
-    String userID;
-
-
+    LinearLayoutManager linearLayoutManager;
+    MyAdapter myAdapter;
+    //Filtering Dropdown stuff
     boolean[] selectedFilteringCriteria;
     ArrayList<Integer> filteringCriteriaList = new ArrayList<>();
-    String[] filteringCriteriaArray = {"Travelling Time", "Ratings", "Crowd Level"};
-
-
+    String[] filteringCriteriaArray = {"Halal", "Ratings", "Crowd Level"};
+    //Sorting dropdown stuff
     boolean[] selectedSortingCriteria;
     ArrayList<Integer> sortingCriteriaList = new ArrayList<>();
     String[] sortingCriteriaArray = {"Travelling Time", "Ratings", "Crowd Level"};
+    int singlePosition = 0; //default sorting selection
+    int[] multiPosition = {-1} ; //
 
-    int position = 0;
+    //Firebase
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+                                                                String userID; //For testing purposes
 
-    public DisplayRestaurantsList() {
+    //MVC related
+    Model filteringListModel;
+    Model sortingListModel;
+
+    // store data store configuration
+    private final static Map<String, String> configuration = new HashMap<String, String>();
+
+    // load data store configuration during system startup
+    static {
+        try {
+            Scanner configurationReader = new Scanner(new File("com/example/application/backend/control/sorting"));
+            while(configurationReader.hasNextLine()) {
+                String line  = configurationReader.nextLine();
+                String[] parts = line.split("=");
+                configuration.put(parts[0], parts[1]);
+            }
+            configurationReader.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -64,29 +90,26 @@ public class DisplayRestaurantsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_restaurants_list);
 
+        for (String name: configuration.keySet()) {
+            Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
+        }
+
+
+        //Firebase (has to come first)
+        mAuth = FirebaseAuth.getInstance();
+        //userID = firebaseAuth.getCurrentUser().getUid();
+                                                                userID = "Usl1ufnfyEfevGFTWxu3nxSwdCt2";//For testing purposes
+        //databaseReference = firebaseDatabase.getReference(userID).child("Account").child("recommendedList");
+        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+
+        //Widgets and Associated stuff
         buttonSortBy = findViewById(R.id.buttonSortBy);
         buttonFilterBy = findViewById(R.id.buttonFilterBy);
+                                                                button = findViewById(R.id.button6);//For testing purposes
         recyclerView = findViewById(R.id.recycler_id);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        //userID = firebaseAuth.getCurrentUser().getUid();
-        userID = "Usl1ufnfyEfevGFTWxu3nxSwdCt2";
-
-        // below line is used to get the instance
-        // of our Firebase database.
-        firebaseDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app");
-
-        // below line is used to get
-        // reference for our database.
-        //databaseReference = firebaseDatabase.getReference(userID).child("Account").child("recommendedList");
-        databaseReference = firebaseDatabase.getReference();
-
-
-
         selectedFilteringCriteria = new boolean[filteringCriteriaArray.length];
-
         selectedSortingCriteria = new boolean[sortingCriteriaArray.length];
-
+        //SortingCriteria dropdown (Expand for code)
         buttonSortBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,34 +117,18 @@ public class DisplayRestaurantsList extends AppCompatActivity {
                 builder.setTitle("Select Sorting Criteria");
 
 
-                builder.setSingleChoiceItems(sortingCriteriaArray, position, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(sortingCriteriaArray, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        position = i;
-                        //mResult.setText(listItems[i]);
+                        singlePosition = i;
+                                                                Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Initialize string builder
-                        StringBuilder stringBuilder = new StringBuilder();
-                        // use for loop
-                        for (int j = 0; j < sortingCriteriaList.size(); j++) {
-                            // concat array value
-                            stringBuilder.append(sortingCriteriaArray[sortingCriteriaList.get(j)]);
-                            // check condition
-                            if (j != sortingCriteriaList.size() - 1) {
-                                // When j value  not equal
-                                // to lang list size - 1
-                                // add comma
-                                stringBuilder.append("\n");
-                            }
-                        }
-                        // set text on textView
-                        // if you want to show the selected criteria on the button
-                        //buttonFilterBy.setText(stringBuilder.toString());
+                                                                Toast.makeText(DisplayRestaurantsList.this, "Test "+String.valueOf(singlePosition), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -151,8 +158,7 @@ public class DisplayRestaurantsList extends AppCompatActivity {
                 mDialog.show();
             }
         });
-
-
+        //FilteringCriteria dropdown (Expand for code)
         buttonFilterBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,18 +235,22 @@ public class DisplayRestaurantsList extends AppCompatActivity {
 
 
         });
-
-        button = findViewById(R.id.button6);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DisplayRestaurantsList.this);
+        //Restaurant list stuff
+        linearLayoutManager = new LinearLayoutManager(DisplayRestaurantsList.this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        arrayList = new ArrayList<>();
-
-        MyAdapter myAdapter = new MyAdapter(DisplayRestaurantsList.this,arrayList);
+        myAdapter = new MyAdapter(DisplayRestaurantsList.this,null);
         recyclerView.setAdapter(myAdapter);
+        this.retrieveAndDisplay();
 
-        databaseReference.child(userID).child("Account").child("recommendedList")
+        //MVC Stuff
+        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+        filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+    }
+
+    public void retrieveAndDisplay(){
+        ArrayList<Restaurant> arrayList = new ArrayList<>();
+        myAdapter.setArrayList(arrayList);
+        mDatabase.child(userID).child("Account").child("recommendedList")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -258,7 +268,15 @@ public class DisplayRestaurantsList extends AppCompatActivity {
                         Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        this.retrieveAndDisplay();
+    }
+
+
+    public void getAllCriteria(){
     }
 }
 
