@@ -29,7 +29,7 @@ public class FilteringListModel extends Model{
         //Retrieve account object and sort recommended list
         Account account = this.getAccountObject();
         FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
-        account.setRecommendedList(filteringCriteria.filter(account.getRecommendedList()));
+        account.setRecommendedList(filteringCriteria.filter(account.getFullRestaurantList()));
 
         //Hash Map to store string data
         Map<String, Object> map = new HashMap<>();
@@ -39,7 +39,7 @@ public class FilteringListModel extends Model{
         String userID = mAuth.getCurrentUser().getUid();
 
         //Update database (This means update "Account" key in "userID" child)
-        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child(userID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "List filtered and updated!", Toast.LENGTH_SHORT).show();

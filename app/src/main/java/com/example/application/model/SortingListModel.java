@@ -39,7 +39,7 @@ public class SortingListModel extends Model{
         String userID = mAuth.getCurrentUser().getUid();
 
         //Update database (This means update "Account" key in "userID" child)
-        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child(userID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "List sorted and updated!", Toast.LENGTH_SHORT).show();

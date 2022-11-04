@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.backend.entity.Account;
+import com.example.application.backend.entity.Restaurant;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +31,7 @@ public abstract class Model extends Observable{
     public void addAttributeList(ArrayList<Object> list) {attributeList=list;}
     //Used to retrieve the account object from the database (if user is logged in)
     public Account getAccountObject(){
-        final Account[] account = {null};
+       ArrayList<Account> accountArray = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!=null) {
             String userID = user.getUid();
@@ -39,7 +40,7 @@ public abstract class Model extends Observable{
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Iterable<DataSnapshot> children = snapshot.getChildren();
                     for (DataSnapshot child : children) {
-                        account[0] = child.getValue(Account.class);
+                        accountArray.add(child.getValue(Account.class));
                     }
                 }
 
@@ -49,6 +50,6 @@ public abstract class Model extends Observable{
                 }
             });
         }
-        return account[0]; //return the sole account a user has
+        return accountArray.get(0); //return the sole account a user has
     }
 }

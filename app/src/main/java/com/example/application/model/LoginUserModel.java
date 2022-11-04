@@ -11,6 +11,7 @@ import com.example.application.backend.control.others.FormatChecker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,9 +28,9 @@ public class LoginUserModel extends Model{
         // FORMAT: attributeList = [email, textInputEmail, password, textInputPassword]
 
         //Getting necessary variables
-        String email = (String) super.attributeList.get(0);
+        String email = ((TextInputEditText) super.attributeList.get(0)).getText().toString();
         TextInputLayout textInputEmail = (TextInputLayout) super.attributeList.get(1);
-        String password = (String) super.attributeList.get(2);
+        String password = ((TextInputEditText) super.attributeList.get(2)).getText().toString();
         TextInputLayout textInputPassword = (TextInputLayout) super.attributeList.get(3);
 
         //Login in process
