@@ -14,7 +14,7 @@ public class SortingStoreFactory {
     static {
         try {
 
-            Scanner configurationReader = new Scanner(new File("configuration.txt"));
+            Scanner configurationReader = new Scanner(new File("sorting_configuration.txt"));
             while(configurationReader.hasNextLine()) {
                 String line  = configurationReader.nextLine();
                 String[] parts = line.split("=");

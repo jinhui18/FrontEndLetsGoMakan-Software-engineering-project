@@ -1,7 +1,5 @@
 package com.example.application.backend.control.filtering;
 
-import com.example.application.backend.control.sorting.SortingCriteria;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -16,7 +14,7 @@ public class FilteringStoreFactory {
     static {
         try {
 
-            Scanner configurationReader = new Scanner(new File("configuration.txt"));
+            Scanner configurationReader = new Scanner(new File("sorting_configuration.txt"));
             while(configurationReader.hasNextLine()) {
                 String line  = configurationReader.nextLine();
                 String[] parts = line.split("=");

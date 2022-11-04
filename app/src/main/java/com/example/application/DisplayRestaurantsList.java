@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Filter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.entity.Restaurant;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
@@ -26,8 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -67,10 +65,17 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     // store data store configuration
     private final static Map<String, String> configuration = new HashMap<String, String>();
 
-    // load data store configuration during system startup
-    static {
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.display_restaurants_list);
+
+        //Retrieving all sorting criteria from sorting_configuration.txt
         try {
-            Scanner configurationReader = new Scanner(new File("com/example/application/backend/control/sorting"));
+            System.out.println("My Path");
+            Scanner configurationReader = new Scanner(getAssets().open("sorting_configuration.txt"));
+
             while(configurationReader.hasNextLine()) {
                 String line  = configurationReader.nextLine();
                 String[] parts = line.split("=");
@@ -80,20 +85,14 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
 
-
-    @SuppressLint("MissingInflatedId")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.display_restaurants_list);
-
+        //Testing
         for (String name: configuration.keySet()) {
             Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
         }
-
 
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
