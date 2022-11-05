@@ -124,7 +124,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
                         ArrayList<Object> initialSortingList = new ArrayList<Object>();
                         initialSortingList.add(sortingCriteria);
-                        FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
+                        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
                     }
                 });
 
@@ -255,7 +255,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         System.out.println("THE OBEJCT: "+filteringCriteriaArray[0]);
         System.out.println("THE OBEJCT: "+filteringCriteriaArray[1]);
         //FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, DisplayRestaurantsList.this, initialFilteringList, filteringListModel);
-        FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
+        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
     }
 
@@ -263,7 +263,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
         mDatabase.child(userID).child("Account").child("recommendedList")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Iterable<DataSnapshot> children = snapshot.getChildren();

@@ -20,16 +20,16 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FirebaseRetrieval {
-    public static void retrieveRecommendedList(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model sortingListModel){
+    public static void pureSorting(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model sortingListModel){
         final ArrayList<Restaurant> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
 
         mDatabase.child(userID).child("Account").child("recommendedList")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (arrayList.size()==0) {
+
                             Iterable<DataSnapshot> children = snapshot.getChildren();
 
                             for (DataSnapshot child : children) {
@@ -41,7 +41,7 @@ public class FirebaseRetrieval {
                             System.out.println("RECOMMENDED LIST RETRIEVED AND APPENDED");
                             Controller initialSortingController = new Controller(sortingListModel, attributeList);
                             initialSortingController.handleEvent(); //model -> update -> retrieveAndDisplay() called
-                        }
+
                         return;
                     }
                     @Override
@@ -49,7 +49,7 @@ public class FirebaseRetrieval {
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-        System.out.println("By-pass 1");
+        System.out.println("By-pass 1 --->>>"+ arrayList.size());
         return;
     }
 
@@ -59,10 +59,10 @@ public class FirebaseRetrieval {
         String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
 
         mDatabase.child(userID).child("Account").child("fullRestaurantList")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (arrayList.size()==0) {
+
                             Iterable<DataSnapshot> children = snapshot.getChildren();
 
                             for (DataSnapshot child : children) {
@@ -74,7 +74,7 @@ public class FirebaseRetrieval {
                             System.out.println("FULL RESTAURANT LIST RETRIEVED AND APPENDED");
                             Controller initialFilteringController = new Controller(filteringListModel, attributeList);
                             initialFilteringController.handleEvent();
-                        }
+
                         return;
                     }
                     @Override
