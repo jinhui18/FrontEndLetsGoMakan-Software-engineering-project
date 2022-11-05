@@ -31,14 +31,22 @@ public class TravellingTime extends SortingCriteria {
 
         Restaurant temp = new Restaurant();
 
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
+
         // Bubble sort is used.
         for(int i = 0; i < sizeOfRestaurantList; i++) {
-            for(int j = 1; j < (sizeOfRestaurantList - 1); j++) {
+
+            for(int j = 1; j <= (sizeOfRestaurantList-1); j++) {
+                System.out.println("Res1: "+restaurantList.get(j-1).getTravellingTime()+"   "+"Res2: "+restaurantList.get(j).getTravellingTime());
                 if(restaurantList.get(j-1).getTravellingTime() > restaurantList.get(j).getTravellingTime())
                 {
                     temp = restaurantList.get(j-1);
                     restaurantList.set(j-1, restaurantList.get(j));
                     restaurantList.set(j, temp);
+                    System.out.println("Swapped");
                 }
 
                 // This statement checks if the crowd levels of both restaurants are equal
@@ -58,5 +66,9 @@ public class TravellingTime extends SortingCriteria {
                 }
             }
         }
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
     }
 }

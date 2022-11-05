@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.control.filtering.FilteringStoreFactory;
+import com.example.application.backend.control.others.FirebaseRetrieval;
 import com.example.application.backend.control.sorting.CrowdLevel;
 import com.example.application.backend.control.sorting.SortingCriteria;
 import com.example.application.backend.control.sorting.SortingStoreFactory;
@@ -85,7 +86,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
         //userID = firebaseAuth.getCurrentUser().getUid();
-                                                                userID = "ss28rX1fEiV1bRtmkrJmCksoCZ43";//For testing purposes
+                                                                userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
         //MVC Stuff and Observer Pattern
@@ -252,14 +253,16 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]));
         System.out.println("THE OBEJCT: "+sortingCriteriaArray[singlePosition]);
 
+        FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
+
         //Controller initialFilteringController = new Controller(filteringListModel, initialFilteringList);
-        Controller initialSortingController = new Controller(sortingListModel, initialSortingList);
+
 
         //For testing, assume that recommendedList == fullList
         //initialFilteringController.handleEvent();
-        initialSortingController.handleEvent();
+        //initialSortingController.handleEvent(); //model -> update -> retrieveAndDisplay() called
 
-        this.retrieveAndDisplay(); //displays recyclerView
+        //this.retrieveAndDisplay(); //displays recyclerView
     }
 
     public void retrieveAndDisplay(){
@@ -274,19 +277,23 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         for (DataSnapshot child : children) {
                             Restaurant restaurant = child.getValue(Restaurant.class);
                             arrayList.add(restaurant);
+                            System.out.println("Size here: "+ arrayList.size());
                         }
                         myAdapter.notifyDataSetChanged();
+                        return;
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
+        return;
     }
 
     @Override
     public void update(Observable observable, Object o) {
         this.retrieveAndDisplay();
+        System.out.println("UPDATE IS CALLED");
     }
 
     public void getAllCriteria(){
