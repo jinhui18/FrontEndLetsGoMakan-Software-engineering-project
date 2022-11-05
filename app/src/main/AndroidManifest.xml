@@ -77,6 +77,8 @@
         <activity android:name=".SignOut" />
         <activity android:name=".CreateNewAccountVerifyEmail" />
         <activity android:name=".DisplayRestaurantsList" />
+        <activity android:name=".DisplayRestaurant" />
+
 
     </application>
 

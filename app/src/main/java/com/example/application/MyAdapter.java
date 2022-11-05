@@ -1,19 +1,21 @@
 package com.example.application;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.application.backend.entity.Restaurant;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
@@ -53,6 +55,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 .fit()
                 .into(holder.imageView_restaurant1);
 
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"clicked",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, DisplayRestaurant.class);
+                intent.putExtra("restaurant_url", restaurant.getImage());
+                intent.putExtra("restaurant_name", restaurant.getName());
+                intent.putExtra("restaurant_address", restaurant.getAddress());
+                intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
+                intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
+                intent.putExtra("restaurant_travelling_time", restaurant.getTravellingTime());
+                context.startActivity(intent);
+
+            }
+        });
+
     }
 
     @Override
@@ -65,6 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1;
         private ImageView imageView_bg1,imageView_restaurant1;
         String restaurant_url;
+        CardView cardView;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -74,7 +94,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             textView_restaurant_time1 = itemView.findViewById(R.id.textView_restaurant_time1);
             imageView_bg1 = itemView.findViewById(R.id.imageView_bg1);
             imageView_restaurant1 = itemView.findViewById(R.id.imageView_restaurant1);
-
+            cardView = itemView.findViewById(R.id.cardView);
         }
 
     }
