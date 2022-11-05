@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.application.backend.control.filtering.FilteringCriteria;
+import com.example.application.backend.control.filtering.FilteringStoreFactory;
 import com.example.application.backend.control.sorting.CrowdLevel;
 import com.example.application.backend.control.sorting.SortingCriteria;
 import com.example.application.backend.control.sorting.SortingStoreFactory;
+import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
+import com.example.application.controller.Controller;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
 import com.example.application.model.SortingListModel;
@@ -85,6 +88,10 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //databaseReference = firebaseDatabase.getReference(userID).child("Account").child("recommendedList");
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
+        //MVC Stuff
+        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+        filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+
         //Widgets and Associated stuff
         buttonSortBy = findViewById(R.id.buttonSortBy);
         buttonFilterBy = findViewById(R.id.buttonFilterBy);
@@ -92,6 +99,9 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         recyclerView = findViewById(R.id.recycler_id);
         selectedFilteringCriteria = new boolean[filteringCriteriaArray.length];
         selectedSortingCriteria = new boolean[sortingCriteriaArray.length];
+
+
+
         //SortingCriteria dropdown (Expand for code)
         buttonSortBy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,16 +231,30 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
 
         });
+
+
+
         //Restaurant list stuff
         linearLayoutManager = new LinearLayoutManager(DisplayRestaurantsList.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         myAdapter = new MyAdapter(DisplayRestaurantsList.this,null);
         recyclerView.setAdapter(myAdapter);
-        this.retrieveAndDisplay();
 
-        //MVC Stuff
-        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
-        filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+        //First time display
+        ArrayList<Object> initialSortingList = new ArrayList<Object>();
+        ArrayList<Object> initialFilteringList = new ArrayList<>();
+        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]));
+        System.out.println("THE OBEJCT: "+sortingCriteriaArray[singlePosition]);
+        //initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[]));
+        Controller initialSortingController = new Controller(sortingListModel, initialSortingList);
+        Account account = sortingListModel.getAccountObject();
+        System.out.println("Testing account retrieval: "+account.getName());
+        //Controller initialFilteringController = new Controller(filteringListModel, initialFilteringList);
+        //initialSortingController.handleEvent();
+        //initialFilteringController.handleEvent();
+        this.retrieveAndDisplay(); //displays recyclerView
+
+
     }
 
     public void retrieveAndDisplay(){
@@ -293,7 +317,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             sortingCriteriaArray[i] = sortingConfiguration.get(String.valueOf(i));
         }
 
-
+        //Testing
         for (int i=0; i<sortingConfiguration.size(); i++){
             System.out.println("Testing: "+ sortingCriteriaArray[i]);
         }

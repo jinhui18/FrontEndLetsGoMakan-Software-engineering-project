@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.DisplayRestaurantsList;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
 import com.google.firebase.auth.AuthResult;
@@ -29,18 +30,42 @@ public abstract class Model extends Observable{
     }
     public abstract void service();
     public void addAttributeList(ArrayList<Object> list) {attributeList=list;}
+
     //Used to retrieve the account object from the database (if user is logged in)
     public Account getAccountObject(){
-       ArrayList<Account> accountArray = new ArrayList<>();
+        ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user!=null) {
-            String userID = user.getUid();
-            mDatabase.child(userID).addValueEventListener(new ValueEventListener() {
+        String userID = "Usl1ufnfyEfevGFTWxu3nxSwdCt2";//user.getUid();
+        mDatabase.child(userID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
+
+                        for (DataSnapshot child : children) {
+                            Account account = child.getValue(Account.class);
+                            arrayList.add(account);
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        return arrayList.get(0);
+
+        /*
+        if (user==null) { //CHANGE THIS TO != AFTERWARDS
+            String userID = "Usl1ufnfyEfevGFTWxu3nxSwdCt2";//user.getUid();
+            System.out.println("HERE");
+            mDatabase.child(userID).child("Account").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Iterable<DataSnapshot> children = snapshot.getChildren();
                     for (DataSnapshot child : children) {
-                        accountArray.add(child.getValue(Account.class));
+                        accountArray.add(child.getValue(Restaurant.class));
+                        System.out.println("RUNNING");
                     }
                 }
 
@@ -49,7 +74,10 @@ public abstract class Model extends Observable{
                     Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                 }
             });
+            return accountArray.get(0); //return the sole account a user has
         }
-        return accountArray.get(0); //return the sole account a user has
+        return null;
+
+         */
     }
 }
