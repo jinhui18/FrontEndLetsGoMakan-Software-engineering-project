@@ -1,4 +1,4 @@
-BookmarkedRestaurants=BookmarkedRestaurants
-CrowdLevel=CrowdLevel
-Ratings=Ratings
-TravellingTime=TravellingTime
+0=BookmarkedRestaurants
+1=CrowdLevel
+2=Ratings
+3=TravellingTime

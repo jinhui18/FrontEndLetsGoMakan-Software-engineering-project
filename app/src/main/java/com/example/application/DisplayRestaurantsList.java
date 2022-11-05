@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.application.backend.control.filtering.FilteringCriteria;
+import com.example.application.backend.control.sorting.CrowdLevel;
+import com.example.application.backend.control.sorting.SortingCriteria;
+import com.example.application.backend.control.sorting.SortingStoreFactory;
 import com.example.application.backend.entity.Restaurant;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
@@ -48,7 +52,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     //Sorting dropdown stuff
     boolean[] selectedSortingCriteria;
     ArrayList<Integer> sortingCriteriaList = new ArrayList<>();
-    String[] sortingCriteriaArray = {"Travelling Time", "Ratings", "Crowd Level"};
+    String[] sortingCriteriaArray;
     int singlePosition = 0; //default sorting selection
     int[] multiPosition = {-1} ; //
 
@@ -63,7 +67,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     Model sortingListModel;
 
     // store data store configuration
-    private final static Map<String, String> configuration = new HashMap<String, String>();
+    private final static Map<String, String> sortingConfiguration = new HashMap<String, String>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -71,28 +75,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_restaurants_list);
 
-        //Retrieving all sorting criteria from sorting_configuration.txt
-        try {
-            System.out.println("My Path");
-            Scanner configurationReader = new Scanner(getAssets().open("sorting_configuration.txt"));
-
-            while(configurationReader.hasNextLine()) {
-                String line  = configurationReader.nextLine();
-                String[] parts = line.split("=");
-                configuration.put(parts[0], parts[1]);
-            }
-            configurationReader.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Testing
-        for (String name: configuration.keySet()) {
-            Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
-        }
+        //Reading all sorting and filtering criteria binaries
+        this.getAllCriteria();
 
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
@@ -116,7 +100,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                 builder.setTitle("Select Sorting Criteria");
 
 
-                builder.setSingleChoiceItems(sortingCriteriaArray, 0, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(sortingCriteriaArray, singlePosition, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         singlePosition = i;
@@ -128,6 +112,9 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                                                                 Toast.makeText(DisplayRestaurantsList.this, "Test "+String.valueOf(singlePosition), Toast.LENGTH_SHORT).show();
+                        SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
+
+                        sortingCriteria.testing();
                     }
                 });
 
@@ -276,6 +263,40 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
 
     public void getAllCriteria(){
+        //Retrieving all sorting criteria from sorting_configuration.txt
+        try {
+            System.out.println("My Path");
+            Scanner sortingConfigurationReader = new Scanner(getAssets().open("sorting_configuration.txt"));
+            //Scanner filteringConfigurationReader = new Scanner(getAssets().open("filtering_configuration.txt"));
+
+            while(sortingConfigurationReader.hasNextLine()) {
+                String line  = sortingConfigurationReader.nextLine();
+                String[] parts = line.split("=");
+                sortingConfiguration.put(parts[0], parts[1]);
+            }
+            sortingConfigurationReader.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Testing
+        for (String name: sortingConfiguration.keySet()) {
+            Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
+        }
+
+        //Initialising sortingArray and filteringArray
+        sortingCriteriaArray = new String[sortingConfiguration.size()];
+        for (int i=0; i<sortingConfiguration.size(); i++){
+            sortingCriteriaArray[i] = sortingConfiguration.get(String.valueOf(i));
+        }
+
+
+        for (int i=0; i<sortingConfiguration.size(); i++){
+            System.out.println("Testing: "+ sortingCriteriaArray[i]);
+        }
     }
 }
 
