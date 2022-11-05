@@ -6,13 +6,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.backend.control.filtering.FilteringCriteria;
+import com.example.application.backend.control.others.FirebaseRetrieval;
 import com.example.application.backend.entity.Account;
+import com.example.application.backend.entity.Restaurant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,19 +30,19 @@ public class FilteringListModel extends Model{
         // FORMAT: attributeList = [filteringCriteria]
 
         //Retrieve account object and sort recommended list
-        Account account = this.getAccountObject();
+        ArrayList<Restaurant> fullRestaurantList = FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, context);
         FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
-        account.setRecommendedList(filteringCriteria.filter(account.getFullRestaurantList()));
+        ArrayList<Restaurant> recommendedList = filteringCriteria.filter(fullRestaurantList);
 
         //Hash Map to store string data
         Map<String, Object> map = new HashMap<>();
-        map.put("Account", account);
+        map.put("recommendedList", recommendedList);
 
         //Get UserID
-        String userID = mAuth.getCurrentUser().getUid();
+        String userID = "ss28rX1fEiV1bRtmkrJmCksoCZ43"; //mAuth.getCurrentUser().getUid();
 
-        //Update database (This means update "Account" key in "userID" child)
-        mDatabase.child(userID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        //Update database (This means update "recommendedList" key in "Account" child)
+        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "List filtered and updated!", Toast.LENGTH_SHORT).show();

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
+import com.example.application.backend.entity.Restaurant;
 import com.example.application.backend.enums.PreferredMaximumTravelTime;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,9 +78,23 @@ public class CreateUser extends CreateNewAccount {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                //LoginInformation loginInformation = new LoginInformation(email, password);
-                                Profile profile = new Profile(TypesOfDietaryRequirements.NONE, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
-                                Account account = new Account(name, email, profile);
+                                Account account = new Account(name, email, null);
+                            //Testing
+                                Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+                                Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
+                                Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
+                                Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
+
+                                ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+                                restaurantArrayList.add(r1);
+                                restaurantArrayList.add(r2);
+                                restaurantArrayList.add(r3);
+                                restaurantArrayList.add(r4);
+
+                                account.setFullRestaurantList(restaurantArrayList);
+                                account.setRecommendedList(restaurantArrayList);
+                            //Testing ends
+
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 mDataBase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
                                 mDataBase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -13,7 +13,7 @@ public class Account {
 
         public Account(String name, String email, Profile profile) {
             this.name = name;
-            this.email = "email test";
+            this.email = email;
             this.profile = profile;
             this.fullRestaurantList = this.recommendedList = null;
         }
