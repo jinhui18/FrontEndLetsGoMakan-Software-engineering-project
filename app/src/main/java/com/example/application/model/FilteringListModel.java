@@ -27,25 +27,33 @@ public class FilteringListModel extends Model{
 
     @Override
     public void service() {
-        // FORMAT: attributeList = [filteringCriteria]
+        // FORMAT: attributeList = [filteringCriteria, actualCriteria, fullRestaurantList]
 
         //Retrieve account object and sort recommended list
-        ArrayList<Restaurant> fullRestaurantList = FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, context);
         FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
+        filteringCriteria.addCriteria(super.attributeList.get(1));
+        ArrayList<Restaurant> fullRestaurantList = (ArrayList<Restaurant>) super.attributeList.get(2);
+        System.out.println("\nRecommendedList size before: "+ fullRestaurantList.size());
         ArrayList<Restaurant> recommendedList = filteringCriteria.filter(fullRestaurantList);
+        System.out.println("\nRecommendedList size before: "+ recommendedList.size());
+
 
         //Hash Map to store string data
         Map<String, Object> map = new HashMap<>();
         map.put("recommendedList", recommendedList);
 
         //Get UserID
-        String userID = "ss28rX1fEiV1bRtmkrJmCksoCZ43"; //mAuth.getCurrentUser().getUid();
+        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92"; //mAuth.getCurrentUser().getUid();
 
         //Update database (This means update "recommendedList" key in "Account" child)
         mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "List filtered and updated!", Toast.LENGTH_SHORT).show();
+                //Informing observers to update
+                setChanged();
+                notifyObservers();
+                return;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -53,9 +61,7 @@ public class FilteringListModel extends Model{
                 Toast.makeText(context, "Failure to sort list", Toast.LENGTH_SHORT).show();
             }
         });
-
-        //Informing observers to update
-        setChanged();
-        notifyObservers();
+        System.out.println("By-pass2B");
+        return;
     }
 }

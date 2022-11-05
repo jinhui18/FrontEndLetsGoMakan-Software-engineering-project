@@ -248,10 +248,13 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
         ArrayList<Object> initialFilteringList = new ArrayList<>();
 
-        //initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
         initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]));
         System.out.println("THE OBEJCT: "+sortingCriteriaArray[singlePosition]);
-
+        System.out.println("THE OBEJCT: "+filteringCriteriaArray[0]);
+        System.out.println("THE OBEJCT: "+filteringCriteriaArray[1]);
+        //FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, DisplayRestaurantsList.this, initialFilteringList, filteringListModel);
         FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
     }
@@ -302,7 +305,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             sortingConfigurationReader.close();
 
             while(filteringConfigurationReader.hasNextLine()) {
-                String line  = sortingConfigurationReader.nextLine();
+                String line  = filteringConfigurationReader.nextLine();
                 String[] parts = line.split("=");
                 filteringConfiguration.put(parts[0], parts[1]);
             }
@@ -319,19 +322,26 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         for (int i=0; i<sortingConfiguration.size(); i++){
             sortingCriteriaArray[i] = sortingConfiguration.get(String.valueOf(i));
         }
-        /*
+
         filteringCriteriaArray = new String[filteringConfiguration.size()];
-        for (int i=0; i<sortingConfiguration.size(); i++){
+        for (int i=0; i<filteringConfiguration.size(); i++){
             filteringCriteriaArray[i] = filteringConfiguration.get(String.valueOf(i));
-        } */
-                                //Testing
-                                for (String name: sortingConfiguration.keySet()) {
-                                    Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
-                                }
+        }
+
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){
                                     System.out.println("Testing: "+ sortingCriteriaArray[i]);
                                 }
+                                //Testing
+                                for (int i=0; i<filteringConfiguration.size(); i++){
+                                    System.out.println("TestingB: "+ filteringCriteriaArray[i]);
+                                }
     }
 }
+/*
+//Testing
+                                for (String name: sortingConfiguration.keySet()) {
+                                        Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
+                                        }
 
+ */

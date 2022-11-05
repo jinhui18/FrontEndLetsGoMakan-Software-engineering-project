@@ -24,7 +24,7 @@ public class FirebaseRetrieval {
         final ArrayList<Restaurant> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
-        System.out.println("PATH\n");
+
         mDatabase.child(userID).child("Account").child("recommendedList")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -53,27 +53,36 @@ public class FirebaseRetrieval {
         return;
     }
 
-    public static ArrayList<Restaurant> retrieveFullRestaurantList(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context){
-        ArrayList<Restaurant> arrayList = new ArrayList<>();
+    public static void retrieveFullRestaurantList(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model filteringListModel){
+        final ArrayList<Restaurant> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "ss28rX1fEiV1bRtmkrJmCksoCZ43";//user.getUid();
+        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
 
         mDatabase.child(userID).child("Account").child("fullRestaurantList")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Iterable<DataSnapshot> children = snapshot.getChildren();
+                        if (arrayList.size()==0) {
+                            Iterable<DataSnapshot> children = snapshot.getChildren();
 
-                        for (DataSnapshot child : children) {
-                            Restaurant restaurant = child.getValue(Restaurant.class);
-                            arrayList.add(restaurant);
+                            for (DataSnapshot child : children) {
+                                Restaurant restaurant = child.getValue(Restaurant.class);
+                                arrayList.add(restaurant);
+                            }
+                            System.out.println("Size of arrayList 000 :" + arrayList.size());
+                            attributeList.add(arrayList);
+                            System.out.println("FULL RESTAURANT LIST RETRIEVED AND APPENDED");
+                            Controller initialFilteringController = new Controller(filteringListModel, attributeList);
+                            initialFilteringController.handleEvent();
                         }
+                        return;
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-        return arrayList;
+        System.out.println("By-pass1B");
+        return;
     }
 }

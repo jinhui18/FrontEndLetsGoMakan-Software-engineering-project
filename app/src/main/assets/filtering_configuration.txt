@@ -1,0 +1,2 @@
+0=DietaryRequirements
+1=MaximumTravelTime

@@ -28,7 +28,7 @@ public class SortingListModel extends Model{
 
     @Override
     public void service() {
-        // FORMAT: attributeList = [filteringCriteria, recommendedList]
+        // FORMAT: attributeList = [sortingCriteria, recommendedList]
 
         //Retrieve account object and sort recommended list
 
