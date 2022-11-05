@@ -34,9 +34,15 @@ public class CrowdLevel extends SortingCriteria {
 
         Restaurant temp = new Restaurant();
 
+        //debug
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
+
         // Bubble sort is used.
         for(int i = 0; i < sizeOfRestaurantList; i++) {
-            for(int j = 1; j < (sizeOfRestaurantList - 1); j++) {
+            for(int j = 1; j <= (sizeOfRestaurantList - 1); j++) {
                 if(restaurantList.get(j-1).getCrowdLevel() > restaurantList.get(j).getCrowdLevel())
                 {
 
@@ -64,5 +70,10 @@ public class CrowdLevel extends SortingCriteria {
                 }
             }
         }
+        //debug
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
     }
 }

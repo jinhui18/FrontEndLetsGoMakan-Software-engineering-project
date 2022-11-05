@@ -15,6 +15,12 @@ public class Ratings extends SortingCriteria {
         ArrayList<Restaurant> r4 = new ArrayList<Restaurant>();
         ArrayList<Restaurant> r5 = new ArrayList<Restaurant>();
 
+        //debug
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
+
         // add same rating restaurant into separate arrays
         for (int i=0; i<restaurantList.size(); i++) {
             Restaurant restaurant = restaurantList.get(i);
@@ -41,5 +47,11 @@ public class Ratings extends SortingCriteria {
         restaurantList.addAll(r3);
         restaurantList.addAll(r2);
         restaurantList.addAll(r1);
+
+        //debug
+        for (int i=0; i<restaurantList.size();i++){
+            System.out.println(restaurantList.get(i).getAddress());
+        }
+        System.out.println();
     }
 }

@@ -113,7 +113,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         singlePosition = i;
-                        Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -124,8 +124,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
                         ArrayList<Object> initialSortingList = new ArrayList<Object>();
                         initialSortingList.add(sortingCriteria);
-                        Controller sortingController = new Controller(sortingListModel, initialSortingList);
-                        sortingController.handleEvent();
+                        FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
                     }
                 });
 
@@ -255,14 +254,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
         FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
-        //Controller initialFilteringController = new Controller(filteringListModel, initialFilteringList);
-
-
-        //For testing, assume that recommendedList == fullList
-        //initialFilteringController.handleEvent();
-        //initialSortingController.handleEvent(); //model -> update -> retrieveAndDisplay() called
-
-        //this.retrieveAndDisplay(); //displays recyclerView
     }
 
     public void retrieveAndDisplay(){

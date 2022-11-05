@@ -31,6 +31,7 @@ public class TravellingTime extends SortingCriteria {
 
         Restaurant temp = new Restaurant();
 
+        //debug
         for (int i=0; i<restaurantList.size();i++){
             System.out.println(restaurantList.get(i).getAddress());
         }
@@ -66,6 +67,7 @@ public class TravellingTime extends SortingCriteria {
                 }
             }
         }
+        //debug
         for (int i=0; i<restaurantList.size();i++){
             System.out.println(restaurantList.get(i).getAddress());
         }
