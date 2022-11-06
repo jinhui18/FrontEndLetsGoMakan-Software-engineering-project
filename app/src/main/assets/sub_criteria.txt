@@ -1,0 +1,9 @@
+0=None
+1=Halal
+2=Vegetarian
+3=Both
+NEXT
+0=HALF_HOUR
+1=ONE_HOUR
+2=ONE_HALF_HOUR
+3=TWO_HOUR
