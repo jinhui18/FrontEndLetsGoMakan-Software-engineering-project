@@ -1,6 +1,5 @@
 package com.example.application.backend.entity;
 
-import com.example.application.backend.enums.PreferredMaximumTravelTime;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
@@ -11,11 +10,8 @@ public class Profile {
      */
     private TypesOfDietaryRequirements diet;
 
-    /**
-     * The maximum duration the user is willing to travel to eat.
-     * See {@link PreferredMaximumTravelTime} for the different travelling times.
-     */
-    private PreferredMaximumTravelTime maxTravel;
+
+    private float maxTravel;
 
     /**
      * The mode of transport the user prefers.
@@ -35,7 +31,7 @@ public class Profile {
      * @param maxTravel            This user's preferred maximum travelling time
      * @param transportMode        This user's preferred mode of transport
      */
-    public Profile(TypesOfDietaryRequirements diet, PreferredMaximumTravelTime maxTravel, PreferredModeOfTransport transportMode) {
+    public Profile(TypesOfDietaryRequirements diet, float maxTravel, PreferredModeOfTransport transportMode) {
         this.diet = diet;
         this.maxTravel = maxTravel;
         this.transportMode = transportMode;
@@ -61,7 +57,7 @@ public class Profile {
      * Gets the preferred maximum travel time of the user.
      * @return	this user's preferred maximum travel time
      */
-    public PreferredMaximumTravelTime getPreferredMaximumTravelTime() {
+    public float getPreferredMaximumTravelTime() {
         return maxTravel;
     }
 
@@ -69,7 +65,7 @@ public class Profile {
      * Sets the preferred maximum travel time of the user.
      * @param maxTravel	This user's preferred maximum travel time
      */
-    public void setPreferredMaximumTravelTime(PreferredMaximumTravelTime maxTravel) {
+    public void setPreferredMaximumTravelTime(float maxTravel) {
         this.maxTravel = maxTravel;
     }
 

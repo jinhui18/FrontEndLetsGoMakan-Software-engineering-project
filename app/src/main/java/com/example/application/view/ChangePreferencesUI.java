@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.example.application.backend.enums.PreferredMaximumTravelTime;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.entity.Profile;
 import com.example.application.R;
@@ -96,16 +95,16 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
 
         switch (travel) {
             case "0.5 hour":
-                newProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.HALF_HOUR);
+                newProfile.setPreferredMaximumTravelTime(15);
                 break;
             case "1 hour":
-                newProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.ONE_HOUR);
+                newProfile.setPreferredMaximumTravelTime(30);
                 break;
             case "1.5 hours":
-                newProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.ONE_HALF_HOUR);
+                newProfile.setPreferredMaximumTravelTime(45);
                 break;
             case "2 hours":
-                newProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.TWO_HOUR);
+                newProfile.setPreferredMaximumTravelTime(60);
         }
 
         switch (diet) {

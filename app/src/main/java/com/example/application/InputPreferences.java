@@ -11,15 +11,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.application.backend.entity.Profile;
-import com.example.application.backend.enums.PreferredMaximumTravelTime;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
 
@@ -112,16 +108,16 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
 
         switch (travel) {
             case "0.5 hour":
-                currentProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.HALF_HOUR);
+                currentProfile.setPreferredMaximumTravelTime(15);
                 break;
             case "1 hour":
-                currentProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.ONE_HOUR);
+                currentProfile.setPreferredMaximumTravelTime(30);
                 break;
             case "1.5 hours":
-                currentProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.ONE_HALF_HOUR);
+                currentProfile.setPreferredMaximumTravelTime(45);
                 break;
             case "2 hours":
-                currentProfile.setPreferredMaximumTravelTime(PreferredMaximumTravelTime.TWO_HOUR);
+                currentProfile.setPreferredMaximumTravelTime(60);
         }
 
         switch (diet) {

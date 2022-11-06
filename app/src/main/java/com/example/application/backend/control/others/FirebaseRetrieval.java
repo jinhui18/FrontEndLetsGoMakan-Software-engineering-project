@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.DisplayRestaurantsList;
+import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
 import com.example.application.controller.Controller;
 import com.example.application.model.Model;
@@ -21,11 +22,11 @@ import java.util.ArrayList;
 
 public class FirebaseRetrieval {
     public static void pureSorting(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model sortingListModel){
-        final ArrayList<Restaurant> arrayList = new ArrayList<>();
+        final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
 
-        mDatabase.child(userID).child("Account").child("recommendedList")
+        mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -33,11 +34,11 @@ public class FirebaseRetrieval {
                             Iterable<DataSnapshot> children = snapshot.getChildren();
 
                             for (DataSnapshot child : children) {
-                                Restaurant restaurant = child.getValue(Restaurant.class);
-                                arrayList.add(restaurant);
+                                Account account = child.getValue(Account.class);
+                                arrayList.add(account);
                             }
                             System.out.println("Size of arrayList 999 :" + arrayList.size());
-                            attributeList.add(arrayList);
+                            attributeList.add(arrayList.get(0).getRecommendedList());
                             System.out.println("RECOMMENDED LIST RETRIEVED AND APPENDED");
                             Controller initialSortingController = new Controller(sortingListModel, attributeList);
                             initialSortingController.handleEvent(); //model -> update -> retrieveAndDisplay() called
@@ -53,12 +54,18 @@ public class FirebaseRetrieval {
         return;
     }
 
-    public static void retrieveFullRestaurantList(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model filteringListModel){
-        final ArrayList<Restaurant> arrayList = new ArrayList<>();
+    public static void filterAndSort(
+            FirebaseAuth mAuth,
+            DatabaseReference mDatabase,
+            Context context,
+            ArrayList<Object> filteringList,
+            Model filteringListModel
+    ) {
+        final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
 
-        mDatabase.child(userID).child("Account").child("fullRestaurantList")
+        mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,14 +73,18 @@ public class FirebaseRetrieval {
                             Iterable<DataSnapshot> children = snapshot.getChildren();
 
                             for (DataSnapshot child : children) {
-                                Restaurant restaurant = child.getValue(Restaurant.class);
-                                arrayList.add(restaurant);
+                                Account account = child.getValue(Account.class);
+                                arrayList.add(account);
                             }
                             System.out.println("Size of arrayList 000 :" + arrayList.size());
-                            attributeList.add(arrayList);
-                            System.out.println("FULL RESTAURANT LIST RETRIEVED AND APPENDED");
-                            Controller initialFilteringController = new Controller(filteringListModel, attributeList);
-                            initialFilteringController.handleEvent();
+                            Account userAccount = arrayList.get(0);
+
+                            filteringList.add(userAccount.getFullRestaurantList());
+                            System.out.println("FULL RESTAURANT LIST RETRIEVED AND APPENDED"); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+
+                            Controller filteringController = new Controller(filteringListModel, filteringList);
+                            filteringController.handleEvent();
+
 
                         return;
                     }

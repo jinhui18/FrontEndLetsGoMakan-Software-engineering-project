@@ -2,7 +2,6 @@ package com.example.application;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Patterns;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,13 +9,9 @@ import androidx.annotation.NonNull;
 
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
-import com.example.application.backend.entity.Profile;
 import com.example.application.backend.entity.Restaurant;
-import com.example.application.backend.enums.PreferredMaximumTravelTime;
-import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -25,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CreateUser extends CreateNewAccount {
     private static final String TAG = "CreateUser";

@@ -9,6 +9,7 @@ import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.control.others.FirebaseRetrieval;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
+import com.example.application.controller.Controller;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -27,8 +28,27 @@ public class FilteringListModel extends Model{
 
     @Override
     public void service() {
-        // FORMAT: attributeList = [filteringCriteria, actualCriteria, fullRestaurantList]
+        //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+        ArrayList<Restaurant> fullRestaurantList = (ArrayList<Restaurant>) super.attributeList.get(3);
+        ArrayList<FilteringCriteria> filteringCriteriaList = (ArrayList<FilteringCriteria>) super.attributeList.get(2);
 
+        for (int i=0; i<filteringCriteriaList.size(); i++){
+            FilteringCriteria filteringCriteria = filteringCriteriaList.get(i);
+            fullRestaurantList = filteringCriteria.filter(fullRestaurantList);
+            System.out.println("\nSize of restaurant list after filtering: "+ fullRestaurantList.size());
+        }
+
+        ArrayList<Object> sortingList = (ArrayList<Object>) attributeList.get(0);
+        //add restaurant list to sortingList
+        sortingList.add(fullRestaurantList);
+        Controller sortingListController = new Controller((Model) attributeList.get(1), sortingList);
+        sortingListController.handleEvent();
+
+        return;
+    }
+}
+
+/*
         //Retrieve account object and sort recommended list
         FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
         filteringCriteria.addCriteria(super.attributeList.get(1));
@@ -36,32 +56,4 @@ public class FilteringListModel extends Model{
         System.out.println("\nRecommendedList size before: "+ fullRestaurantList.size());
         ArrayList<Restaurant> recommendedList = filteringCriteria.filter(fullRestaurantList);
         System.out.println("\nRecommendedList size before: "+ recommendedList.size());
-
-
-        //Hash Map to store string data
-        Map<String, Object> map = new HashMap<>();
-        map.put("recommendedList", recommendedList);
-
-        //Get UserID
-        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92"; //mAuth.getCurrentUser().getUid();
-
-        //Update database (This means update "recommendedList" key in "Account" child)
-        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(context, "List filtered and updated!", Toast.LENGTH_SHORT).show();
-                //Informing observers to update
-                setChanged();
-                notifyObservers();
-                return;
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Failure to sort list", Toast.LENGTH_SHORT).show();
-            }
-        });
-        System.out.println("By-pass2B");
-        return;
-    }
-}
+ */
