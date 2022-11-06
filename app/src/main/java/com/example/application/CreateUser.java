@@ -80,10 +80,10 @@ public class CreateUser extends CreateNewAccount {
                             if (task.isSuccessful()) {
                                 Account account = new Account(name, email, null);
                             //Testing
-                                Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
-                                Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
-                                Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
-                                Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
+                                Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "a", "Punggol", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+                                Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "b", "Admiralty", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
+                                Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "c", "Bishan", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
+                                Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "d", "Woodlands", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
 
                                 ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
                                 restaurantArrayList.add(r1);

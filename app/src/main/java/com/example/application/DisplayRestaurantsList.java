@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.control.filtering.FilteringStoreFactory;
+import com.example.application.backend.control.others.FirebaseRetrieval;
 import com.example.application.backend.control.sorting.CrowdLevel;
 import com.example.application.backend.control.sorting.SortingCriteria;
 import com.example.application.backend.control.sorting.SortingStoreFactory;
@@ -85,7 +86,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
         //userID = firebaseAuth.getCurrentUser().getUid();
-                                                                userID = "ss28rX1fEiV1bRtmkrJmCksoCZ43";//For testing purposes
+                                                                userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
         //MVC Stuff and Observer Pattern
@@ -112,7 +113,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         singlePosition = i;
-                        Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -123,8 +124,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
                         ArrayList<Object> initialSortingList = new ArrayList<Object>();
                         initialSortingList.add(sortingCriteria);
-                        Controller sortingController = new Controller(sortingListModel, initialSortingList);
-                        sortingController.handleEvent();
+                        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
                     }
                 });
 
@@ -248,25 +248,22 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
         ArrayList<Object> initialFilteringList = new ArrayList<>();
 
-        //initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
         initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]));
         System.out.println("THE OBEJCT: "+sortingCriteriaArray[singlePosition]);
+        System.out.println("THE OBEJCT: "+filteringCriteriaArray[0]);
+        System.out.println("THE OBEJCT: "+filteringCriteriaArray[1]);
+        //FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, DisplayRestaurantsList.this, initialFilteringList, filteringListModel);
+        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
-        //Controller initialFilteringController = new Controller(filteringListModel, initialFilteringList);
-        Controller initialSortingController = new Controller(sortingListModel, initialSortingList);
-
-        //For testing, assume that recommendedList == fullList
-        //initialFilteringController.handleEvent();
-        initialSortingController.handleEvent();
-
-        this.retrieveAndDisplay(); //displays recyclerView
     }
 
     public void retrieveAndDisplay(){
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
         mDatabase.child(userID).child("Account").child("recommendedList")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Iterable<DataSnapshot> children = snapshot.getChildren();
@@ -274,19 +271,23 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         for (DataSnapshot child : children) {
                             Restaurant restaurant = child.getValue(Restaurant.class);
                             arrayList.add(restaurant);
+                            System.out.println("Size here: "+ arrayList.size());
                         }
                         myAdapter.notifyDataSetChanged();
+                        return;
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
+        return;
     }
 
     @Override
     public void update(Observable observable, Object o) {
         this.retrieveAndDisplay();
+        System.out.println("UPDATE IS CALLED");
     }
 
     public void getAllCriteria(){
@@ -304,7 +305,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             sortingConfigurationReader.close();
 
             while(filteringConfigurationReader.hasNextLine()) {
-                String line  = sortingConfigurationReader.nextLine();
+                String line  = filteringConfigurationReader.nextLine();
                 String[] parts = line.split("=");
                 filteringConfiguration.put(parts[0], parts[1]);
             }
@@ -321,19 +322,26 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         for (int i=0; i<sortingConfiguration.size(); i++){
             sortingCriteriaArray[i] = sortingConfiguration.get(String.valueOf(i));
         }
-        /*
+
         filteringCriteriaArray = new String[filteringConfiguration.size()];
-        for (int i=0; i<sortingConfiguration.size(); i++){
+        for (int i=0; i<filteringConfiguration.size(); i++){
             filteringCriteriaArray[i] = filteringConfiguration.get(String.valueOf(i));
-        } */
-                                //Testing
-                                for (String name: sortingConfiguration.keySet()) {
-                                    Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
-                                }
+        }
+
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){
                                     System.out.println("Testing: "+ sortingCriteriaArray[i]);
                                 }
+                                //Testing
+                                for (int i=0; i<filteringConfiguration.size(); i++){
+                                    System.out.println("TestingB: "+ filteringCriteriaArray[i]);
+                                }
     }
 }
+/*
+//Testing
+                                for (String name: sortingConfiguration.keySet()) {
+                                        Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
+                                        }
 
+ */

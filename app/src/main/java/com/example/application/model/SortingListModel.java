@@ -28,18 +28,65 @@ public class SortingListModel extends Model{
 
     @Override
     public void service() {
-        // FORMAT: attributeList = [filteringCriteria]
+        // FORMAT: attributeList = [sortingCriteria, recommendedList]
 
         //Retrieve account object and sort recommended list
+
+        SortingCriteria sortingCriteria = (SortingCriteria) super.attributeList.get(0);
+        ArrayList<Restaurant> recommendedList = (ArrayList<Restaurant>) super.attributeList.get(1);
+        System.out.println("\nRecommendedList size before: "+ recommendedList.size());
+        sortingCriteria.sort(recommendedList);
+        System.out.println("\nRecommendedList size after: "+ recommendedList.size());
+
+
+        //Hash Map to store string data
+        Map<String, Object> map = new HashMap<>();
+        map.put("recommendedList", recommendedList);
+
+        //Get UserID
+        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//mAuth.getCurrentUser().getUid();
+
+        //Update database (This means update "recommendedList" key in "Account" child)
+        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(context, "List sorted and updated!", Toast.LENGTH_SHORT).show();
+                System.out.println("Database updated! Proceeding to update visuals");
+                //Informing observers to update
+                setChanged();
+                notifyObservers();
+                return;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failure to sort list", Toast.LENGTH_SHORT).show();
+            }
+        });
+        System.out.println("By-pass 2");
+        return;
+    }
+}
+
+
+
+
+
+
+
+/*
+ //Retrieve account object and sort recommended list
         ArrayList<Restaurant> recommendedList = FirebaseRetrieval.retrieveRecommendedList(mAuth, mDatabase, context);
+        System.out.println("\nRecommendedList size before: "+ recommendedList.size());
         SortingCriteria sortingCriteria = (SortingCriteria) super.attributeList.get(0);
         sortingCriteria.sort(recommendedList);
+        System.out.println("\nRecommendedList size after: "+ recommendedList.size());
 
         //Testing
-        Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
-        Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
-        Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
-        Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "Bukit Timah St12", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
+        Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "AMK", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+        Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "WOODLANDS", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
+        Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "MANDAI", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
+        Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "PUNGGOL", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
 
         ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
         restaurantArrayList.add(r1);
@@ -72,4 +119,17 @@ public class SortingListModel extends Model{
         setChanged();
         notifyObservers();
     }
-}
+
+
+     //Testing
+        Restaurant r1 = new Restaurant(true, (float) 1, 5, a, (float) 5, "AMK", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+        Restaurant r2 = new Restaurant(true, (float) 2, 4, b, (float) 4, "WOODLANDS", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
+        Restaurant r3 = new Restaurant(true, (float) 3, 3, c, (float) 3, "MANDAI", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
+        Restaurant r4 = new Restaurant(true, (float) 4, 2, d, (float) 2, "PUNGGOL", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);
+
+        ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+        restaurantArrayList.add(r1);
+        restaurantArrayList.add(r4);
+        restaurantArrayList.add(r3);
+        restaurantArrayList.add(r2);
+ */

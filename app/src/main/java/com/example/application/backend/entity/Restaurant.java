@@ -17,11 +17,12 @@ public class Restaurant {
 
     public Restaurant() {}
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(boolean bm, float cl, int rtngs, float tt, String adrs, String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
+    public Restaurant(boolean bm, float cl, int rtngs, float tt, String name, String adrs, String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
         this.bookmark = bm;
         this.crowdLevel = cl;
         this.ratings = rtngs;
         this.travellingTime = tt;
+        this.name = name;
         this.address = adrs;
         this.description = des;
         this.image = img;
