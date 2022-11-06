@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.DisplayRestaurantsList;
 import com.example.application.R;
+import com.example.application.ShowMap;
 import com.example.application.controller.Controller;
 import com.example.application.model.LoginUserModel;
 import com.example.application.model.Model;
@@ -108,7 +109,9 @@ public class LoginUI extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            FirebaseAuth.getInstance().signOut();
+            //FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(LoginUI.this, ShowMap.class);
+            startActivity(intent);
             //startActivity(new Intent(MainActivity.this, HomePage.class));
         }
     }
