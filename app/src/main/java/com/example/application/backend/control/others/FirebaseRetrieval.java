@@ -38,7 +38,9 @@ public class FirebaseRetrieval {
                                 arrayList.add(account);
                             }
                             System.out.println("Size of arrayList 999 :" + arrayList.size());
-                            attributeList.add(arrayList.get(0).getRecommendedList());
+                            ArrayList<Restaurant> recommendedList = new ArrayList<>();
+                            if (arrayList.get(0).getRecommendedList()!=null) recommendedList=arrayList.get(0).getRecommendedList();
+                            attributeList.add(recommendedList);
                             System.out.println("RECOMMENDED LIST RETRIEVED AND APPENDED");
                             Controller initialSortingController = new Controller(sortingListModel, attributeList);
                             initialSortingController.handleEvent(); //model -> update -> retrieveAndDisplay() called
