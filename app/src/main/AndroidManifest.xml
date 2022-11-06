@@ -54,11 +54,8 @@
         </activity>
 
         <activity
-            android:name=".CreateNewAccount"
+            android:name=".view.AccountCreationUI"
             android:parentActivityName=".view.LoginUI" />
-        <activity
-            android:name=".CreateUser"
-            tools:ignore="Instantiatable" />
         <activity
             android:name=".InputPreferences"
             android:parentActivityName=".CreateNewAccountVerifyEmail" />

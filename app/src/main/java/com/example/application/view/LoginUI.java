@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.CreateNewAccount;
 import com.example.application.DisplayRestaurantsList;
 import com.example.application.R;
 import com.example.application.controller.Controller;
@@ -97,7 +96,7 @@ public class LoginUI extends AppCompatActivity {
         textView_hp7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginUI.this, CreateNewAccount.class);
+                Intent intent = new Intent(LoginUI.this, AccountCreationUI.class);
                 startActivity(intent);
             }
         });
