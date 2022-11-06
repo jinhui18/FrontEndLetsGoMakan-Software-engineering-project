@@ -144,8 +144,57 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
         initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
 
-        
+
         FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
+
+
+/*
+        SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
+        ArrayList<Object> sortingList = new ArrayList<Object>();
+        sortingList.add(sortingCriteria);
+
+        //From selectedFilteringCriteria array instantiate required filteringCriteria objects
+        ArrayList<Object> filteringList = new ArrayList<Object>();
+        ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
+        for (int k=0; k<filteringCriteriaArray.length; k++) {
+                FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
+                //filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user selected that filtering option
+                filteringCriteriaList.add(filteringCriteria);
+        }//end for
+        //Pass in everything to method
+        filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
+        filteringList.add(sortingListModel);
+        filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+        FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, filteringListModel);
+
+        //add subcriteria2D in as well
+        //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
+
+        //for future filtering binaries, null criteria must be considered in .filter() function
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -409,7 +458,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     public void subCriteriaDropDown(String[] subCriteriaList, int filteringCriteriaIndex){
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
-        builder.setTitle("Select Sorting Criteria");
+        builder.setTitle("Select Sub Criteria");
 
 
         builder.setSingleChoiceItems(subCriteriaList, profileSubCriteriaChoice[filteringCriteriaIndex], new DialogInterface.OnClickListener() { //pre selected option is user's profile
