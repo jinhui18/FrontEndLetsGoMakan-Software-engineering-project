@@ -56,8 +56,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     String[] filteringCriteriaArray;
     ArrayList<Object> subCriteria2D = new ArrayList<>();
     int[] clickCounter1;
-    int[] profileSubCriteriaChoice; //default user's profile filtering criteria
-    String[] selectedSubCriteria;
+    int[] profileSubCriteriaChoice; //used to pre-select subCriteria option according to users' default/previous selection
+    String[] selectedSubCriteria; //used to store the selected subcriteria for filtering Criteria
     int subCriteriaPosition;
 
     //Sorting dropdown stuff
@@ -71,7 +71,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-                                                                String userID; //For testing purposes
+    String userID;
 
     //MVC related
     Model filteringListModel;
@@ -93,7 +93,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
         //userID = firebaseAuth.getCurrentUser().getUid();
-                                                                userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//For testing purposes
+                                                                userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
         //MVC Stuff and Observer Pattern
@@ -135,20 +135,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         recyclerView.setAdapter(myAdapter);
 
 
-        //First time display (involves default filtering and sorting)
-            //Filter first then sort
-        ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
-        ArrayList<Object> initialFilteringList = new ArrayList<>();
-
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
-        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
-
-
-        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
-
-
-/*
         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
         ArrayList<Object> sortingList = new ArrayList<Object>();
         sortingList.add(sortingCriteria);
@@ -156,75 +142,28 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //From selectedFilteringCriteria array instantiate required filteringCriteria objects
         ArrayList<Object> filteringList = new ArrayList<Object>();
         ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
-        for (int k=0; k<filteringCriteriaArray.length; k++) {
+        for (int k=0; k<filteringCriteriaArray.length; k++) { //for default, need to use all filteringCriteria
+                selectedFilteringCriteria[k]=true;
+                System.out.println("Outside K value: "+k);
                 FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
-                //filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user selected that filtering option
+                //subCriteria to be added later on
                 filteringCriteriaList.add(filteringCriteria);
         }//end for
+        System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
         //Pass in everything to method
         filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
         filteringList.add(sortingListModel);
         filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-        FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, filteringListModel);
+        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, subCriteria2D, filteringListModel);
 
         //add subcriteria2D in as well
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
 
         //for future filtering binaries, null criteria must be considered in .filter() function
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
-
-    public void defaultFilterAndSort(){
-        //Update profileSubCriteriaChoice with user's profile info
-        //Calls firebaseRetrieval methods to filter and sort
-        ArrayList<Restaurant> arrayList = new ArrayList<>();
-        myAdapter.setArrayList(arrayList);
-        mDatabase.child(userID).child("Account").child("recommendedList")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                        for (DataSnapshot child : children) {
-                            Restaurant restaurant = child.getValue(Restaurant.class);
-                            arrayList.add(restaurant);
-                            System.out.println("Size here: "+ arrayList.size());
-                        }
-                        myAdapter.notifyDataSetChanged();
-                        return;
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        return;
-    }
-
+    
     public void retrieveAndDisplay(){
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
@@ -394,7 +333,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                     System.out.println("NUMBER: "+i);
-                    if (clickCounter1[i]%2==0) { //Can also use selectedFilteringCriteria
+                    if (clickCounter1[i]%2==1) { //Can also use selectedFilteringCriteria
                         //get hashmap with all sub criteria
                         Map<String, String> hashy = (Map<String, String>) subCriteria2D.get(i);
                         //create string array with sub criteria
@@ -472,6 +411,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 selectedSubCriteria[filteringCriteriaIndex] = subCriteriaList[subCriteriaPosition];
+                profileSubCriteriaChoice[filteringCriteriaIndex] = subCriteriaPosition;
                 for (int k=0; k<2; k++){
                     System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
                 }
@@ -513,5 +453,19 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     for (int k=0; k<2; k++)
         System.out.println("boolean array: "+selectedFilteringCriteria[k]);
         }
+
+ */
+/*
+        //First time display (involves default filtering and sorting)
+            //Filter first then sort
+        ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
+        ArrayList<Object> initialFilteringList = new ArrayList<>();
+
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
+        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
+
+
+        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
  */

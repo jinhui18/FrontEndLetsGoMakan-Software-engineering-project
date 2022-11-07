@@ -28,3 +28,5 @@ public class MaximumTravelTime extends FilteringCriteria{
     }
 }
 
+//possible to optimise this by reading all entries from the text file, converting string attribute to float and comparing to set maxTravelTime
+
