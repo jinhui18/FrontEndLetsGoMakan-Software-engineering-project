@@ -78,6 +78,8 @@
         <activity android:name=".CreateNewAccountVerifyEmail" />
         <activity android:name=".DisplayRestaurantsList" />
         <activity android:name=".DisplayRestaurant" />
+        <activity android:name=".ResetPasswordLinkSent" />
+
 
 
     </application>

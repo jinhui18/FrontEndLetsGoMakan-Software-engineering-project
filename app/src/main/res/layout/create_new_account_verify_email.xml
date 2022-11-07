@@ -57,9 +57,8 @@
 a link to verify your account. You must verify your account to login. \n\n
 If you have not received your email after a few minutes, please check your spam folder
 or click here to resend the email. "
-        android:textColor="#615F5F"
+        android:textColor="@color/black"
         android:textSize="20dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
