@@ -1,29 +1,19 @@
 package com.example.application.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.CreateNewAccountVerifyEmail;
-import com.example.application.InputPreferences;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
-import com.example.application.view.LoginUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChangePreferencesModel extends Model {
 

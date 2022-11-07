@@ -1,6 +1,5 @@
-package com.example.application;
+package com.example.application.view;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,28 +8,22 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.application.backend.entity.Account;
+import com.example.application.CreateNewAccountVerifyEmail;
+import com.example.application.R;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
 import com.example.application.model.ChangePreferencesModel;
-import com.example.application.model.InputPreferencesModel;
 import com.example.application.model.Model;
-import com.example.application.view.ChangePreferencesUI;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
+public class InputPreferencesUI extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner transportMode;
     private Spinner dietRequirement;
@@ -57,6 +50,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         createProfile.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
         ArrayAdapter<CharSequence> transportAdapter = ArrayAdapter.createFromResource(this, R.array.transportMode, android.R.layout.simple_spinner_item);
         transportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -70,7 +64,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dietRequirement.setAdapter(dietAdapter);
 
-        inputPreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, InputPreferences.this);
+        inputPreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, InputPreferencesUI.this);
     }
 
     @Override
@@ -82,6 +76,7 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         list.add(currentProfile);
         Controller changePreferencesController = new Controller(inputPreferencesModel, list);
         changePreferencesController.handleEvent();
+        startActivity(new Intent(InputPreferencesUI.this, CreateNewAccountVerifyEmail.class));
     }
 
     private void createProfile() {

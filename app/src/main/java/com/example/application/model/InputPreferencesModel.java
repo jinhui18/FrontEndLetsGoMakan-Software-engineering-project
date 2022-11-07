@@ -1,15 +1,10 @@
 package com.example.application.model;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.CreateNewAccountVerifyEmail;
-import com.example.application.InputPreferences;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.google.firebase.auth.FirebaseAuth;

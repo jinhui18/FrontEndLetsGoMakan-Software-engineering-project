@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.InputPreferences;
+import com.example.application.view.InputPreferencesUI;
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
@@ -82,7 +82,7 @@ public class StoreAccountModel extends Model{
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()){
-                                                        Intent i = new Intent(context, InputPreferences.class);
+                                                        Intent i = new Intent(context, InputPreferencesUI.class);
                                                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         context.startActivity(i);
                                                     }
