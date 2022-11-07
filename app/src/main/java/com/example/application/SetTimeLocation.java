@@ -179,7 +179,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                     getCurrentTime();
                 }
                 Toast.makeText(SetTimeLocation.this, "Time selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SetTimeLocation.this, ShowRestaurantMap.class));//change to displayrestaurantslist
+                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));//change to displayrestaurantslist
             }
             else{
                 showTimeDialog();

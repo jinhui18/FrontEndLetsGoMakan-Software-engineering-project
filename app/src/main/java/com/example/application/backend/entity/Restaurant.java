@@ -9,6 +9,8 @@ public class Restaurant {
     private float travellingTime;
     private String name;
     private String address;
+    private double latitude;
+    private double longitude;
     private String description;
     private String image;
     private String availableDietaryRequirements;
@@ -17,13 +19,15 @@ public class Restaurant {
 
     public Restaurant() {}
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(boolean bm, float cl, int rtngs, float tt, String name, String adrs, String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
+    public Restaurant(boolean bm, float cl, int rtngs, float tt, String name, String adrs, double lati, double longi,String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
         this.bookmark = bm;
         this.crowdLevel = cl;
         this.ratings = rtngs;
         this.travellingTime = tt;
         this.name = name;
         this.address = adrs;
+        this.latitude = lati;
+        this.longitude = longi;
         this.description = des;
         this.image = img;
         this.openCloseTimings = timings;
@@ -73,6 +77,22 @@ public class Restaurant {
     }
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    //Latitude
+    public double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    //Longitude
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     //Restaurant Description

@@ -103,7 +103,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
         //map related
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapRestaurantList);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         //MVC Stuff and Observer Pattern

@@ -35,6 +35,8 @@ public class DisplayRestaurant extends AppCompatActivity {
         textView_make_reservation = findViewById(R.id.textView_make_reservation);
         textView_get_direction = findViewById(R.id.textView_get_direction);
 
+        // this function sets the back button on top of the screen
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         String restaurant_url = intent.getExtras().getString("restaurant_url");
@@ -61,18 +63,6 @@ public class DisplayRestaurant extends AppCompatActivity {
         textView_restaurant_opening_hours_time.setText(restaurant_opening_hours_time);
         textView_restaurant_crowd_level_value.setText(restaurant_crowd_level_value);
         //textView_restaurant_travelling_time.setText(restaurant_travelling_time);
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 

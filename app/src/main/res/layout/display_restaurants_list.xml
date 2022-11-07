@@ -67,7 +67,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="365dp"
-        android:id="@+id/mapRestaurant"
+        android:id="@+id/mapRestaurantList"
         tools:context=".DisplayRestaurantsList"
         tools:layout="@layout/display_restaurants_list"
         app:layout_constraintBottom_toTopOf="@+id/recycler_id"
