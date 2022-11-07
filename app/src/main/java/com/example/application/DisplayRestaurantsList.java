@@ -106,6 +106,9 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                                                                 //userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
+        // this function sets the back button on top of the screen
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //map related
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapRestaurantList);
         mapFragment.getMapAsync((OnMapReadyCallback) this);

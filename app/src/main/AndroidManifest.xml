@@ -74,7 +74,9 @@
             android:name=".Settings"
             android:parentActivityName=".ShowMap" />
         <activity android:name=".CreateNewAccountVerifyEmail" />
-        <activity android:name=".DisplayRestaurantsList" />
+        <activity
+            android:name=".DisplayRestaurantsList"
+            android:parentActivityName=".ShowMap"/>
         <activity
             android:name=".DisplayRestaurant"
             android:parentActivityName=".DisplayRestaurantsList" />
