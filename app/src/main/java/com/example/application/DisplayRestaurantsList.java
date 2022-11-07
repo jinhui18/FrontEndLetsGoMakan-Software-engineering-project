@@ -264,7 +264,15 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     }
 
     public void showAlertDialog(){
-
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DisplayRestaurantsList.this);
+        builder.setTitle("Need Location Permission!");
+        builder.setMessage("This app needs location permission. Close the app and allow location permission in phone settings.");
+        builder.setPositiveButton("Close App", (dialog, which) -> {
+            dialog.cancel();
+            finishAffinity();
+        });
+        final android.app.AlertDialog permissionAlert = builder.create();
+        permissionAlert.show();
     }
 
     public void retrieveAndDisplay(){

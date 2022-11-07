@@ -73,6 +73,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        updateLocationUI();
     }
 
     @Override
