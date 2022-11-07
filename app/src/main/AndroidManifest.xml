@@ -66,19 +66,13 @@
             android:name=".ResetPassword"
             android:parentActivityName=".view.LoginUI" />
         <activity
-            android:name=".ResetPasswordVerifyOTP"
-            android:parentActivityName=".ResetPassword" />
-        <activity
-            android:name=".ResetPasswordEnterNewPassword"
-            android:parentActivityName=".ResetPasswordVerifyOTP" />
-        <activity
             android:name=".Settings"
             android:parentActivityName=".ShowMap" />
-        <activity android:name=".SignOut" />
         <activity android:name=".CreateNewAccountVerifyEmail" />
         <activity android:name=".DisplayRestaurantsList" />
         <activity android:name=".DisplayRestaurant" />
         <activity android:name=".ResetPasswordLinkSent" />
+
 
 
 
