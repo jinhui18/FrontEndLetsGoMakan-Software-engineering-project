@@ -6,8 +6,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.application.DisplayRestaurantsList;
+import com.example.application.backend.control.filtering.FilteringCriteria;
+import com.example.application.backend.control.filtering.FilteringStoreFactory;
 import com.example.application.backend.entity.Account;
+import com.example.application.backend.entity.Profile;
 import com.example.application.backend.entity.Restaurant;
+import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
 import com.example.application.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,12 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FirebaseRetrieval {
     public static void pureSorting(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model sortingListModel){
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
+        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -65,7 +70,7 @@ public class FirebaseRetrieval {
     ) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
+        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,11 +111,12 @@ public class FirebaseRetrieval {
             ArrayList<Object> filteringList,
             int[] profileSubCriteriaChoice,
             String[] selectedSubCriteria,
+            ArrayList<Object> subCriteria2D,
             Model filteringListModel
     ) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "XFil8xUcH7MmzdqQSoFnTiwWWU92";//user.getUid();
+        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -125,6 +131,42 @@ public class FirebaseRetrieval {
                         }
                         System.out.println("Size of arrayList 000 :" + arrayList.size());
                         Account userAccount = arrayList.get(0);
+                        Profile userProfile = userAccount.getProfile();
+                        TypesOfDietaryRequirements defaultDietaryRequirement = userProfile.getDietaryRequirements();
+                        float defaultMaxTravelTime = userProfile.getPreferredMaximumTravelTime();
+
+                        //There are only 2 default filtering criteria
+                        for (int i=0; i<2; i++){
+                            Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
+                            for (int j=0; j<hashy.size();j++){
+                                if (i==0){
+                                    String subCriteria = hashy.get(String.valueOf(j));
+                                    if (defaultDietaryRequirement==TypesOfDietaryRequirements.valueOf(subCriteria)){
+                                        profileSubCriteriaChoice[i] = j;
+                                        selectedSubCriteria[i] = subCriteria;
+                                        break;
+                                    }
+                                }
+                                else if (i==1){
+                                    String subCriteria = hashy.get(String.valueOf(j));
+                                    String[] parts = subCriteria.split(" ");
+                                    float maxTimeLimit = Float.parseFloat(parts[0]);
+                                    if (defaultMaxTravelTime<=maxTimeLimit){ //maxTimeLimit will be in ascending order as per txt file
+                                        profileSubCriteriaChoice[i] = j;
+                                        selectedSubCriteria[i] = subCriteria;
+                                        break;
+                                    }
+                                }
+                            }//inner for
+                        }//outer for
+                        //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+
+                        ArrayList<FilteringCriteria> filteringCriteriaList = (ArrayList<FilteringCriteria>) filteringList.get(2); //Store all needed filtering criteria object
+                        for (int k=0; k<filteringCriteriaList.size(); k++) {
+                            FilteringCriteria filteringCriteria = filteringCriteriaList.get(k);
+                            filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user profile has that filtering option
+                            filteringCriteriaList.add(filteringCriteria);
+                        }//end for
 
                         filteringList.add(userAccount.getFullRestaurantList());
                         System.out.println("FULL RESTAURANT LIST RETRIEVED AND APPENDED"); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
@@ -132,15 +174,15 @@ public class FirebaseRetrieval {
                         Controller filteringController = new Controller(filteringListModel, filteringList);
                         filteringController.handleEvent();
 
-
                         return;
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-        System.out.println("By-pass1B");
+        System.out.println("By-pass1C");
         return;
     }
 

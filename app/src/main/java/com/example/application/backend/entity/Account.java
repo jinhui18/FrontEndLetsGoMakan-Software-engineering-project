@@ -28,6 +28,9 @@ public class Account {
         public String getEmail() {return email;}
         public void setEmail(String email) {this.email=email;}
 
+        public Profile getProfile(){return this.profile;}
+        public void setProfile(Profile profile){this.profile = profile;}
+
         public ArrayList<Restaurant> getFullRestaurantList() {return this.fullRestaurantList;}
         public void setFullRestaurantList(ArrayList<Restaurant> fullRestaurantList) {
             this.fullRestaurantList = fullRestaurantList;

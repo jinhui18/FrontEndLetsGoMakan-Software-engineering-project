@@ -1,5 +1,6 @@
 package com.example.application;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,12 +11,20 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
+import com.example.application.controller.Controller;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class InputPreferences extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,30 +71,42 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         createProfile();
         String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
+        //Getting Account object
+        final ArrayList<Account> arrayList = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-        mDatabase.child(userID).child("Account").child("Profile").setValue(currentProfile).addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                Toast.makeText(InputPreferences.this, "Account added successfully, please verify your email address!", Toast.LENGTH_SHORT).show();
+        mDatabase.child(userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-              /*  //TESTING UPDATE
-                Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
-                Map<String, Object> map = new HashMap<>();
-                map.put("Profile", newProfile);
-                //map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
-                //map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
-                //map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
 
-                //Update database
-                mDatabase.child(userID).child("Account").updateChildren(map);
-                Toast.makeText(InputPreferences.this, "HELLOOOO", Toast.LENGTH_SHORT);
-                //END OF TESTING */
+                        for (DataSnapshot child : children) {
+                            Account account = child.getValue(Account.class);
+                            arrayList.add(account);
+                        }
+                        System.out.println("Size of arrayList 000 :" + arrayList.size());
+                        Account userAccount = arrayList.get(0);
+                        userAccount.setProfile(currentProfile); //addCurrentProfile to account object
 
-                startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
-            } else {
-                Toast.makeText(InputPreferences.this, "Failed to create account, please try again!", Toast.LENGTH_SHORT).show();
-            }
-        });
+                        //add entire account object
+                        mDatabase.child(userID).child("Account").setValue(userAccount).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Toast.makeText(InputPreferences.this, "Profile has been created", Toast.LENGTH_SHORT).show();
 
+                                startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
+                            } else {
+                                Toast.makeText(InputPreferences.this, "Failed to create profile", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        return;
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(InputPreferences.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -136,3 +157,15 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         }
     }
 }
+              /*  //TESTING UPDATE
+                Profile newProfile = new Profile(TypesOfDietaryRequirements.VEGETARIAN, PreferredMaximumTravelTime.HALF_HOUR, PreferredModeOfTransport.CAR);
+                Map<String, Object> map = new HashMap<>();
+                map.put("Profile", newProfile);
+                //map.put("dietaryRequirements", newProfile.getDietaryRequirements().toString());
+                //map.put("preferredMaximumTravelTime", newProfile.getPreferredMaximumTravelTime().toString());
+                //map.put("preferredModeOfTransport", newProfile.getPreferredModeOfTransport().toString());
+
+                //Update database
+                mDatabase.child(userID).child("Account").updateChildren(map);
+                Toast.makeText(InputPreferences.this, "HELLOOOO", Toast.LENGTH_SHORT);
+                //END OF TESTING */
