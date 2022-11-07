@@ -238,19 +238,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.448"/>
 
-    <TextView
-        android:id="@+id/textView_get_direction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="232dp"
-        android:clickable="true"
-        android:text="Get Direction"
-        android:textColor="#0E2EE1"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/imageView_bookmarked"
         android:layout_width="wrap_content"
