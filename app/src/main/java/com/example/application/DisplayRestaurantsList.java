@@ -163,34 +163,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
 
     }
-
-    public void defaultFilterAndSort(){
-        //Update profileSubCriteriaChoice with user's profile info
-        //Calls firebaseRetrieval methods to filter and sort
-        ArrayList<Restaurant> arrayList = new ArrayList<>();
-        myAdapter.setArrayList(arrayList);
-        mDatabase.child(userID).child("Account").child("recommendedList")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                        for (DataSnapshot child : children) {
-                            Restaurant restaurant = child.getValue(Restaurant.class);
-                            arrayList.add(restaurant);
-                            System.out.println("Size here: "+ arrayList.size());
-                        }
-                        myAdapter.notifyDataSetChanged();
-                        return;
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        return;
-    }
-
+    
     public void retrieveAndDisplay(){
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
