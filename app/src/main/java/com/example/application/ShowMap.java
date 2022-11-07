@@ -1,14 +1,10 @@
 package com.example.application;
 
-import static android.content.ContentValues.TAG;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -26,29 +22,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.application.view.ChangePreferencesUI;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
@@ -59,28 +41,16 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     private static final int DEFAULT_ZOOM = 15;
     private static boolean locationPermissionGranted;
 
-    private String userID;
-
-    private FusedLocationProviderClient fusedLocationProviderClient;
-
     private LocationRequest locationRequest;
     private static final String TAG = ShowMap.class.getSimpleName();
     private GoogleMap gMap;
 
     LocationManager locationManager;
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_map);
-
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-
-        userID = mAuth.getCurrentUser().getUid();
 
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -103,6 +73,11 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         isGPSEnabled();
         getLocationPermission();
     }
@@ -128,24 +103,45 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             updateLocationUI();
         }
         else{
-            ActivityCompat.requestPermissions(this, new String [] {Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(ShowMap.this, new String [] {Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    locationPermissionGranted = true;
+                    Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    locationPermissionGranted = false;
+                    Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
+                    showLocationDialog();
+                }
+                updateLocationUI();
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)){
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 locationPermissionGranted = true;
                 Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
             }
         } else {
             locationPermissionGranted = false;
+            Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
             showLocationDialog();
+            return;
         }
         updateLocationUI();
-    }
+    }*/
 
     private void updateLocationUI(){
         if (gMap == null){
@@ -155,11 +151,12 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             if (locationPermissionGranted) {
                 gMap.setMyLocationEnabled(true);
                 gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                getRecommendations.setEnabled(true);
                 getDeviceLocation();
             } else {
                 gMap.setMyLocationEnabled(false);
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
-                getLocationPermission();
+                getRecommendations.setEnabled(false);
             }
         }catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -169,12 +166,13 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     private void showLocationDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ShowMap.this);
         builder.setTitle("Need Location Permission!");
-        builder.setMessage("This app needs location permission. Restart the app and allow location permission.");
-        builder.setPositiveButton("Restart App", (dialog, which) -> {
+        builder.setMessage("This app needs location permission. Close the app and allow location permission in phone settings.");
+        builder.setPositiveButton("Close App", (dialog, which) -> {
             dialog.cancel();
-            finish();
-            startActivity(getIntent());
+            finishAffinity();
         });
+        final AlertDialog permissionAlert = builder.create();
+        permissionAlert.show();
     }
 
     private boolean isGPSEnabled()
@@ -228,9 +226,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                                 location, DEFAULT_ZOOM));
                     }
                     else{
-                        Log.d(TAG, "Location permission not granted... Exiting the app");
-                        finish();
-                        startActivity(getIntent());
+                        showLocationDialog();
                     }
                 }
             }, Looper.getMainLooper());
