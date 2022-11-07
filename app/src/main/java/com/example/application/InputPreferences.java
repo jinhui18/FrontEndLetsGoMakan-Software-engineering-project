@@ -16,6 +16,10 @@ import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
+import com.example.application.model.ChangePreferencesModel;
+import com.example.application.model.InputPreferencesModel;
+import com.example.application.model.Model;
+import com.example.application.view.ChangePreferencesUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +41,8 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    Profile currentProfile = new Profile();
+    private Profile currentProfile = new Profile();
+    private Model inputPreferencesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         ArrayAdapter<CharSequence> dietAdapter = ArrayAdapter.createFromResource(this, R.array.diet, android.R.layout.simple_spinner_item);
         dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dietRequirement.setAdapter(dietAdapter);
+
+        inputPreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, InputPreferences.this);
     }
 
     @Override
@@ -71,43 +78,10 @@ public class InputPreferences extends AppCompatActivity implements View.OnClickL
         createProfile();
         String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
-        //Getting Account object
-        final ArrayList<Account> arrayList = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-        mDatabase.child(userID)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                        for (DataSnapshot child : children) {
-                            Account account = child.getValue(Account.class);
-                            arrayList.add(account);
-                        }
-                        System.out.println("Size of arrayList 000 :" + arrayList.size());
-                        Account userAccount = arrayList.get(0);
-                        userAccount.setProfile(currentProfile); //addCurrentProfile to account object
-
-                        //add entire account object
-                        mDatabase.child(userID).child("Account").setValue(userAccount).addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()) {
-                                Toast.makeText(InputPreferences.this, "Profile has been created", Toast.LENGTH_SHORT).show();
-
-                                startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
-                            } else {
-                                Toast.makeText(InputPreferences.this, "Failed to create profile", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        return;
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(InputPreferences.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+        ArrayList<Object> list = new ArrayList<Object>();
+        list.add(currentProfile);
+        Controller changePreferencesController = new Controller(inputPreferencesModel, list);
+        changePreferencesController.handleEvent();
     }
 
     private void createProfile() {
