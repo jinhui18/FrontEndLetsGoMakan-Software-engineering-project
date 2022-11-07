@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 public class FirebaseRetrieval {
@@ -141,7 +142,7 @@ public class FirebaseRetrieval {
                             for (int j=0; j<hashy.size();j++){
                                 if (i==0){
                                     String subCriteria = hashy.get(String.valueOf(j));
-                                    if (defaultDietaryRequirement==TypesOfDietaryRequirements.valueOf(subCriteria)){
+                                    if (defaultDietaryRequirement==TypesOfDietaryRequirements.valueOf(subCriteria.toUpperCase(Locale.ROOT))){
                                         profileSubCriteriaChoice[i] = j;
                                         selectedSubCriteria[i] = subCriteria;
                                         break;
@@ -160,9 +161,13 @@ public class FirebaseRetrieval {
                             }//inner for
                         }//outer for
                         //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-
+                        for (int k=0; k<2; k++){
+                            System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
+                        }
                         ArrayList<FilteringCriteria> filteringCriteriaList = (ArrayList<FilteringCriteria>) filteringList.get(2); //Store all needed filtering criteria object
-                        for (int k=0; k<filteringCriteriaList.size(); k++) {
+                        System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
+                        for (int k=0; k<2; k++) {
+                            System.out.println("K value: "+k);
                             FilteringCriteria filteringCriteria = filteringCriteriaList.get(k);
                             filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user profile has that filtering option
                             filteringCriteriaList.add(filteringCriteria);

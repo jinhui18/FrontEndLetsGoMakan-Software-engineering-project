@@ -56,8 +56,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     String[] filteringCriteriaArray;
     ArrayList<Object> subCriteria2D = new ArrayList<>();
     int[] clickCounter1;
-    int[] profileSubCriteriaChoice; //default user's profile filtering criteria
-    String[] selectedSubCriteria;
+    int[] profileSubCriteriaChoice; //used to pre-select subCriteria option according to users' default/previous selection
+    String[] selectedSubCriteria; //used to store the selected subcriteria for filtering Criteria
     int subCriteriaPosition;
 
     //Sorting dropdown stuff
@@ -148,7 +148,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
  */
-
         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
         ArrayList<Object> sortingList = new ArrayList<Object>();
         sortingList.add(sortingCriteria);
@@ -157,10 +156,13 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         ArrayList<Object> filteringList = new ArrayList<Object>();
         ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
         for (int k=0; k<filteringCriteriaArray.length; k++) { //for default, need to use all filteringCriteria
+                selectedFilteringCriteria[k]=true;
+                System.out.println("Outside K value: "+k);
                 FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
                 //subCriteria to be added later on
                 filteringCriteriaList.add(filteringCriteria);
         }//end for
+        System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
         //Pass in everything to method
         filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
         filteringList.add(sortingListModel);
@@ -371,7 +373,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                     System.out.println("NUMBER: "+i);
-                    if (clickCounter1[i]%2==0) { //Can also use selectedFilteringCriteria
+                    if (clickCounter1[i]%2==1) { //Can also use selectedFilteringCriteria
                         //get hashmap with all sub criteria
                         Map<String, String> hashy = (Map<String, String>) subCriteria2D.get(i);
                         //create string array with sub criteria
