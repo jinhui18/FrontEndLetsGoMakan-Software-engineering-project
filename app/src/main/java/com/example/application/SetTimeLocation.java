@@ -86,7 +86,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         userID = mAuth.getCurrentUser().getUid();
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-        mDatabase.child(userID).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(userID).child("Account").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.hasChild("Chosen Location")){
@@ -122,8 +122,8 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         // this function sets the back button on top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDatabase.child(userID).child("Use Current Location").setValue(false);
-        mDatabase.child(userID).child("Use Current Time").setValue(false);
+        mDatabase.child(userID).child("Account").child("Use Current Location").setValue(false);
+        mDatabase.child(userID).child("Account").child("Use Current Time").setValue(false);
         getLocation();
 
         useCurrentLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -132,12 +132,12 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if (isChecked){
                     textInputLocation.setEnabled(false);
                     useCurLoc = true;
-                    mDatabase.child(userID).child("Use Current Location").setValue(true);
+                    mDatabase.child(userID).child("Account").child("Use Current Location").setValue(true);
                 }
                 else{
                     textInputLocation.setEnabled(true);
                     useCurLoc = false;
-                    mDatabase.child(userID).child("Use Current Location").setValue(false);
+                    mDatabase.child(userID).child("Account").child("Use Current Location").setValue(false);
                 }
             }
         });
@@ -148,13 +148,13 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if (isChecked){
                     changeTimeButton.setEnabled(false);
                     useCurTime = true;
-                    mDatabase.child(userID).child("Use Current Time").setValue(true);
+                    mDatabase.child(userID).child("Account").child("Use Current Time").setValue(true);
                     getCurrentTime();
                 }
                 else{
                     changeTimeButton.setEnabled(true);
                     useCurTime = false;
-                    mDatabase.child(userID).child("Use Current Time").setValue(false);
+                    mDatabase.child(userID).child("Account").child("Use Current Time").setValue(false);
                 }
             }
         });
@@ -166,7 +166,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(SetTimeLocation.this, "location selected", Toast.LENGTH_SHORT).show();
             if((useCurTime == true) || choseTime == true){
                 Toast.makeText(SetTimeLocation.this, "Time selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SetTimeLocation.this, ShowMap.class));
+                startActivity(new Intent(SetTimeLocation.this, ShowRestaurantMap.class));//change to displayrestaurantslist
             }
             else{
                 showTimeDialog();
@@ -195,7 +195,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 coordinates = String.valueOf(place.getLatLng());
-                mDatabase.child(userID).child("Chosen Location").setValue(coordinates);
+                mDatabase.child(userID).child("Account").child("Chosen Location").setValue(coordinates);
             }
 
             @Override
@@ -214,10 +214,10 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 minute = selectedMinute;
                 changeTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
                 if(minute<10){
-                    mDatabase.child(userID).child("Chosen Time").setValue(hour+":0"+minute);
+                    mDatabase.child(userID).child("Account").child("Chosen Time").setValue(hour+":0"+minute);
                 }
                 else {
-                    mDatabase.child(userID).child("Chosen Time").setValue(hour + ":" + minute);
+                    mDatabase.child(userID).child("Account").child("Chosen Time").setValue(hour + ":" + minute);
                 }
             }
         };
@@ -230,7 +230,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     public void getCurrentTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
         String currentDateAndTime = sdf.format(new Date());
-        mDatabase.child(userID).child("Current Time").setValue(currentDateAndTime);
+        mDatabase.child(userID).child("Account").child("Current Time").setValue(currentDateAndTime);
     }
 
     private void showTimeDialog(){

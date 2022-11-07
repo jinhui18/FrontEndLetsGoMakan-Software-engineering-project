@@ -21,9 +21,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.example.application.view.ChangePreferencesUI;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -52,15 +55,19 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int DEFAULT_ZOOM = 15;
-    private boolean locationPermissionGranted;
+    private static boolean locationPermissionGranted;
 
     private String userID;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     private LocationRequest locationRequest;
     private static final String TAG = ShowMap.class.getSimpleName();
     private GoogleMap gMap;
 
-    ArrayList<String> userLocation = new ArrayList<>();
+    LocationManager locationManager;
+
+    String userLocation, initialLocation;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -80,6 +87,8 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(2000);
 
+        locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
@@ -94,28 +103,30 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        getLocationPermission();
         isGPSEnabled();
-        getDeviceLocation();
+        getLocationPermission();
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.mapToRec: {
+                updateLocationUI();
                 startActivity(new Intent(this, SetTimeLocation.class));
                 break;
             }
             case R.id.settings: {
-                startActivity(new Intent(this, Settings.class));
+                startActivity(new Intent(this, ChangePreferencesUI.class));
+                break;
             }
         }
     }
 
     private void getLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             locationPermissionGranted = true;
-            Toast.makeText(this, "Location permission granted.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+            updateLocationUI();
         }
         else{
             ActivityCompat.requestPermissions(this, new String [] {Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
@@ -125,19 +136,18 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        locationPermissionGranted = false;
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
             if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)){
                 locationPermissionGranted = true;
-                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
             }
         } else {
+            locationPermissionGranted = false;
             showLocationDialog();
         }
         updateLocationUI();
     }
 
-    @SuppressLint("MissingPermission")
     private void updateLocationUI(){
         if (gMap == null){
             return;
@@ -146,6 +156,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             if (locationPermissionGranted) {
                 gMap.setMyLocationEnabled(true);
                 gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                getDeviceLocation();
             } else {
                 gMap.setMyLocationEnabled(false);
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -156,7 +167,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
-    @SuppressLint("MissingPermission")
     private void getDeviceLocation(){
         try{
             LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
@@ -170,12 +180,11 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                         int index = locationResult.getLocations().size() - 1;
                         double latitude = locationResult.getLocations().get(index).getLatitude();
                         double longitude = locationResult.getLocations().get(index).getLongitude();
-                        userLocation.add(Double.toString(latitude));
-                        userLocation.add(Double.toString(longitude));
-                        mDatabase.child(userID).child("Current Location").setValue(userLocation);
+                        userLocation = "lat/lng: ("+latitude+", "+longitude+")";
                         LatLng location = new LatLng(latitude, longitude);
+                        mDatabase.child(userID).child("Account").child("Current Location").setValue(userLocation);
                         // Add a marker to current location and move the camera
-                        gMap.addMarker(new MarkerOptions().position(location).title("Your current location"));
+                        //gMap.addMarker(new MarkerOptions().position(location).title("Your current location"));
                         gMap.setMyLocationEnabled(true);
                         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 location, DEFAULT_ZOOM));
@@ -214,12 +223,11 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
                 try {
                     LocationSettingsResponse response = task.getResult(ApiException.class);
+                    Toast.makeText(ShowMap.this, "GPS is already turned on", Toast.LENGTH_SHORT).show();
 
                 } catch (ApiException e) {
-
                     switch (e.getStatusCode()) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
                             try {
                                 ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                                 resolvableApiException.startResolutionForResult(ShowMap.this, 2);
@@ -239,7 +247,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     private boolean isGPSEnabled()
     {
-        LocationManager locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
         boolean isEnabled = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

@@ -19,19 +19,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Application"
         tools:targetApi="31">
+        <activity
+            android:name=".ShowRestaurantMap"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
-
+            android:value="AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".SetTimeLocation"
-            android:parentActivityName=".ShowMap"
-            android:exported="false">
+            android:exported="false"
+            android:parentActivityName=".ShowMap">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,7 +58,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.AccountCreationUI"
             android:parentActivityName=".view.LoginUI" />
@@ -61,7 +66,7 @@
             android:parentActivityName=".CreateNewAccountVerifyEmail" />
         <activity
             android:name=".view.ChangePreferencesUI"
-            android:parentActivityName=".view.LoginUI" /> <!-- Change to HomePage class -->
+            android:parentActivityName=".ShowMap" /> <!-- Change to HomePage class -->
         <activity
             android:name=".ResetPassword"
             android:parentActivityName=".view.LoginUI" />
@@ -78,8 +83,6 @@
         <activity android:name=".CreateNewAccountVerifyEmail" />
         <activity android:name=".DisplayRestaurantsList" />
         <activity android:name=".DisplayRestaurant" />
-
-
     </application>
 
 </manifest>
