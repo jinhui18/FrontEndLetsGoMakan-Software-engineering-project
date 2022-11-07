@@ -45,7 +45,7 @@ public class SortingListModel extends Model{
         map.put("recommendedList", recommendedList);
 
         //Get UserID
-        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//mAuth.getCurrentUser().getUid();
+        String userID = mAuth.getCurrentUser().getUid();
 
         //Update database (This means update "recommendedList" key in "Account" child)
         mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {

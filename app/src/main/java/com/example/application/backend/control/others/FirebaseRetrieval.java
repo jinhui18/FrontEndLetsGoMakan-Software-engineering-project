@@ -30,7 +30,7 @@ public class FirebaseRetrieval {
     public static void pureSorting(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context, ArrayList<Object> attributeList, Model sortingListModel){
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
+        String userID = user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,7 +71,7 @@ public class FirebaseRetrieval {
     ) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
+        String userID = user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -117,7 +117,7 @@ public class FirebaseRetrieval {
     ) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//user.getUid();
+        String userID = user.getUid();
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
