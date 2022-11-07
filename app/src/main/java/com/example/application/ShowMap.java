@@ -40,6 +40,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -55,6 +59,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
@@ -354,14 +360,33 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
-            for (int i = 0; i<strings.size(); i++)
-                new GetPlaceDetails().execute(strings.get(i));
+            new GetPlaceDetails().execute(strings.get(0));
         }
     }
+
 
     private class GetPlaceDetails extends AsyncTask<String, Integer, String>{
         @Override
         protected String doInBackground(String... strings) {
+            String placeID = strings[0];
+
+            List<Place.Field> placeFields = Arrays.asList(Place.Field.ADDRESS);
+            FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeID, placeFields);
+            PlacesClient placesClient = Places.createClient(ShowMap.this);
+            placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+                Place place = response.getPlace();
+                Log.i(TAG, "Place found: " + place.getName());
+                Toast.makeText(ShowMap.this, place.getAddress(), Toast.LENGTH_LONG).show();
+            }).addOnFailureListener((exception) -> {
+                if (exception instanceof ApiException) {
+                    final ApiException apiException = (ApiException) exception;
+                    Log.e(TAG, "Place not found: " + exception.getMessage());
+                    final int statusCode = apiException.getStatusCode();
+                    // TODO: Handle error with given status code.
+                }
+            });
+
+
 
             return null;
         }
