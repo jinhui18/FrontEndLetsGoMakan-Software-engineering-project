@@ -26,6 +26,9 @@ import com.example.application.controller.Controller;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
 import com.example.application.model.SortingListModel;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +46,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-public class DisplayRestaurantsList extends AppCompatActivity implements Observer {
+public class DisplayRestaurantsList extends AppCompatActivity implements Observer, OnMapReadyCallback {
     //Widgets and associated stuff
     //private TextView textView;
     private Button button, buttonSortBy, buttonFilterBy;
@@ -77,6 +80,9 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     Model filteringListModel;
     Model sortingListModel;
 
+    //map related
+    GoogleMap gMap;
+
     // store data store configuration
     private final static Map<String, String> sortingConfiguration = new HashMap<String, String>();
     private final static Map<String, String> filteringConfiguration = new HashMap<String, String>();
@@ -95,6 +101,10 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //userID = firebaseAuth.getCurrentUser().getUid();
                                                                 userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+
+        //map related
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         //MVC Stuff and Observer Pattern
         sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
@@ -160,10 +170,13 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
 
         //for future filtering binaries, null criteria must be considered in .filter() function
-
-
     }
-    
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        gMap = googleMap;
+    }
+
     public void retrieveAndDisplay(){
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
@@ -436,8 +449,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         AlertDialog mDialog = builder.create();
         mDialog.show();
     } //end of function
-
-
 } //end of class
 
 

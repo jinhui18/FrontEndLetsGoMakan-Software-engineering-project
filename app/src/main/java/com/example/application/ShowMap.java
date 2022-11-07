@@ -1,5 +1,7 @@
 package com.example.application;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -67,8 +69,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     LocationManager locationManager;
 
-    String userLocation, initialLocation;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -111,7 +111,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.mapToRec: {
-                updateLocationUI();
                 startActivity(new Intent(this, SetTimeLocation.class));
                 break;
             }
@@ -167,40 +166,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
-    private void getDeviceLocation(){
-        try{
-            LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
-                @Override
-                public void onLocationResult(@NonNull LocationResult locationResult) {
-                    super.onLocationResult(locationResult);
-                    LocationServices.getFusedLocationProviderClient(ShowMap.this).removeLocationUpdates(this);
-
-                    if(locationResult != null && locationResult.getLocations().size() > 0)
-                    {
-                        int index = locationResult.getLocations().size() - 1;
-                        double latitude = locationResult.getLocations().get(index).getLatitude();
-                        double longitude = locationResult.getLocations().get(index).getLongitude();
-                        userLocation = "lat/lng: ("+latitude+", "+longitude+")";
-                        LatLng location = new LatLng(latitude, longitude);
-                        mDatabase.child(userID).child("Account").child("Current Location").setValue(userLocation);
-                        // Add a marker to current location and move the camera
-                        //gMap.addMarker(new MarkerOptions().position(location).title("Your current location"));
-                        gMap.setMyLocationEnabled(true);
-                        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                location, DEFAULT_ZOOM));
-                    }
-                    else{
-                        Log.d(TAG, "Location permission not granted... Exiting the app");
-                        finish();
-                        startActivity(getIntent());
-                    }
-                }
-            }, Looper.getMainLooper());
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage(), e);
-        }
-    }
-
     private void showLocationDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ShowMap.this);
         builder.setTitle("Need Location Permission!");
@@ -209,39 +174,6 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             dialog.cancel();
             finish();
             startActivity(getIntent());
-        });
-    }
-
-    private void turnOnGPS() {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        builder.setAlwaysShow(true);
-
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext()).checkLocationSettings(builder.build());
-
-        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-                try {
-                    LocationSettingsResponse response = task.getResult(ApiException.class);
-                    Toast.makeText(ShowMap.this, "GPS is already turned on", Toast.LENGTH_SHORT).show();
-
-                } catch (ApiException e) {
-                    switch (e.getStatusCode()) {
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            try {
-                                ResolvableApiException resolvableApiException = (ResolvableApiException) e;
-                                resolvableApiException.startResolutionForResult(ShowMap.this, 2);
-                            } catch (IntentSender.SendIntentException ex) {
-                                ex.printStackTrace();
-                            }
-                            break;
-
-                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            Toast.makeText(ShowMap.this, "location must be enabled", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            }
         });
     }
 
@@ -276,5 +208,34 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void getDeviceLocation(){
+        try{
+            LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                    LocationServices.getFusedLocationProviderClient(ShowMap.this).removeLocationUpdates(this);
+
+                    if(locationResult != null && locationResult.getLocations().size() > 0)
+                    {
+                        int index = locationResult.getLocations().size() - 1;
+                        double latitude = locationResult.getLocations().get(index).getLatitude();
+                        double longitude = locationResult.getLocations().get(index).getLongitude();
+                        LatLng location = new LatLng(latitude, longitude);
+                        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                location, DEFAULT_ZOOM));
+                    }
+                    else{
+                        Log.d(TAG, "Location permission not granted... Exiting the app");
+                        finish();
+                        startActivity(getIntent());
+                    }
+                }
+            }, Looper.getMainLooper());
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
     }
 }
