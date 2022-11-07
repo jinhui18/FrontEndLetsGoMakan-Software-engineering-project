@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,16 +50,22 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     private RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     MyAdapter myAdapter;
+
     //Filtering Dropdown stuff
     boolean[] selectedFilteringCriteria;
-    ArrayList<Integer> filteringCriteriaList = new ArrayList<>();
-    String[] filteringCriteriaArray = {"Halal", "Ratings", "Crowd Level"};
+    String[] filteringCriteriaArray;
+    ArrayList<Object> subCriteria2D = new ArrayList<>();
+    int[] clickCounter1;
+    int[] profileSubCriteriaChoice; //default user's profile filtering criteria
+    String[] selectedSubCriteria;
+    int subCriteriaPosition;
+
     //Sorting dropdown stuff
     boolean[] selectedSortingCriteria;
     ArrayList<Integer> sortingCriteriaList = new ArrayList<>();
     String[] sortingCriteriaArray;
-    int singlePosition = 3; //default sorting selection is travelling time (index 3)
-    int[] multiPosition = {-1} ; //
+    int singlePosition = 2; //default sorting selection is travelling time (index 2)
+
 
     //Firebase
     private FirebaseDatabase firebaseDatabase;
@@ -93,7 +100,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
         filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
         sortingListModel.addObserver(this);
-        filteringListModel.addObserver(this);
+        //filteringListModel.addObserver(this);
 
         //Widgets and Associated stuff
         buttonSortBy = findViewById(R.id.buttonSortBy);
@@ -101,135 +108,20 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         button = findViewById(R.id.button6);//For testing purposes
 
 
-        //SortingCriteria dropdown (Expand for code)
+        //SortingCriteria dropdown
         buttonSortBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
-                builder.setTitle("Select Sorting Criteria");
-
-
-                builder.setSingleChoiceItems(sortingCriteriaArray, singlePosition, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        singlePosition = i;
-                        //Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(DisplayRestaurantsList.this, "Test "+String.valueOf(singlePosition), Toast.LENGTH_SHORT).show();
-                        SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
-                        ArrayList<Object> initialSortingList = new ArrayList<Object>();
-                        initialSortingList.add(sortingCriteria);
-                        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // dismiss dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // use for loop
-                        for (int j = 0; j < selectedSortingCriteria.length; j++) {
-                            // remove all selection
-                            selectedSortingCriteria[j] = false;
-                            // clear language list
-                            sortingCriteriaList.clear();
-                            // clear text view value
-                            //buttonSortBy.setText("");
-                        }
-                    }
-                });
-
-                AlertDialog mDialog = builder.create();
-                mDialog.show();
+                sortingDropDown();
             }
         });
-        //FilteringCriteria dropdown (Expand for code)
+
+        //FilteringCriteria dropdown
         buttonFilterBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
-                builder.setTitle("Select Filtering Criteria");
-                builder.setCancelable(false);
-
-
-                builder.setMultiChoiceItems(filteringCriteriaArray, selectedFilteringCriteria, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        // check condition
-                        if (b) {
-                            // when checkbox selected
-                            // Add position  in lang list
-                            filteringCriteriaList.add(i);
-                            // Sort array list
-                            Collections.sort(filteringCriteriaList);
-                        } else {
-                            // when checkbox unselected
-                            // Remove position from langList
-                            filteringCriteriaList.remove(Integer.valueOf(i));
-                        }
-                    }
-                });
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Initialize string builder
-                        StringBuilder stringBuilder = new StringBuilder();
-                        // use for loop
-                        for (int j = 0; j < filteringCriteriaList.size(); j++) {
-                            // concat array value
-                            stringBuilder.append(filteringCriteriaArray[filteringCriteriaList.get(j)]);
-                            // check condition
-                            if (j != filteringCriteriaList.size() - 1) {
-                                // When j value  not equal
-                                // to lang list size - 1
-                                // add comma
-                                stringBuilder.append("\n");
-                            }
-                        }
-                        // set text on textView
-                        // if you want to show the selected criteria on the button
-                        //buttonFilterBy.setText(stringBuilder.toString());
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // dismiss dialog
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // use for loop
-                        for (int j = 0; j < selectedFilteringCriteria.length; j++) {
-                            // remove all selection
-                            selectedFilteringCriteria[j] = false;
-                            // clear language list
-                            filteringCriteriaList.clear();
-                            // clear text view value
-                            buttonSortBy.setText("");
-                        }
-                    }
-                });
-                // show dialog
-                builder.show();
+                filteringDropDown();
             }
-
-
         });
 
 
@@ -250,13 +142,87 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
         initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
         initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
-        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]));
-        System.out.println("THE OBEJCT: "+sortingCriteriaArray[singlePosition]);
-        System.out.println("THE OBEJCT: "+filteringCriteriaArray[0]);
-        System.out.println("THE OBEJCT: "+filteringCriteriaArray[1]);
-        //FirebaseRetrieval.retrieveFullRestaurantList(mAuth, mDatabase, DisplayRestaurantsList.this, initialFilteringList, filteringListModel);
+        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
+
+
         FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
+
+/*
+        SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
+        ArrayList<Object> sortingList = new ArrayList<Object>();
+        sortingList.add(sortingCriteria);
+
+        //From selectedFilteringCriteria array instantiate required filteringCriteria objects
+        ArrayList<Object> filteringList = new ArrayList<Object>();
+        ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
+        for (int k=0; k<filteringCriteriaArray.length; k++) {
+                FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
+                //filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user selected that filtering option
+                filteringCriteriaList.add(filteringCriteria);
+        }//end for
+        //Pass in everything to method
+        filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
+        filteringList.add(sortingListModel);
+        filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+        FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, filteringListModel);
+
+        //add subcriteria2D in as well
+        //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
+
+        //for future filtering binaries, null criteria must be considered in .filter() function
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    public void defaultFilterAndSort(){
+        //Update profileSubCriteriaChoice with user's profile info
+        //Calls firebaseRetrieval methods to filter and sort
+        ArrayList<Restaurant> arrayList = new ArrayList<>();
+        myAdapter.setArrayList(arrayList);
+        mDatabase.child(userID).child("Account").child("recommendedList")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Iterable<DataSnapshot> children = snapshot.getChildren();
+
+                        for (DataSnapshot child : children) {
+                            Restaurant restaurant = child.getValue(Restaurant.class);
+                            arrayList.add(restaurant);
+                            System.out.println("Size here: "+ arrayList.size());
+                        }
+                        myAdapter.notifyDataSetChanged();
+                        return;
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        return;
     }
 
     public void retrieveAndDisplay(){
@@ -296,6 +262,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             System.out.println("My Path");
             Scanner sortingConfigurationReader = new Scanner(getAssets().open("sorting_configuration.txt"));
             Scanner filteringConfigurationReader = new Scanner(getAssets().open("filtering_configuration.txt"));
+            Scanner subCriteriaConfigurationReader = new Scanner(getAssets().open("sub_criteria.txt"));
 
             while(sortingConfigurationReader.hasNextLine()) {
                 String line  = sortingConfigurationReader.nextLine();
@@ -310,6 +277,20 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                 filteringConfiguration.put(parts[0], parts[1]);
             }
             filteringConfigurationReader.close();
+
+            int count=0; int index=0;
+            while(subCriteriaConfigurationReader.hasNextLine()) {
+                if (count==0){
+                    subCriteria2D.add(new HashMap<String, String>());
+                }
+                String line  = subCriteriaConfigurationReader.nextLine();
+                if (line.compareTo("NEXT")==0) {
+                    count=0; index++; continue;
+                }
+                String[] parts = line.split("=");
+                ((Map<String, String>) subCriteria2D.get(index)).put(parts[0], parts[1]);
+            }
+            subCriteriaConfigurationReader.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -328,6 +309,20 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             filteringCriteriaArray[i] = filteringConfiguration.get(String.valueOf(i));
         }
 
+        clickCounter1 = new int[filteringConfiguration.size()];
+        for (int i=0; i<filteringConfiguration.size(); i++){
+            clickCounter1[i] = 0;
+        }
+        profileSubCriteriaChoice = new int[filteringConfiguration.size()];
+        for (int i=0; i<filteringConfiguration.size(); i++){
+            profileSubCriteriaChoice[i] = 0;
+        }
+
+        selectedSubCriteria = new String[filteringConfiguration.size()];
+        for (int i=0; i<filteringConfiguration.size(); i++){
+            selectedSubCriteria[i] = null;
+        }
+
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){
                                     System.out.println("Testing: "+ sortingCriteriaArray[i]);
@@ -336,12 +331,187 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                                 for (int i=0; i<filteringConfiguration.size(); i++){
                                     System.out.println("TestingB: "+ filteringCriteriaArray[i]);
                                 }
+                                //Testing
+                                for (int i=0; i<subCriteria2D.size(); i++){
+                                    Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
+                                    for (int j=0; j<hashy.size();j++){
+                                        System.out.println("hashy value: "+ hashy.get(String.valueOf(j)));
+                                    }
+                                    System.out.println();
+                                }
     }
-}
+
+    public void sortingDropDown(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+        builder.setTitle("Select Sorting Criteria");
+
+
+        builder.setSingleChoiceItems(sortingCriteriaArray, singlePosition, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                singlePosition = i;
+                //Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(DisplayRestaurantsList.this, "Test "+String.valueOf(singlePosition), Toast.LENGTH_SHORT).show();
+                SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
+                ArrayList<Object> initialSortingList = new ArrayList<Object>();
+                initialSortingList.add(sortingCriteria);
+                FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
+            }
+        });
+
+        builder.setNegativeButton("", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog mDialog = builder.create();
+        mDialog.show();
+    }
+
+    public void filteringDropDown(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+            builder.setTitle("Select Filtering Criteria");
+            builder.setCancelable(false);
+
+            System.out.println("FILTERING DROP DOWN FUNCTION RAN");
+            builder.setMultiChoiceItems(filteringCriteriaArray, selectedFilteringCriteria, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                    System.out.println("NUMBER: "+i);
+                    if (clickCounter1[i]%2==0) { //Can also use selectedFilteringCriteria
+                        //get hashmap with all sub criteria
+                        Map<String, String> hashy = (Map<String, String>) subCriteria2D.get(i);
+                        //create string array with sub criteria
+                        String[] subCriterialist = new String[hashy.size()];
+                        for (int j = 0; j < hashy.size(); j++) {
+                            subCriterialist[j] = hashy.get(String.valueOf(j));
+                        }
+
+                        subCriteriaDropDown(subCriterialist, i); //pass in filtering criteria index for sub criteria retrieval
+                        clickCounter1[i]++;
+                    }
+                    else{clickCounter1[i]++;}
+                    System.out.println("clickCounter: "+clickCounter1[i]);
+                }
+            });
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //get the sortingCriteria here using the singlePosition (keeps track of last-used sortingCriteria
+                    SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
+                    ArrayList<Object> sortingList = new ArrayList<Object>();
+                    sortingList.add(sortingCriteria);
+
+                    //From selectedFilteringCriteria array instantiate required filteringCriteria objects
+                    ArrayList<Object> filteringList = new ArrayList<Object>();
+                    ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
+                    for (int k=0; k<filteringCriteriaArray.length; k++) {
+                        System.out.println("boolean array: " + selectedFilteringCriteria[k]);
+                        if (selectedFilteringCriteria[k] == true){
+                            FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
+                            filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user selected that filtering option
+                            filteringCriteriaList.add(filteringCriteria);
+                        }//end if
+                    }//end for
+                    //Pass in everything to method
+                    filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
+                    filteringList.add(sortingListModel);
+                    filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
+                    FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, filteringListModel);
+                }
+            });
+
+            builder.setNegativeButton("", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // dismiss dialog
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // dismiss dialog
+                    dialogInterface.dismiss();
+                }
+            });
+            // show dialog
+            builder.show();
+    }
+
+    public void subCriteriaDropDown(String[] subCriteriaList, int filteringCriteriaIndex){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+        builder.setTitle("Select Sub Criteria");
+
+
+        builder.setSingleChoiceItems(subCriteriaList, profileSubCriteriaChoice[filteringCriteriaIndex], new DialogInterface.OnClickListener() { //pre selected option is user's profile
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                subCriteriaPosition = i;
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selectedSubCriteria[filteringCriteriaIndex] = subCriteriaList[subCriteriaPosition];
+                for (int k=0; k<2; k++){
+                    System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
+                }
+            }
+        });
+
+        builder.setNegativeButton("", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // dismiss dialog
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog mDialog = builder.create();
+        mDialog.show();
+    } //end of function
+
+
+} //end of class
+
+
+
 /*
 //Testing
                                 for (String name: sortingConfiguration.keySet()) {
                                         Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
                                         }
+
+ */
+/*
+                    for (int k=0; k<2; k++)
+        System.out.println("boolean array: "+selectedFilteringCriteria[k]);
+        }
 
  */

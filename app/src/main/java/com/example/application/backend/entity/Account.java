@@ -10,7 +10,7 @@ public class Account {
         private ArrayList<Restaurant> fullRestaurantList;
         private ArrayList<Restaurant> recommendedList;
 
-
+        public Account(){}
         public Account(String name, String email, Profile profile) {
             this.name = name;
             this.email = email;

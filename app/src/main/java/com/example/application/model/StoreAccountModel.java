@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.model;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +7,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.InputPreferences;
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,47 +23,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class CreateUser extends CreateNewAccount {
-    private static final String TAG = "CreateUser";
-    private String name;
-    private String email;
-    private String password;
-    private Context context;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDataBase;
+public class StoreAccountModel extends Model{
 
 
-    public CreateUser(String name, String email, String password,Context context){
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.context = context;
-
-    }
-    /**
-     * name setter
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    /**
-     * name setter
-     * @param email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    /**
-     * dateOfBirth setter
-     * @param password
-     */
-    public void setPassword(String password){
-        this.password = password;
+    public StoreAccountModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
+        super(mAuth, mDatabase, context);
     }
 
+    // store data/ interact with firebase
+    @Override
+    public void service() {
+        // FORMAT: attributeList = [name, email, textInputEmail, password, textInputPassword]
 
-    public void handleEvent(String name, String email, String password, TextInputLayout textInputEmail, TextInputLayout textInputPassword) {
+        //Getting necessary variables
+        String name = ((TextInputEditText) super.attributeList.get(0)).getText().toString().trim();
+        String email = ((TextInputEditText) super.attributeList.get(1)).getText().toString().trim();
+        TextInputLayout textInputEmail = (TextInputLayout) super.attributeList.get(2);
+        String password = ((TextInputEditText) super.attributeList.get(3)).getText().toString().trim();
+        TextInputLayout textInputPassword = (TextInputLayout) super.attributeList.get(4);
+
+        final String TAG = "CreateUser";
+
 
 
         if (FormatChecker.isValidEmail(email, textInputEmail) && FormatChecker.isValidPassword(password, textInputPassword)) {
@@ -72,7 +54,7 @@ public class CreateUser extends CreateNewAccount {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Account account = new Account(name, email, null);
-                            //Testing
+                                //Testing
                                 Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "a", "Punggol", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
                                 Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "b", "Admiralty", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
                                 Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "c", "Bishan", "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
@@ -86,11 +68,11 @@ public class CreateUser extends CreateNewAccount {
 
                                 account.setFullRestaurantList(restaurantArrayList);
                                 account.setRecommendedList(restaurantArrayList);
-                            //Testing ends
+                                //Testing ends
 
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                mDataBase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
-                                mDataBase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+                                mDatabase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task1) {
                                         if (task1.isSuccessful()){
@@ -109,7 +91,6 @@ public class CreateUser extends CreateNewAccount {
                                                     }
                                                 }
                                             });
-                                            //Toast.makeText(CreateNewAccount.this, "Account added successfully", Toast.LENGTH_SHORT).show();
                                         }
                                         else{
                                             Toast.makeText(context, "Failed to create an account 1", Toast.LENGTH_SHORT).show();
@@ -126,14 +107,14 @@ public class CreateUser extends CreateNewAccount {
                                     }
                                 });
 
-                                //startActivity(new Intent(CreateNewAccount.this, MainActivity.class));
                             } else { //when user account was already created before
                                 Toast.makeText(context, "Failed to create an account 2", Toast.LENGTH_LONG).show();
-                                //Toast.makeText(CreateNewAccount.this, "Registration Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                     });
         }
+
+
     }
 }

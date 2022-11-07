@@ -34,6 +34,7 @@ public class SortingListModel extends Model{
 
         SortingCriteria sortingCriteria = (SortingCriteria) super.attributeList.get(0);
         ArrayList<Restaurant> recommendedList = (ArrayList<Restaurant>) super.attributeList.get(1);
+        System.out.println("Address of recommendedList: "+recommendedList);
         System.out.println("\nRecommendedList size before: "+ recommendedList.size());
         sortingCriteria.sort(recommendedList);
         System.out.println("\nRecommendedList size after: "+ recommendedList.size());

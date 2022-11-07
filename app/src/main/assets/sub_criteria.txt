@@ -1,0 +1,9 @@
+0=None
+1=Halal
+2=Vegetarian
+3=Both
+NEXT
+0=15 minutes
+1=30 minutes
+2=45 minutes
+3=60 minutes
