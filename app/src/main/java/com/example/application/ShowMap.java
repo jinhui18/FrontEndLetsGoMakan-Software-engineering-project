@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -43,11 +44,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
     private Button getRecommendations;
+    private Button testButton;
     private ImageView settings;
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
@@ -89,6 +101,9 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
         settings = (ImageView) findViewById(R.id.settings);
         settings.setOnClickListener(this);
+
+        testButton = (Button) findViewById(R.id.testButton);
+        testButton.setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +123,10 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             }
             case R.id.settings: {
                 startActivity(new Intent(this, Settings.class));
+            }
+            case R.id.testButton:{
+                String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=1.3420045%2C103.7118808&radius=1500&type=restaurant&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
+                new PlaceTask().execute(url);
             }
         }
     }
@@ -269,5 +288,82 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private class PlaceTask extends AsyncTask<String, String, String>
+    {
+        @Override
+        protected String doInBackground(String... strings) {
+            String data= null;
+            try{
+                data = downloadUrl(strings[0]);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            new GetPlaceIDs().execute(s);
+        }
+
+    }
+
+    private String downloadUrl(String s) throws IOException{
+        URL url = new URL(s);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.connect();
+        InputStream is = connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+        String line = "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while((line = bufferedReader.readLine())!= null){
+            stringBuilder.append(line);
+        }
+
+        String data = stringBuilder.toString();
+
+        bufferedReader.close();
+
+        return data;
+    }
+
+    private class GetPlaceIDs extends AsyncTask<String, Integer, ArrayList<String>>{
+
+        @Override
+        protected ArrayList<String> doInBackground(String... strings) {
+            ArrayList<String> placeIDs = new ArrayList<String>();
+            try {
+                JSONObject nearbySearchResult = new JSONObject(strings[0]);
+                JSONArray resultsArray = nearbySearchResult.getJSONArray("results");
+
+                for (int i = 0; i< resultsArray.length();i++) {
+                    placeIDs.add(resultsArray.getJSONObject(i).getString("place_id"));
+                }
+
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+
+            return placeIDs;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            for (int i = 0; i<strings.size(); i++)
+                new GetPlaceDetails().execute(strings.get(i));
+        }
+    }
+
+    private class GetPlaceDetails extends AsyncTask<String, Integer, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+
+            return null;
+        }
     }
 }
