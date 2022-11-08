@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         holder.textView_restaurant_address1.setText(restaurant.getAddress());
 
         holder.textView_restaurant_time1.setText(( restaurant.getTravellingTime() + " mins") );
-
+        holder.ratingBar.setRating(restaurant.getRatings());
         Picasso.get()
                 .load(restaurant.getImage())
                 .fit()
@@ -66,6 +67,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
                 intent.putExtra("restaurant_travelling_time", restaurant.getTravellingTime());
+                intent.putExtra("ratings", restaurant.getRatings());
                 context.startActivity(intent);
 
             }
@@ -83,6 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
         private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1;
         private ImageView imageView_bg1,imageView_restaurant1;
+        private RatingBar ratingBar;
         String restaurant_url;
         CardView cardView;
 
@@ -95,6 +98,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             imageView_bg1 = itemView.findViewById(R.id.imageView_bg1);
             imageView_restaurant1 = itemView.findViewById(R.id.imageView_restaurant1);
             cardView = itemView.findViewById(R.id.cardView);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
         }
 
     }
