@@ -11,26 +11,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ChangePreferencesModel extends Model {
+public class InputPreferencesModel extends Model{
 
-    public ChangePreferencesModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
+    public InputPreferencesModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }
-
     @Override
-    public void service() {
-        //Get newly changed profile
-        Profile changedProfile = (Profile) super.attributeList.get(0);
-
-        //Get UserID
-        String userID = mAuth.getCurrentUser().getUid();
+    public void service(){
+        //Get current profile
+        Profile currentProfile = new Profile();
+        String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
         //Getting Account object
         final ArrayList<Account> arrayList = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -44,15 +43,16 @@ public class ChangePreferencesModel extends Model {
                         }
                         System.out.println("Size of arrayList 000 :" + arrayList.size());
                         Account userAccount = arrayList.get(0);
-                        userAccount.setProfile(changedProfile); //add changedProfile to account object
+                        userAccount.setProfile(currentProfile); //addCurrentProfile to account object
 
                         //add entire account object
                         mDatabase.child(userID).child("Account").setValue(userAccount).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
-                                Toast.makeText(context, "Profile has been changed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Profile has been created", Toast.LENGTH_SHORT).show();
 
+                                //startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
                             } else {
-                                Toast.makeText(context, "Failed to change profile", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Failed to create profile", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -63,27 +63,5 @@ public class ChangePreferencesModel extends Model {
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
+    };
 }
-
-//NOTE: There is no observer pattern for this
-    /*
-Map<String, Object> map = new HashMap<>();
-        map.put("Profile", changedProfile);
-                //Update database (This means update "Profile" key in "Account" child)
-                mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-@Override
-public void onComplete(@NonNull Task<Void> task) {
-        Toast.makeText(context, "Preferences updated!", Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(context, LoginUI.class); //Change to HomePage class
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
-        }
-        }).addOnFailureListener(new OnFailureListener() {
-@Override
-public void onFailure(@NonNull Exception e) {
-        Toast.makeText(context, "Failed to change preferences", Toast.LENGTH_SHORT).show();
-        }
-        });
-
-     */

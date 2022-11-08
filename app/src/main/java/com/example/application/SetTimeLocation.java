@@ -2,10 +2,12 @@ package com.example.application;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
@@ -52,12 +61,16 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    private String placeID, coordinates;
+    private String coordinates;
     private String userID;
 
     private int hour,minute;
 
-    private boolean useCurLoc, useCurTime, choseLoc, choseTime;
+    private boolean useCurLoc, useCurTime, choseOneLoc, choseTime, choseLoc;
+
+    private String userLocation;
+
+    private LocationRequest locationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,44 +99,24 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         userID = mAuth.getCurrentUser().getUid();
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-        mDatabase.child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild("Chosen Location")){
-                    choseLoc = true;
-                }
-                else if(!snapshot.hasChild("Chosen Location")){
-                    choseLoc = false;
-                }
-                if(snapshot.hasChild("Chosen Time")){
-                    choseTime = true;
-                }
-                else if(snapshot.hasChild("Chosen Time")){
-                    choseTime = false;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-        /*mDatabase.child(userID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    if(task.getResult().exists()){
-                        DataSnapshot dataSnapshot = task.getResult();
-                        String useCurLoc = String.valueOf(dataSnapshot.child("Use Current Location"));
-                        String useCurTime = String.valueOf(dataSnapshot.child("Use Current Time"));
-                    }
-                }
-            }
-        });*/
 
         // this function sets the back button on top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDatabase.child(userID).child("Use Current Location").setValue(false);
-        mDatabase.child(userID).child("Use Current Time").setValue(false);
+        mDatabase.child(userID).child("Account").child("Use Current Location").setValue(false);
+        mDatabase.child(userID).child("Account").child("Use Current Time").setValue(false);
+
+        locationRequest = com.google.android.gms.location.LocationRequest.create();
+        locationRequest.setPriority(com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(2000);
+
+        useCurLoc = false;
+        useCurTime = false;
+        choseOneLoc = false;
+        choseTime = false;
+        choseLoc = false;
+
         getLocation();
 
         useCurrentLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -132,12 +125,12 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if (isChecked){
                     textInputLocation.setEnabled(false);
                     useCurLoc = true;
-                    mDatabase.child(userID).child("Use Current Location").setValue(true);
+                    mDatabase.child(userID).child("Account").child("Use Current Location").setValue(true);
                 }
                 else{
                     textInputLocation.setEnabled(true);
                     useCurLoc = false;
-                    mDatabase.child(userID).child("Use Current Location").setValue(false);
+                    mDatabase.child(userID).child("Account").child("Use Current Location").setValue(false);
                 }
             }
         });
@@ -148,13 +141,12 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if (isChecked){
                     changeTimeButton.setEnabled(false);
                     useCurTime = true;
-                    mDatabase.child(userID).child("Use Current Time").setValue(true);
-                    getCurrentTime();
+                    mDatabase.child(userID).child("Account").child("Use Current Time").setValue(true);
                 }
                 else{
                     changeTimeButton.setEnabled(true);
                     useCurTime = false;
-                    mDatabase.child(userID).child("Use Current Time").setValue(false);
+                    mDatabase.child(userID).child("Account").child("Use Current Time").setValue(false);
                 }
             }
         });
@@ -162,11 +154,17 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if((useCurLoc == true) || choseLoc == true){
-            Toast.makeText(SetTimeLocation.this, "location selected", Toast.LENGTH_SHORT).show();
-            if((useCurTime == true) || choseTime == true){
-                Toast.makeText(SetTimeLocation.this, "Time selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SetTimeLocation.this, ShowMap.class));
+        if(useCurLoc || choseLoc){
+            Toast.makeText(this, "chose a location", Toast.LENGTH_SHORT).show();
+            if(useCurLoc){
+                getDeviceLocation();
+                Toast.makeText(this, "current", Toast.LENGTH_SHORT).show();
+            }
+            if(useCurTime || choseTime){
+                if(useCurTime){
+                    getCurrentTime();
+                }
+                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
             }
             else{
                 showTimeDialog();
@@ -175,6 +173,52 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         else{
             showLocDialog();
         }
+        /*if(useCurLoc || choseLoc){
+            Toast.makeText(this, "chose a location", Toast.LENGTH_SHORT).show();
+            if(useCurTime || choseTime) {
+                if (useCurLoc) {
+                    getDeviceLocation();
+                    Toast.makeText(this, "current", Toast.LENGTH_SHORT).show();
+                } else {
+                    getLocation();
+                    Toast.makeText(this, "chose", Toast.LENGTH_SHORT).show();
+                }
+                if (useCurTime){
+                    getCurrentTime();
+                }
+                Toast.makeText(this, "chose a time", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
+            }
+            showTimeDialog();
+        }
+        else{
+            showLocDialog();}*/
+
+
+        /*if(useCurLoc || choseLoc){
+            Toast.makeText(this, "chose a location", Toast.LENGTH_SHORT).show();
+            if(useCurLoc){
+                getDeviceLocation();
+                Toast.makeText(SetTimeLocation.this, "current location selected", Toast.LENGTH_SHORT).show();
+            }
+            else if(choseLoc){
+                getLocation();
+                Toast.makeText(SetTimeLocation.this, "chosen location selected", Toast.LENGTH_SHORT).show();
+            }
+            if((useCurTime) || choseTime){
+                if(useCurTime){
+                    getCurrentTime();
+                }
+                Toast.makeText(SetTimeLocation.this, "Time selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));//change to displayrestaurantslist
+            }
+            else{
+                showTimeDialog();
+            }
+        }
+        else{
+            showLocDialog();
+        }*/
     }
 
     public void getLocation(){
@@ -195,7 +239,8 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 coordinates = String.valueOf(place.getLatLng());
-                mDatabase.child(userID).child("Chosen Location").setValue(coordinates);
+                mDatabase.child(userID).child("Account").child("Chosen Location").setValue(coordinates);
+                choseLoc = true;
             }
 
             @Override
@@ -214,11 +259,12 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 minute = selectedMinute;
                 changeTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
                 if(minute<10){
-                    mDatabase.child(userID).child("Chosen Time").setValue(hour+":0"+minute);
+                    mDatabase.child(userID).child("Account").child("Chosen Time").setValue(hour+":0"+minute);
                 }
                 else {
-                    mDatabase.child(userID).child("Chosen Time").setValue(hour + ":" + minute);
+                    mDatabase.child(userID).child("Account").child("Chosen Time").setValue(hour + ":" + minute);
                 }
+                choseTime = true;
             }
         };
         int style = AlertDialog.THEME_HOLO_DARK;
@@ -230,7 +276,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     public void getCurrentTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
         String currentDateAndTime = sdf.format(new Date());
-        mDatabase.child(userID).child("Current Time").setValue(currentDateAndTime);
+        mDatabase.child(userID).child("Account").child("Current Time").setValue(currentDateAndTime);
     }
 
     private void showTimeDialog(){
@@ -251,5 +297,34 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
             dialog.cancel();
         });
         builder2.show();
+    }
+
+    private void getDeviceLocation(){
+        try{
+            LocationServices.getFusedLocationProviderClient(SetTimeLocation.this).requestLocationUpdates(locationRequest, new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                    LocationServices.getFusedLocationProviderClient(SetTimeLocation.this).removeLocationUpdates(this);
+
+                    if(locationResult != null && locationResult.getLocations().size() > 0)
+                    {
+                        Toast.makeText(SetTimeLocation.this, "got current location!", Toast.LENGTH_SHORT).show();
+                        int index1 = locationResult.getLocations().size() - 1;
+                        double latitude = locationResult.getLocations().get(index1).getLatitude();
+                        double longitude = locationResult.getLocations().get(index1).getLongitude();
+                        userLocation = "lat/lng: ("+latitude+", "+longitude+")";
+                        mDatabase.child(userID).child("Account").child("Current Location").setValue(userLocation);
+                    }
+                    else{
+                        Log.d(TAG, "Location permission not granted... Exiting the app");
+                        finish();
+                        startActivity(getIntent());
+                    }
+                }
+            }, Looper.getMainLooper());
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
     }
 }

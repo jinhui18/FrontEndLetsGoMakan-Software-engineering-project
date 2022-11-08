@@ -28,9 +28,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         this.arrayList = arrayList;
     }
 
-
-
-
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,6 +61,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_url", restaurant.getImage());
                 intent.putExtra("restaurant_name", restaurant.getName());
                 intent.putExtra("restaurant_address", restaurant.getAddress());
+                intent.putExtra("restaurant_latitude", restaurant.getLatitude());
+                intent.putExtra("restaurant_longitude", restaurant.getLongitude());
                 intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
                 intent.putExtra("restaurant_travelling_time", restaurant.getTravellingTime());

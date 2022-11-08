@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.view.LoginUI;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class CreateNewAccountVerifyEmail extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class CreateNewAccountVerifyEmail extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(CreateNewAccountVerifyEmail.this, LoginUI.class));
             }
         });

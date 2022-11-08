@@ -1,31 +1,37 @@
 package com.example.application;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Filter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.control.filtering.FilteringStoreFactory;
 import com.example.application.backend.control.others.FirebaseRetrieval;
-import com.example.application.backend.control.sorting.CrowdLevel;
 import com.example.application.backend.control.sorting.SortingCriteria;
 import com.example.application.backend.control.sorting.SortingStoreFactory;
-import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
-import com.example.application.controller.Controller;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
 import com.example.application.model.SortingListModel;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,17 +42,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-public class DisplayRestaurantsList extends AppCompatActivity implements Observer {
+public class DisplayRestaurantsList extends AppCompatActivity implements Observer, OnMapReadyCallback {
     //Widgets and associated stuff
     //private TextView textView;
-    private Button button, buttonSortBy, buttonFilterBy;
+    private Button buttonSortBy, buttonFilterBy;
     private RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     MyAdapter myAdapter;
@@ -66,16 +71,21 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     String[] sortingCriteriaArray;
     int singlePosition = 2; //default sorting selection is travelling time (index 2)
 
-
     //Firebase
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-                                                                String userID; //For testing purposes
+    String userID;
 
     //MVC related
     Model filteringListModel;
     Model sortingListModel;
+
+    //map related
+    GoogleMap gMap;
+    private LocationRequest locationRequest;
+    private static final int DEFAULT_ZOOM = 15;
+    boolean useCurLoc;
 
     // store data store configuration
     private final static Map<String, String> sortingConfiguration = new HashMap<String, String>();
@@ -92,9 +102,21 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
         //Firebase (has to come first)
         mAuth = FirebaseAuth.getInstance();
-        //userID = firebaseAuth.getCurrentUser().getUid();
-                                                                userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//For testing purposes
+        userID = mAuth.getCurrentUser().getUid();
+                                                                //userID = "ytqpxJbhKISbEHjoFMqyd6G1j412";//For testing purposes
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+
+        // this function sets the back button on top of the screen
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //map related
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapRestaurantList);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(2000);
 
         //MVC Stuff and Observer Pattern
         sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
@@ -105,8 +127,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //Widgets and Associated stuff
         buttonSortBy = findViewById(R.id.buttonSortBy);
         buttonFilterBy = findViewById(R.id.buttonFilterBy);
-        button = findViewById(R.id.button6);//For testing purposes
-
 
         //SortingCriteria dropdown
         buttonSortBy.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +144,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             }
         });
 
-
         //Restaurant list stuff
         recyclerView = findViewById(R.id.recycler_id);
         selectedFilteringCriteria = new boolean[filteringCriteriaArray.length];
@@ -134,20 +153,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         myAdapter = new MyAdapter(DisplayRestaurantsList.this,null);
         recyclerView.setAdapter(myAdapter);
 
-/*
-        //First time display (involves default filtering and sorting)
-            //Filter first then sort
-        ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
-        ArrayList<Object> initialFilteringList = new ArrayList<>();
-
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
-        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
-
-
-        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
-
- */
         SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
         ArrayList<Object> sortingList = new ArrayList<Object>();
         sortingList.add(sortingCriteria);
@@ -173,35 +178,104 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
 
         //for future filtering binaries, null criteria must be considered in .filter() function
-
-
     }
 
-    public void defaultFilterAndSort(){
-        //Update profileSubCriteriaChoice with user's profile info
-        //Calls firebaseRetrieval methods to filter and sort
-        ArrayList<Restaurant> arrayList = new ArrayList<>();
-        myAdapter.setArrayList(arrayList);
-        mDatabase.child(userID).child("Account").child("recommendedList")
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        gMap = googleMap;
+        getUserLocation();
+        showOnMap();
+    }
+
+    public void getUserLocation() {
+        mDatabase.child(userID).child("Account").child("Use Current Location")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                        for (DataSnapshot child : children) {
-                            Restaurant restaurant = child.getValue(Restaurant.class);
-                            arrayList.add(restaurant);
-                            System.out.println("Size here: "+ arrayList.size());
-                        }
-                        myAdapter.notifyDataSetChanged();
-                        return;
+                        useCurLoc = snapshot.getValue(boolean.class);
+                        showLocation(useCurLoc);
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-        return;
+    }
+
+    public void showLocation(boolean useCurLoc) {
+        if (useCurLoc == true) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                showAlertDialog();
+                return;
+            }
+            gMap.setMyLocationEnabled(true);
+
+            mDatabase.child(userID).child("Account").child("Current Location")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String data = snapshot.getValue(String.class);
+                            double latitude = Double.parseDouble(data.substring(data.indexOf("(") + 1, data.indexOf(",")));
+                            double longitude = Double.parseDouble(data.substring(data.indexOf(",") + 1, data.indexOf(")")));
+                            LatLng location = new LatLng(latitude, longitude);
+                            gMap.setMyLocationEnabled(true);
+                            gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    location, DEFAULT_ZOOM));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            mDatabase.child(userID).child("Account").child("Chosen Location")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String data = snapshot.getValue(String.class);
+                            double latitude = Double.parseDouble(data.substring(data.indexOf("(") + 1, data.indexOf(",")));
+                            double longitude = Double.parseDouble(data.substring(data.indexOf(",") + 1, data.indexOf(")")));
+                            LatLng location = new LatLng(latitude, longitude);
+                            gMap.setMyLocationEnabled(true);
+                            gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                            gMap.addMarker(new MarkerOptions().position(location).title("Chosen Location"));
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    location, DEFAULT_ZOOM));
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    public void showOnMap() {
+        double latitude = 1.347078972102637;
+        double longitude = 103.68033412545849;
+        LatLng location = new LatLng(latitude, longitude);
+        LatLng location2 = new LatLng(1.34729,103.68080);
+        LatLng location3 = new LatLng(1.34268, 103.68240);
+        gMap.addMarker(new MarkerOptions().position(location).title("McDonald's"));
+        gMap.addMarker(new MarkerOptions().position(location2).title("KFC"));
+        gMap.addMarker(new MarkerOptions().position(location3).title("South Spine Fine Foods"));
+    }
+
+    public void showAlertDialog(){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DisplayRestaurantsList.this);
+        builder.setTitle("Need Location Permission!");
+        builder.setMessage("This app needs location permission. Close the app and allow location permission in phone settings.");
+        builder.setPositiveButton("Close App", (dialog, which) -> {
+            dialog.cancel();
+            finishAffinity();
+        });
+        final android.app.AlertDialog permissionAlert = builder.create();
+        permissionAlert.show();
     }
 
     public void retrieveAndDisplay(){
@@ -451,6 +525,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 selectedSubCriteria[filteringCriteriaIndex] = subCriteriaList[subCriteriaPosition];
+                profileSubCriteriaChoice[filteringCriteriaIndex] = subCriteriaPosition;
                 for (int k=0; k<2; k++){
                     System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
                 }
@@ -475,8 +550,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         AlertDialog mDialog = builder.create();
         mDialog.show();
     } //end of function
-
-
 } //end of class
 
 
@@ -492,5 +565,19 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     for (int k=0; k<2; k++)
         System.out.println("boolean array: "+selectedFilteringCriteria[k]);
         }
+
+ */
+/*
+        //First time display (involves default filtering and sorting)
+            //Filter first then sort
+        ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
+        ArrayList<Object> initialFilteringList = new ArrayList<>();
+
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
+        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
+        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
+
+
+        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
 
  */

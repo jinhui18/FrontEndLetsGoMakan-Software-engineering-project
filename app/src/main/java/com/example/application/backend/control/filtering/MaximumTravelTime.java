@@ -20,7 +20,7 @@ public class MaximumTravelTime extends FilteringCriteria{
         else if (travelTimeString.compareTo("60 minutes")==0) maxTravelTime=60;
 
         for (int i=0; i<restaurantList.size(); i++) {
-            if (restaurantList.get(i).getTravellingTime()<=maxTravelTime) {
+            if (restaurantList.get(i).getTravellingTime()<=maxTravelTime && restaurantList.get(i).getTravellingTime()>=0) {
                 filteredList.add(restaurantList.get(i));
             }
         }

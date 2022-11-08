@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.view.LoginUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -63,7 +62,8 @@ public class ResetPassword extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(ResetPassword.this, "Please check your email to reset your password", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ResetPassword.this, LoginUI.class  );
+                            Intent intent = new Intent(ResetPassword.this, ResetPasswordLinkSent.class  );
+                            intent.putExtra("email", email.getText().toString());
                             startActivity(intent);
                         }
                     }
@@ -71,7 +71,7 @@ public class ResetPassword extends AppCompatActivity {
                 ).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ResetPassword.this, "Log in error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPassword.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
