@@ -173,52 +173,6 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         else{
             showLocDialog();
         }
-        /*if(useCurLoc || choseLoc){
-            Toast.makeText(this, "chose a location", Toast.LENGTH_SHORT).show();
-            if(useCurTime || choseTime) {
-                if (useCurLoc) {
-                    getDeviceLocation();
-                    Toast.makeText(this, "current", Toast.LENGTH_SHORT).show();
-                } else {
-                    getLocation();
-                    Toast.makeText(this, "chose", Toast.LENGTH_SHORT).show();
-                }
-                if (useCurTime){
-                    getCurrentTime();
-                }
-                Toast.makeText(this, "chose a time", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
-            }
-            showTimeDialog();
-        }
-        else{
-            showLocDialog();}*/
-
-
-        /*if(useCurLoc || choseLoc){
-            Toast.makeText(this, "chose a location", Toast.LENGTH_SHORT).show();
-            if(useCurLoc){
-                getDeviceLocation();
-                Toast.makeText(SetTimeLocation.this, "current location selected", Toast.LENGTH_SHORT).show();
-            }
-            else if(choseLoc){
-                getLocation();
-                Toast.makeText(SetTimeLocation.this, "chosen location selected", Toast.LENGTH_SHORT).show();
-            }
-            if((useCurTime) || choseTime){
-                if(useCurTime){
-                    getCurrentTime();
-                }
-                Toast.makeText(SetTimeLocation.this, "Time selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));//change to displayrestaurantslist
-            }
-            else{
-                showTimeDialog();
-            }
-        }
-        else{
-            showLocDialog();
-        }*/
     }
 
     public void getLocation(){
