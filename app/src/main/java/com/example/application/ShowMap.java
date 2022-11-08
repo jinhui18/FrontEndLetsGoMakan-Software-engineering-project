@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.application.backend.control.others.AsyncResponse;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationCallback;
@@ -40,10 +41,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -62,7 +59,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+
+public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback, AsyncResponse {
 
     private Button getRecommendations;
     private Button testButton;
@@ -79,6 +81,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     private GoogleMap gMap;
 
     ArrayList<String> userLocation = new ArrayList<>();
+    ArrayList<JSONObject>restaurantDetails = new ArrayList<JSONObject>();
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -133,6 +136,16 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             case R.id.testButton:{
                 String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=1.3420045%2C103.7118808&radius=1500&type=restaurant&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
                 new PlaceTask().execute(url);
+
+                try{
+                    for (int i = 0; i < restaurantDetails.size(); i++)
+                    {
+                        System.out.println("Name: " + restaurantDetails.get(i).getString("name"));
+                        System.out.println("Address: " + restaurantDetails.get(i).getString("formatted_address"));
+                        System.out.println("Ratings: " + restaurantDetails.get(i).getString("rating") + "\n");
+                        System.out.println(restaurantDetails.get(i).toString() + "\n");
+                    }
+                }catch(JSONException e){e.printStackTrace();}
             }
         }
     }
@@ -296,14 +309,32 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         alert.show();
     }
 
-    private class PlaceTask extends AsyncTask<String, String, String>
-    {
+    @Override
+    public void processFinish(ArrayList<JSONObject> output) {restaurantDetails = output;}
+
+    public class PlaceTask extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            String data= null;
-            try{
-                data = downloadUrl(strings[0]);
-            }catch (IOException e){
+
+            String data = null;
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream is = connection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+                String line = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+
+                data = stringBuilder.toString();
+
+                bufferedReader.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -314,81 +345,72 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         protected void onPostExecute(String s) {
             new GetPlaceIDs().execute(s);
         }
-
     }
 
-    private String downloadUrl(String s) throws IOException{
-        URL url = new URL(s);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
-        InputStream is = connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-
-        String line = "";
-        StringBuilder stringBuilder = new StringBuilder();
-
-        while((line = bufferedReader.readLine())!= null){
-            stringBuilder.append(line);
-        }
-
-        String data = stringBuilder.toString();
-
-        bufferedReader.close();
-
-        return data;
-    }
-
-    private class GetPlaceIDs extends AsyncTask<String, Integer, ArrayList<String>>{
+    public class GetPlaceIDs extends AsyncTask<String, String, ArrayList<String>> {
 
         @Override
         protected ArrayList<String> doInBackground(String... strings) {
-            ArrayList<String> placeIDs = new ArrayList<String>();
+            ArrayList<String> placeIDList = new ArrayList<String>();
             try {
                 JSONObject nearbySearchResult = new JSONObject(strings[0]);
                 JSONArray resultsArray = nearbySearchResult.getJSONArray("results");
-
-                for (int i = 0; i< resultsArray.length();i++) {
-                    placeIDs.add(resultsArray.getJSONObject(i).getString("place_id"));
+                for (int i = 0; i < resultsArray.length(); i++) {
+                    placeIDList.add(resultsArray.getJSONObject(i).getString("place_id"));
                 }
-
-            } catch(JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            return placeIDs;
+            return placeIDList;
         }
 
-        @Override
+
         protected void onPostExecute(ArrayList<String> strings) {
-            new GetPlaceDetails().execute(strings.get(0));
+            new aGetPlaceDetails().execute(strings);
+            /*GetPlaceDetails(strings);*/
         }
     }
 
+    public class aGetPlaceDetails extends AsyncTask<ArrayList<String>, String, ArrayList<JSONObject>> {
 
-    private class GetPlaceDetails extends AsyncTask<String, Integer, String>{
+        AsyncResponse delegate = ShowMap.this;
+
         @Override
-        protected String doInBackground(String... strings) {
-            String placeID = strings[0];
+        protected ArrayList<JSONObject> doInBackground(ArrayList<String>... arrayLists) {
+            ArrayList<String> placeIDs = arrayLists[0];
+            ArrayList<JSONObject> result = new ArrayList<JSONObject>();
 
-            List<Place.Field> placeFields = Arrays.asList(Place.Field.ADDRESS);
-            FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeID, placeFields);
-            PlacesClient placesClient = Places.createClient(ShowMap.this);
-            placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
-                Place place = response.getPlace();
-                Log.i(TAG, "Place found: " + place.getName());
-                Toast.makeText(ShowMap.this, place.getAddress(), Toast.LENGTH_LONG).show();
-            }).addOnFailureListener((exception) -> {
-                if (exception instanceof ApiException) {
-                    final ApiException apiException = (ApiException) exception;
-                    Log.e(TAG, "Place not found: " + exception.getMessage());
-                    final int statusCode = apiException.getStatusCode();
-                    // TODO: Handle error with given status code.
+            for (int i = 0; i < placeIDs.size(); i++) {
+                String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeIDs.get(i) +
+                        "&fields=name%2Crating%2Cformatted_address&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
+
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                MediaType mediaType = MediaType.parse("text/plain");
+
+
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+                try {
+                    ResponseBody response = client.newCall(request).execute().body();
+                    JSONObject responseObject = new JSONObject(response.string());
+                    JSONObject resultObject = responseObject.getJSONObject("result");
+                    result.add(resultObject);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
 
+            return result;
+        }
 
-
-            return null;
+        @Override
+        protected void onPostExecute(ArrayList<JSONObject> jsonObjects) {
+            delegate.processFinish(jsonObjects);
         }
     }
 }
