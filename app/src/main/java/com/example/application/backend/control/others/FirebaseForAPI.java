@@ -128,8 +128,8 @@ public class FirebaseForAPI implements AsyncResponse{
                             location = new LatLng(latitude, longitude);
                         } else {
                             String locdata = arrayList.get(0).getChosenLocation();
-                            double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
-                            double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
+                            Double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
+                            Double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
                             location = new LatLng(latitude, longitude);
                         }
                     }

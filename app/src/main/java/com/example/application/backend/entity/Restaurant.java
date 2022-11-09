@@ -104,4 +104,7 @@ public class Restaurant {
         this.image = image;
     }
 
+    public boolean isOpenNow() { return openNow;}
+    public void setOpenNow(boolean openNow) {this.openNow = openNow;}
+
 }

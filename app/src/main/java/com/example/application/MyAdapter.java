@@ -63,7 +63,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_address", restaurant.getAddress());
                 intent.putExtra("restaurant_latitude", restaurant.getLatitude());
                 intent.putExtra("restaurant_longitude", restaurant.getLongitude());
-                intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
+                intent.putExtra("restaurant_opening_hours_time", restaurant.isOpenNow());
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
                 intent.putExtra("restaurant_travelling_time", restaurant.getTravellingTime());
                 context.startActivity(intent);

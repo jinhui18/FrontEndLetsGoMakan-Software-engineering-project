@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.backend.control.others.FirebaseForAPI;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -164,6 +165,8 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if(useCurTime){
                     getCurrentTime();
                 }
+                FirebaseForAPI FB = new FirebaseForAPI();
+                FB.getAPIData(mAuth,mDatabase,this);
                 startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
             }
             else{
