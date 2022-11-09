@@ -1,15 +1,8 @@
 package com.example.application.backend.entity;
 
 import com.example.application.backend.enums.PreferredModeOfTransport;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
 public class Profile {
-    /**
-     * A list of chosen dietary requirements of the user.
-     * See {@link TypesOfDietaryRequirements} for the different types of dietary requirements.
-     */
-    private TypesOfDietaryRequirements diet;
-
 
     private float maxTravel;
 
@@ -20,38 +13,20 @@ public class Profile {
     private PreferredModeOfTransport transportMode;
 
     public Profile() {
-        this.diet = diet;
         this.maxTravel = maxTravel;
         this.transportMode = transportMode;
     }
     /**
      * Class constructor.
      * Creates a new profile for the user.
-     * @param diet                This user's dietary requirements
      * @param maxTravel            This user's preferred maximum travelling time
      * @param transportMode        This user's preferred mode of transport
      */
-    public Profile(TypesOfDietaryRequirements diet, float maxTravel, PreferredModeOfTransport transportMode) {
-        this.diet = diet;
+    public Profile(float maxTravel, PreferredModeOfTransport transportMode) {
         this.maxTravel = maxTravel;
         this.transportMode = transportMode;
     }
 
-    /**
-     * Gets the list of dietary requirements of the user.
-     * @return	this user's list of dietary requirements
-     */
-    public TypesOfDietaryRequirements getDietaryRequirements() {
-        return diet;
-    }
-
-    /**
-     * Sets the list of dietary requirements of the user.
-     * @param diet	This user's list of dietary requirements
-     */
-    public void setDietaryRequirements(TypesOfDietaryRequirements diet) {
-        this.diet = diet;
-    }
 
     /**
      * Gets the preferred maximum travel time of the user.

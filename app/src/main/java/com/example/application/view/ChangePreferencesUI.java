@@ -1,19 +1,19 @@
 package com.example.application.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.example.application.backend.enums.PreferredModeOfTransport;
-import com.example.application.backend.entity.Profile;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.application.R;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
+import com.example.application.backend.entity.Profile;
+import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.controller.Controller;
-import com.example.application.model.*;
+import com.example.application.model.ChangePreferencesModel;
+import com.example.application.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class ChangePreferencesUI extends AppCompatActivity implements View.OnClickListener{
     //Widgets
     private Spinner transportMode;
-    private Spinner dietRequirement;
     private Spinner travelTime;
     private Button confirmChanges;
     //Firebase
@@ -41,7 +40,6 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
 
         //Instantiating widgets
         transportMode = findViewById(R.id.transportSpinner);
-        dietRequirement = findViewById(R.id.dietSpinner);
         travelTime = findViewById(R.id.travelSpinner);
         confirmChanges = (Button) findViewById(R.id.confirmChanges);
         confirmChanges.setOnClickListener(this);
@@ -51,9 +49,6 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         ArrayAdapter<CharSequence> travelAdapter = ArrayAdapter.createFromResource(this, R.array.travelTime, android.R.layout.simple_spinner_item);
         travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         travelTime.setAdapter(travelAdapter);
-        ArrayAdapter<CharSequence> dietAdapter = ArrayAdapter.createFromResource(this, R.array.diet, android.R.layout.simple_spinner_item);
-        dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        dietRequirement.setAdapter(dietAdapter);
 
         //Firebase
         mAuth = FirebaseAuth.getInstance();
@@ -79,7 +74,6 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
     private void createProfile() {
         String transport = transportMode.getSelectedItem().toString().trim();
         String travel = travelTime.getSelectedItem().toString().trim();
-        String diet = dietRequirement.getSelectedItem().toString().trim();
 
         switch (transport) {
             case "Walking":
@@ -105,21 +99,6 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
                 break;
             case "2 hours":
                 newProfile.setPreferredMaximumTravelTime(60);
-        }
-
-        switch (diet) {
-            case "None":
-                newProfile.setDietaryRequirements(TypesOfDietaryRequirements.NONE);
-                break;
-            case "Halal":
-                newProfile.setDietaryRequirements(TypesOfDietaryRequirements.HALAL);
-                break;
-            case "Vegetarian":
-                newProfile.setDietaryRequirements(TypesOfDietaryRequirements.VEGETARIAN);
-                break;
-            case "Both":
-                newProfile.setDietaryRequirements(TypesOfDietaryRequirements.BOTH);
-                break;
         }
     }
 }
