@@ -64,6 +64,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     int[] profileSubCriteriaChoice; //used to pre-select subCriteria option according to users' default/previous selection
     String[] selectedSubCriteria; //used to store the selected subcriteria for filtering Criteria
     int subCriteriaPosition;
+    int numberOfDefaultCriteria = 1; //number of default filtering criteria (This needs to be set
 
     //Sorting dropdown stuff
     boolean[] selectedSortingCriteria;
@@ -172,7 +173,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
         filteringList.add(sortingListModel);
         filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, subCriteria2D, filteringListModel);
+        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel);
 
         //add subcriteria2D in as well
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)

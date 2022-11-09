@@ -112,6 +112,7 @@ public class FirebaseRetrieval {
             ArrayList<Object> filteringList,
             int[] profileSubCriteriaChoice,
             String[] selectedSubCriteria,
+            int numberOfDefaultCriteria,
             ArrayList<Object> subCriteria2D,
             Model filteringListModel
     ) {
@@ -135,7 +136,6 @@ public class FirebaseRetrieval {
                         Profile userProfile = userAccount.getProfile();
                         //TypesOfDietaryRequirements defaultDietaryRequirement = userProfile.getDietaryRequirements();
                         float defaultMaxTravelTime = userProfile.getPreferredMaximumTravelTime();
-                        int numberOfDefaultCriteria = 1; //This has to be decided
 
                         //There are only x many default filtering criteria
                         for (int i=0; i<numberOfDefaultCriteria; i++){ //changed from 2 to size here
