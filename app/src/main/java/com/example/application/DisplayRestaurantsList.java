@@ -206,6 +206,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     public void showLocation(boolean useCurLoc) {
         if (useCurLoc == true) {
+            System.out.println("using current location");
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 showAlertDialog();
                 return;
@@ -233,6 +234,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         }
                     });
         } else {
+            System.out.println("use chosen location");
             mDatabase.child(userID).child("Account").child("Chosen Location")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("MissingPermission")
@@ -258,10 +260,14 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     public void showOnMap(ArrayList<Restaurant> restList) {
         //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter getApplicationContext());
+        System.out.println("size " + restList.size());
+
+
         for(int index = 0; index < restList.size(); index++){
+            System.out.println("index " + index);
             LatLng restaurant_location = new LatLng(restList.get(index).getLatitude(), restList.get(index).getLongitude());
             gMap.addMarker(new MarkerOptions().position(restaurant_location).title(restList.get(index).getName()));
-            gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList.get(index)));
+            //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList.get(index)));
         }
     }
 

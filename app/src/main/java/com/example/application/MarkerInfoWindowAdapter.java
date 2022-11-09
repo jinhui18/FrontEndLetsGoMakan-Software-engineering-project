@@ -38,13 +38,11 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         image = (ImageView) v.findViewById(R.id.restaurant_image);
 
-        image.setImageResource(R.drawable.grey_bg);
-
-        /*Picasso.get().setLoggingEnabled(true);
+        Picasso.get().setLoggingEnabled(true);
 
         Picasso.get()
-                .load("https://d1sag4ddilekf6.azureedge.net/compressed_webp/items/SGITE20221002161107023229/detail/8b678e1f_e512683802250.webp")
-                .into(image);*/
+                .load(restaurant.getImage())
+                .into(image);
 
         TextView restaurant_name = (TextView) v.findViewById(R.id.restaurant_name);
         restaurant_name.setText(restaurant.getName());
