@@ -1,7 +1,5 @@
 package com.example.application.backend.control.others;
 
-import static com.example.application.BuildConfig.MAPS_API_KEY;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -20,6 +18,9 @@ import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
 import com.example.application.model.Model;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -132,7 +134,6 @@ public class FirebaseForAPI implements AsyncResponse{
                         }
                     }
 
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
@@ -148,6 +149,20 @@ public class FirebaseForAPI implements AsyncResponse{
                 "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
         new PlaceTask().execute(url);
+        Map<String, Object> map = new HashMap<>();
+        map.put("fullRestaurantList", restaurantList);
+        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(context, "List created!", Toast.LENGTH_SHORT).show();
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failed to push list", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //AsyncTask Responses
