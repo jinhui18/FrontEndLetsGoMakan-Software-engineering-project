@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/whiteBox"
         android:layout_width="350dp"
-        android:layout_height="400dp"
+        android:layout_height="450dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/rounded_box"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,24 +18,35 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <Spinner
         android:id="@+id/transportSpinner"
         android:layout_width="295dp"
         android:layout_height="55dp"
-        android:layout_marginTop="60dp"
         android:background="#EAD6D6"
         android:contentDescription="@string/transport_mode"
         android:minHeight="48dp"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/travelSpinnerText"
+        app:layout_constraintBottom_toTopOf="@+id/dietSpinnerText"
+        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
+        app:layout_constraintStart_toStartOf="@+id/whiteBox"
+        app:layout_constraintTop_toTopOf="@+id/whiteBox"
+        tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
+
+    <Spinner
+        android:id="@+id/dietSpinner"
+        android:layout_width="295dp"
+        android:layout_height="55dp"
+        android:background="#EAD6D6"
+        android:contentDescription="@string/transport_mode"
+        android:minHeight="48dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/whiteBox"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/whiteBox"
-        app:layout_constraintTop_toTopOf="@+id/whiteBox"
-        app:layout_constraintVertical_bias="0.33"
-        tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/travelSpinner"
@@ -47,10 +58,10 @@
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="@+id/whiteBox"
         app:layout_constraintEnd_toEndOf="@+id/whiteBox"
-        app:layout_constraintHorizontal_bias="0.500"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/whiteBox"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.891" />
 
     <TextView
         android:id="@+id/transportSpinnerText"
@@ -66,20 +77,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/dietSpinnerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/dietary_requirements"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/dietSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.316"
+        app:layout_constraintStart_toStartOf="@+id/dietSpinner"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/travelSpinnerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/maximum_travel_time"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/travelSpinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintStart_toStartOf="@+id/dietSpinner"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 

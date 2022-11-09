@@ -66,34 +66,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView_bg1"
                 android:layout_alignEnd="@+id/imageView_bg1"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="31dp"
                 android:layout_marginEnd="10dp"
                 android:text="5 mins away" />
-
-            <TextView
-                android:id="@+id/textView_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/textView_restaurant_time1"
-                android:layout_alignTop="@+id/textView_restaurant_address1"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="22dp"
-                android:text="Ratings:" />
-
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="5"
-                android:layout_below="@+id/textView_rating"
-                android:layout_alignStart="@+id/textView_rating"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp" />
 
 
         </RelativeLayout>

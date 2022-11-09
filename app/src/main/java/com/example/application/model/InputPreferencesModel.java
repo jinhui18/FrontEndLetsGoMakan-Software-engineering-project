@@ -1,17 +1,12 @@
 package com.example.application.model;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.CreateNewAccountVerifyEmail;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
-import com.example.application.view.InputPreferencesUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,7 +50,7 @@ public class InputPreferencesModel extends Model{
                             if (task1.isSuccessful()) {
                                 Toast.makeText(context, "Profile has been created", Toast.LENGTH_SHORT).show();
 
-
+                                //startActivity(new Intent(InputPreferences.this, CreateNewAccountVerifyEmail.class));
                             } else {
                                 Toast.makeText(context, "Failed to create profile", Toast.LENGTH_SHORT).show();
                             }

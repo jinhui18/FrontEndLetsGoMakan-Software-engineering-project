@@ -9,10 +9,6 @@ public class Account {
         private Profile profile;
         private ArrayList<Restaurant> fullRestaurantList;
         private ArrayList<Restaurant> recommendedList;
-        private String chosenLocation;
-        private String currentLocation;
-        private boolean useCurrentLocation;
-        private boolean useCurrentTime;
 
         public Account(){}
         public Account(String name, String email, Profile profile) {
@@ -42,29 +38,5 @@ public class Account {
         public ArrayList<Restaurant> getRecommendedList(){return this.recommendedList;}
         public void setRecommendedList(ArrayList<Restaurant> recommendedList) {
             this.recommendedList = recommendedList;
-        }
-        public boolean getuseCurrentTime(){
-            return this.useCurrentTime;
-        }
-        public boolean getuseCurrentLocation(){
-            return this.useCurrentLocation;
-        }
-        public String getChosenLocation(){
-            return this.chosenLocation;
-        }
-        public String getCurrentLocation(){
-            return this.currentLocation;
-        }
-        public void setChosenLocation(String chosenLocation){
-            this.chosenLocation = chosenLocation ;
-        }
-        public void setCurrentLocation(String currentLocation){
-            this.currentLocation = currentLocation;
-        }
-        public void setUseCurrentLocation(boolean useCurrentLocation){
-            this.useCurrentLocation = useCurrentLocation;
-        }
-        public void setUseCurrentTime(boolean useCurrentTime){
-            this.useCurrentTime = useCurrentTime;
         }
 }

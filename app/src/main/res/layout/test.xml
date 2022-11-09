@@ -1,113 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#F8EFE4"
-    tools:context=".view.InputPreferencesUI">
+    tools:context=".view.LoginUI">
 
     <ImageView
-        android:id="@+id/whiteBox"
-        android:layout_width="350dp"
-        android:layout_height="400dp"
-        android:contentDescription="@string/todo"
-        android:src="@drawable/rounded_box"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageView1"
+        android:layout_width="233dp"
+        android:layout_height="202dp"
+        android:layout_marginTop="112dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <Spinner
-        android:id="@+id/transportSpinner"
-        android:layout_width="295dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="60dp"
-        android:background="#EAD6D6"
-        android:contentDescription="@string/transport_mode"
-        android:minHeight="48dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/travelSpinnerText"
-        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="@+id/whiteBox"
-        app:layout_constraintTop_toTopOf="@+id/whiteBox"
-        app:layout_constraintVertical_bias="0.33"
-        tools:ignore="DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
-
-    <Spinner
-        android:id="@+id/travelSpinner"
-        android:layout_width="295dp"
-        android:layout_height="55dp"
-        android:background="#EAD6D6"
-        android:contentDescription="@string/transport_mode"
-        android:minHeight="48dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/whiteBox"
-        app:layout_constraintEnd_toEndOf="@+id/whiteBox"
-        app:layout_constraintHorizontal_bias="0.500"
-        app:layout_constraintStart_toStartOf="@+id/whiteBox"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:srcCompat="@drawable/mail_plane" />
 
     <TextView
-        android:id="@+id/transportSpinnerText"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/mode_of_transport"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/transportSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-
-    <TextView
-        android:id="@+id/travelSpinnerText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/maximum_travel_time"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/travelSpinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/createPreferences"
-        android:layout_width="295dp"
-        android:layout_height="62dp"
-        android:text="@string/create_account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.919" />
-
-    <TextView
-        android:id="@+id/setProfileText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginTop="292dp"
         android:gravity="center"
-        android:text="@string/setting_up_new_profile"
-        android:textColor="#000000"
-        android:textSize="34sp"
+        android:text="Reset Password"
+        android:textColor="@color/black"
+        android:textSize="32dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/whiteBox"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="340dp"
+        android:gravity="center"
+        android:text="Type your email address"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/bg_homepage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Email"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:srcCompat="@drawable/rectangle_box" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutEmailAddress"
+        android:layout_width="270dp"
+        android:layout_height="85dp"
+
+        android:layout_marginTop="80dp"
+        android:orientation="vertical"
+        app:boxBackgroundMode="none"
+        app:errorContentDescription="hello"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextInputEditEmail"
+            android:layout_width="270dp"
+            android:layout_height="53dp"
+            android:layout_marginLeft="0dp"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonSendOTP"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="168dp"
+        android:backgroundTint="#DDDDDD"
+        android:text="Send reset password link"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
