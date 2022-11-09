@@ -10,13 +10,13 @@ public class StuffParser {
     }
     public String convertToLower(PreferredModeOfTransport obj){
         if(obj == PreferredModeOfTransport.PUBLIC_TRANSPORT) return "pt";
-        else if(obj == PreferredModeOfTransport.CAR) return "car";
-        else return "walking";
+        else if(obj == PreferredModeOfTransport.CAR) return "drive";
+        else return "walk";
     }
     public int getCrowdLevelFromPT(String pt){
-        if (pt == "Usually not too busy" || pt == "Usually not busy") return 1;
-        else if (pt == "Usually a little busy") return 2;
-        else if (pt == "Usually as busy as it gets") return 3;
+        if (pt.equals("Usually not too busy") || pt.equals("Usually not busy")) return 1;
+        else if (pt.equals("Usually a little busy")) return 2;
+        else if (pt.equals("Usually as busy as it gets")) return 3;
         else return 0;
     }
 }

@@ -55,7 +55,24 @@ public class StoreAccountModel extends Model{
                             if (task.isSuccessful()) {
                                 Account account = new Account(name, email, null);
                                 //Testing
-                                /*Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "KFC", "76 Nanyang Dr, #01-04 NTU North Spine Plaza, Singapore 637331", 1.34729, 103.68080,"Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+
+                                ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+
+                                Restaurant r1 = new Restaurant(1, (float) 1, 5.0, "KFC", "76 Nanyang Dr, #01-04 NTU North Spine Plaza, Singapore 637331", 1.34729, 103.68080, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", true);
+                                restaurantArrayList.add(r1);
+                                account.setRecommendedList(restaurantArrayList);
+                                account.setFullRestaurantList(restaurantArrayList);
+
+                                account.setChosenLocation("");
+                                account.setCurrentLocation("");
+                                account.setChosenTime("");
+                                account.setCurrentTime("");
+                                account.setUseCurrentLocation(false);
+                                account.setUseCurrentTime(false);
+
+                                /*
+                                Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "KFC", "76 Nanyang Dr, #01-04 NTU North Spine Plaza, Singapore 637331", 1.34729, 103.68080,"Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);
+
                                 Restaurant r2 = new Restaurant(true, (float) 2, 4, (float) 4, "b", "Admiralty", 0.00, 0.00, "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.HALAL);
                                 Restaurant r3 = new Restaurant(true, (float) 3, 3, (float) 3, "c", "Bishan", 0.00, 0.00, "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.VEGETARIAN);
                                 Restaurant r4 = new Restaurant(true, (float) 4, 2, (float) 2, "d", "Woodlands", 0.00, 0.00, "Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.BOTH);

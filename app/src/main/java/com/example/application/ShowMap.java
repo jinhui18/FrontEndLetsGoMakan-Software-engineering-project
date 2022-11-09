@@ -46,8 +46,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -70,6 +68,8 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     private static final String TAG = ShowMap.class.getSimpleName();
     private GoogleMap gMap;
 
+    ArrayList<String> userLocation = new ArrayList<>();
+    ArrayList<JSONObject>restaurantDetails = new ArrayList<JSONObject>();
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -91,7 +91,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(2000);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -102,6 +102,8 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
         settings = (ImageView) findViewById(R.id.settings);
         settings.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -113,7 +115,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch(v.getId()){
             case R.id.mapToRec: {
                 startActivity(new Intent(this, SetTimeLocation.class));
                 break;
@@ -126,12 +128,13 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     }
 
     private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             locationPermissionGranted = true;
             Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
             updateLocationUI();
-        } else {
-            ActivityCompat.requestPermissions(ShowMap.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+        else{
+            ActivityCompat.requestPermissions(ShowMap.this, new String [] {Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
@@ -154,8 +157,8 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
-    private void updateLocationUI() {
-        if (gMap == null) {
+    private void updateLocationUI(){
+        if (gMap == null){
             return;
         }
         try {
@@ -169,12 +172,12 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
                 getRecommendations.setEnabled(false);
             }
-        } catch (SecurityException e) {
+        }catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
     }
 
-    private void showLocationDialog() {
+    private void showLocationDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ShowMap.this);
         builder.setTitle("Need Location Permission!");
         builder.setMessage("This app needs location permission. Close the app and allow location permission in phone settings.");
@@ -186,15 +189,16 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         permissionAlert.show();
     }
 
-    private boolean isGPSEnabled() {
+    private boolean isGPSEnabled()
+    {
         boolean isEnabled = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            if (isEnabled == true) {
+            if(isEnabled == true) {
                 Toast.makeText(this, "GPS is on", Toast.LENGTH_SHORT).show();
             }
         }
-        if (isEnabled == false) {
+        if(isEnabled == false){
             buildAlertMessageNoGps();
         }
         return isEnabled;
@@ -218,28 +222,31 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         alert.show();
     }
 
-    private void getDeviceLocation() {
-        try {
+    private void getDeviceLocation(){
+        try{
             LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     super.onLocationResult(locationResult);
                     LocationServices.getFusedLocationProviderClient(ShowMap.this).removeLocationUpdates(this);
 
-                    if (locationResult != null && locationResult.getLocations().size() > 0) {
+                    if(locationResult != null && locationResult.getLocations().size() > 0)
+                    {
                         int index = locationResult.getLocations().size() - 1;
                         double latitude = locationResult.getLocations().get(index).getLatitude();
                         double longitude = locationResult.getLocations().get(index).getLongitude();
                         LatLng location = new LatLng(latitude, longitude);
                         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 location, DEFAULT_ZOOM));
-                    } else {
+                    }
+                    else{
                         showLocationDialog();
                     }
                 }
             }, Looper.getMainLooper());
-        } catch (SecurityException e) {
+        } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }
+
 }

@@ -171,7 +171,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     }
 
     public void getUserLocation() {
-        mDatabase.child(userID).child("Account").child("Use Current Location")
+        mDatabase.child(userID).child("Account").child("useCurrentLocation")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -195,7 +195,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             }
             gMap.setMyLocationEnabled(true);
 
-            mDatabase.child(userID).child("Account").child("Current Location")
+            mDatabase.child(userID).child("Account").child("currentLocation")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("MissingPermission")
                         @Override
@@ -217,7 +217,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     });
         } else {
             System.out.println("use chosen location");
-            mDatabase.child(userID).child("Account").child("Chosen Location")
+            mDatabase.child(userID).child("Account").child("chosenLocation")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("MissingPermission")
                         @Override

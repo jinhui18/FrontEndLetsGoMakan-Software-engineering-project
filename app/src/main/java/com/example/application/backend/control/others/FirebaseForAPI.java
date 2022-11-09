@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
@@ -68,29 +69,38 @@ public class FirebaseForAPI implements AsyncResponse{
 
     private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36";
 
-    static PreferredModeOfTransport travelMethod;
-    static float travelTime;
-    static LatLng location;
-    static Date date = new Date();
+    PreferredModeOfTransport travelMethod;
+    float travelTime;
+    LatLng location;
+    Date date = new Date();
     String time = new String();
-    static int date_as_int;
+    int date_as_int;
+    String userID;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+
 
 
     public void getAPIData(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         Profile[] profile = new Profile[1];
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
+        userID = mAuth.getCurrentUser().getUid();
+        System.out.println(userID);
+        System.out.println("hereeee");
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        System.out.println("hiiiii");
 
                         Iterable<DataSnapshot> children = snapshot.getChildren();
 
                         for (DataSnapshot child : children) {
+                            System.out.println("byeeeee");
+
                             Account account = child.getValue(Account.class);
+                            System.out.println("chose"+account.getChosenLocation());
                             arrayList.add(account);
                         }
                         System.out.println("Size of arrayList:" + arrayList.size());
@@ -99,8 +109,8 @@ public class FirebaseForAPI implements AsyncResponse{
                         travelMethod = profile[0].getPreferredModeOfTransport();
                         travelTime = profile[0].getPreferredMaximumTravelTime();
                         if (arrayList.get(0).getuseCurrentTime() == true) {
-                            String timedata = arrayList.get(0).getCurrentTime();
-                            SimpleDateFormat parser = new SimpleDateFormat("EEEE dd-mm-yyyy AAA BBBB hh:mm:ss CCC");
+                            String timedata = arrayList.get(0).getCurrentTime().substring(5, 15);
+                            SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
                             try {
                                 date = parser.parse(timedata);
                             } catch (ParseException e) {
@@ -109,9 +119,11 @@ public class FirebaseForAPI implements AsyncResponse{
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
+                            time = arrayList.get(0).getCurrentTime().substring(28, 33);
                         } else {
-                            String timedata = arrayList.get(0).getChosenTime();
-                            SimpleDateFormat parser = new SimpleDateFormat("EEEE dd-mm-yyyy AAA BBBB hh:mm:ss CCC");
+
+                            String timedata = arrayList.get(0).getChosenTime().substring(5, 15);
+                            SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
                             try {
                                 date = parser.parse(timedata);
                             } catch (ParseException e) {
@@ -120,6 +132,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
+                            time = arrayList.get(0).getChosenTime().substring(28, 33);
                         }
                         if (arrayList.get(0).getuseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
@@ -128,10 +141,20 @@ public class FirebaseForAPI implements AsyncResponse{
                             location = new LatLng(latitude, longitude);
                         } else {
                             String locdata = arrayList.get(0).getChosenLocation();
-                            Double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
-                            Double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
+                            double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
+                            double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
                             location = new LatLng(latitude, longitude);
                         }
+                        int radius = stuffParser.convertToSpeed(travelMethod) * (int) travelTime;
+                        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                                "location=" + location.latitude + "%2C" + location.longitude +
+                                "&radius=" + radius +
+                                "&type=restaurant" +
+                                "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
+
+                        System.out.println(url);
+                        new PlaceTask().execute(url);
+
                     }
 
                     @Override
@@ -139,16 +162,14 @@ public class FirebaseForAPI implements AsyncResponse{
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
+        System.out.println("secondss");
 
-        int radius = stuffParser.convertToSpeed(travelMethod) * (int) travelTime;
 
-        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=-" + location.latitude + "%2C" + location.longitude +
-                "&radius=" + radius +
-                "&type=restaurant" +
-                "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
-        new PlaceTask().execute(url);
+
+
+
+/*
         Map<String, Object> map = new HashMap<>();
         map.put("fullRestaurantList", restaurantList);
         mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -163,6 +184,8 @@ public class FirebaseForAPI implements AsyncResponse{
                 Toast.makeText(context, "Failed to push list", Toast.LENGTH_SHORT).show();
             }
         });
+
+ */
     }
 
     //AsyncTask Responses
@@ -183,9 +206,11 @@ public class FirebaseForAPI implements AsyncResponse{
         try{
             for (int i = 0; i < restaurantDetails.size(); i++)
             {
-                if (restaurantDetails.get(i).names().length() != 6 || popTimeList.get(i).size() != 7)
+                if (restaurantDetails.get(i).names().length() != 6 || popTimeList.get(i).size() != 7) {
+                    System.out.println("Mistake");
                     continue;
-                else{
+
+                }else{
                     Double lat =Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                     Double lng = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
@@ -206,18 +231,31 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     int currentDay = date_as_int;
 
+                    System.out.println(time);
+                    System.out.println("Before and");
+
+
                     int currentHour = Integer.valueOf(time.substring(0,2));
+
+                    System.out.println("Before and");
                     int popTimeIndex = currentHour - 6;
-                    JSONArray currentCrowd = popTimeList.get(i).get(date_as_int - 1);
-                    String forCrowdLevel = ((JSONArray) ((JSONArray) currentCrowd.get(1)).get(popTimeIndex)).getString(2);
-                    int crowdLevel = stuffParser.getCrowdLevelFromPT(forCrowdLevel);
+
+                    String popTime;
+                    if (popTimeList.get(i).get(date_as_int - 1).getJSONArray(1).getJSONArray(popTimeIndex).getString(2) != null)
+                        popTime = popTimeList.get(i).get(date_as_int - 1).getJSONArray(1).getJSONArray(popTimeIndex).getString(2);
+                    else
+                        popTime = "1";
+
+                    System.out.println (popTime);
+
+                    int crowdLevel = stuffParser.getCrowdLevelFromPT(popTime);
 
                     int currentTime = (Integer.valueOf(time.substring(0,2)) * 100 )+ Integer.valueOf(time.substring(3,5));
-                    boolean openNow;
-                    int inputForOH = date_as_int > 1 ? date_as_int - 1 : 7;
-                    String openHours = restaurantDetails.get(i).getJSONObject("opening_hours").getJSONArray("periods").getJSONObject(inputForOH).getJSONObject("open").getString("time");
 
-                    if(currentTime > Integer.valueOf(openHours) && currentTime < 2200)
+                    boolean openNow;
+
+
+                    if( currentTime < 2200 && restaurantDetails.get(i).getJSONObject("opening_hours").getBoolean("open_now"))
                     {
                         openNow = true;
                     }
@@ -227,10 +265,29 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
                     Restaurant restaurant = new Restaurant(crowdLevel, ratings, travelTime, name, address, lat, lng, photo, openNow);
+
+                    System.out.println("Name: " + restaurant.getName());
+
                     restaurantList.add(restaurant);
                 }
             }
-        }catch(JSONException e){e.printStackTrace();}
+            System.out.println("list sizeeeeee" + restaurantList.size());
+            Map<String, Object> map = new HashMap<>();
+            map.put("fullRestaurantList", restaurantList);
+            mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    //Toast.makeText(context, "List created!", Toast.LENGTH_SHORT).show();
+                }
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //Toast.makeText(context, "Failed to push list", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch(JSONException e){e.printStackTrace();}
 
         
     }
@@ -268,13 +325,12 @@ public class FirebaseForAPI implements AsyncResponse{
 
         @Override
         protected void onPostExecute(String s) {
+            System.out.println("SC20000000000000000000000000000000006");
             new GetPlaceIDs().execute(s);
         }
     }
 
     public class GetPlaceIDs extends AsyncTask<String, String, ArrayList<String>> {
-
-        AsyncResponse delegate = FirebaseForAPI.this;
 
         @Override
         protected ArrayList<String> doInBackground(String... strings) {
@@ -282,10 +338,10 @@ public class FirebaseForAPI implements AsyncResponse{
             try {
                 JSONObject nearbySearchResult = new JSONObject(strings[0]);
                 JSONArray resultsArray = nearbySearchResult.getJSONArray("results");
-                placeIDList.add(resultsArray.getJSONObject(0).getString("place_id"));
-                /*for (int i = 0; i < resultsArray.length(); i++) {
+
+                for (int i = 0; i < resultsArray.length(); i++) {
                     placeIDList.add(resultsArray.getJSONObject(i).getString("place_id"));
-                }*/
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -347,7 +403,6 @@ public class FirebaseForAPI implements AsyncResponse{
                 try {
                     restaurantDets.add(jsonObjects.get(i).getString("name"));
                     restaurantDets.add(jsonObjects.get(i).getString("formatted_address"));
-
                     latLng.add(jsonObjects.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                     latLng.add(jsonObjects.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
@@ -356,10 +411,10 @@ public class FirebaseForAPI implements AsyncResponse{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                new GetTotalTime().execute(latLngList);
-                new GetPopularTimes().execute(restaurantNAList);
             }
+            new GetTotalTime().execute(latLngList);
+
+            new GetPopularTimes().execute(restaurantNAList);
         }
     }
 
@@ -487,6 +542,8 @@ public class FirebaseForAPI implements AsyncResponse{
                         ",&end=" + lat + "," + lng +
                         "&routeType=" + stuffParser.convertToLower(travelMethod) +
                         "&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjkzNDgsInVzZXJfaWQiOjkzNDgsImVtYWlsIjoidGFucGF0Z3VhbkB5YWhvby5jb20uc2ciLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2Njc5NzYwNDMsImV4cCI6MTY2ODQwODA0MywibmJmIjoxNjY3OTc2MDQzLCJqdGkiOiIzZTk4Y2JhMDM4ZGQwMjY4Y2VjMzliODFmNDgyNmFhNSJ9.CpZ5iOu5LPmJmF43Hj5Vu2O37np2FzjfvP8MMYMpEAY";
+
+                System.out.println(url);
 
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
