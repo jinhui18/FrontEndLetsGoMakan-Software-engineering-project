@@ -261,12 +261,11 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     public void showOnMap(ArrayList<Restaurant> restList) {
         //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter getApplicationContext());
         System.out.println("size " + restList.size());
-
-
         for(int index = 0; index < restList.size(); index++){
             System.out.println("index " + index);
             LatLng restaurant_location = new LatLng(restList.get(index).getLatitude(), restList.get(index).getLongitude());
             gMap.addMarker(new MarkerOptions().position(restaurant_location).title(restList.get(index).getName()));
+
             //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList.get(index)));
         }
     }

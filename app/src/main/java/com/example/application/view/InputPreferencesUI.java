@@ -89,16 +89,16 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         }
 
         switch (travel) {
-            case "0.5 hour":
+            case "15 minutes":
                 currentProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "1 hour":
+            case "30 minutes":
                 currentProfile.setPreferredMaximumTravelTime(30);
                 break;
-            case "1.5 hours":
+            case "45 minutes":
                 currentProfile.setPreferredMaximumTravelTime(45);
                 break;
-            case "2 hours":
+            case "1 hour":
                 currentProfile.setPreferredMaximumTravelTime(60);
                 break;
         }
