@@ -5,12 +5,11 @@ import com.example.application.backend.enums.TypesOfDietaryRequirements;
 public class Restaurant {
     private int crowdLevel;
     private float ratings;
-    private float travellingTime;
+    private Double travellingTime;
     private String name;
     private String address;
-    private double latitude;
-    private double longitude;
-    private String description;
+    private Double latitude;
+    private Double longitude;
     private String image;
     //ArrayList<LocalTime> openCloseTimings;
     private boolean openNow;
@@ -19,7 +18,7 @@ public class Restaurant {
     }
 
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(int cl, float rtngs, float tt, String name, String adrs, double lati, double longi, String des, String img, boolean openNow) {
+    public Restaurant(int cl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow) {
         this.crowdLevel = cl;
         this.ratings = rtngs;
         this.travellingTime = tt;
@@ -27,36 +26,35 @@ public class Restaurant {
         this.address = adrs;
         this.latitude = lati;
         this.longitude = longi;
-        this.description = des;
         this.image = img;
         this.openNow = openNow;
     }
 
 
     // CrowdLevel
-    public float getCrowdLevel() {
+    public int getCrowdLevel() {
         return crowdLevel;
     }
 
-    public void setCrowdLevel(float crowdLevel) {
+    public void setCrowdLevel(int crowdLevel) {
         this.crowdLevel = crowdLevel;
     }
 
     //Ratings
-    public int getRatings() {
+    public float getRatings() {
         return ratings;
     }
 
-    public void setRatings(int ratings) {
+    public void setRatings(float ratings) {
         this.ratings = ratings;
     }
 
     //TravelTime
-    public float getTravellingTime() {
+    public Double getTravellingTime() {
         return travellingTime;
     }
 
-    public void setTravellingTime(float travelTime) {
+    public void setTravellingTime(Double travelTime) {
         this.travellingTime = travelTime;
     }
 
@@ -96,14 +94,6 @@ public class Restaurant {
         this.longitude = longitude;
     }
 
-    //Restaurant Description
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     //Restaurant Image (string format)
     public String getImage() {

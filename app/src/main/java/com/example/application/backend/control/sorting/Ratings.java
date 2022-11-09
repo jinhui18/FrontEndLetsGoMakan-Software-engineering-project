@@ -25,7 +25,7 @@ public class Ratings extends SortingCriteria {
         // add same rating restaurant into separate arrays
         for (int i=0; i<restaurantList.size(); i++) {
             Restaurant restaurant = restaurantList.get(i);
-            int rating = restaurant.getRatings();
+            int rating = (int) restaurant.getRatings();
             if (rating==0) r0.add(restaurant);
             else if (rating==1) r1.add(restaurant);
             else if (rating==2) r2.add(restaurant);

@@ -60,6 +60,8 @@ public class FirebaseForAPI implements AsyncResponse{
     ArrayList<Double> travelTimeList = new ArrayList<Double>();
     ArrayList<ArrayList<JSONArray>> popTimeList = new ArrayList<ArrayList<JSONArray>>();
 
+    ArrayList<Restaurant> restaurantList = new ArrayList<Restaurant>();
+
     StuffParser stuffParser = new StuffParser();
 
     private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36";
@@ -137,8 +139,6 @@ public class FirebaseForAPI implements AsyncResponse{
                     }
                 });
 
-        // Enum to speed for Travel Method
-        TransportEnumParser parser = new TransportEnumParser();
         int radius = stuffParser.convertToSpeed(travelMethod) * (int) travelTime;
 
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
@@ -165,22 +165,59 @@ public class FirebaseForAPI implements AsyncResponse{
     @Override
     public void processFinishPT(ArrayList<ArrayList<JSONArray>> output) {
         popTimeList = output;
+        try{
+            for (int i = 0; i < restaurantDetails.size(); i++)
+            {
+                if (restaurantDetails.get(i).names().length() != 6 || popTimeList.get(i).size() != 7)
+                    continue;
+                else{
+                    Double lat =Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
+                    Double lng = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
-        for (int i = 0; i < restaurantDetails.size(); i++)
-        {
-            if (restaurantDetails.get(i).names().length() != 6 || popTimeList.get(i).size() != 7)
-                continue;
-            else{
-                restaurantDetails.get(i).get();
-                int crowdLevels =;
-                float ratings =
+                    float ratings = Float.valueOf(restaurantDetails.get(i).getString("rating"));
 
-                int currentHour = Integer.valueOf(time.substring(0,2));
-                int popTimeIndex = currentHour - 6;
-                int crowdLevel =
+                    Double travelTime = travelTimeList.get(i);
 
+                    String name = restaurantDetails.get(i).getString("name");
+
+                    String address = restaurantDetails.get(i).getString("formatted_address");
+
+                    String photoRef = restaurantDetails.get(i).getJSONArray("photos").getJSONObject(0).getString("photo_reference");
+
+                    String photo = "https://maps.googleapis.com/maps/api/place/photo" +
+                            "?maxwidth=400" +
+                            "&photo_reference=" + photoRef +
+                            "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
+
+                    int currentDay = date_as_int;
+
+                    int currentHour = Integer.valueOf(time.substring(0,2));
+                    int popTimeIndex = currentHour - 6;
+                    JSONArray currentCrowd = popTimeList.get(i).get(date_as_int - 1);
+                    String forCrowdLevel = ((JSONArray) ((JSONArray) currentCrowd.get(1)).get(popTimeIndex)).getString(2);
+                    int crowdLevel = stuffParser.getCrowdLevelFromPT(forCrowdLevel);
+
+                    int currentTime = (Integer.valueOf(time.substring(0,2)) * 100 )+ Integer.valueOf(time.substring(3,5));
+                    boolean openNow;
+                    int inputForOH = date_as_int > 1 ? date_as_int - 1 : 7;
+                    String openHours = restaurantDetails.get(i).getJSONObject("opening_hours").getJSONArray("periods").getJSONObject(inputForOH).getJSONObject("open").getString("time");
+
+                    if(currentTime > Integer.valueOf(openHours) && currentTime < 2200)
+                    {
+                        openNow = true;
+                    }
+                    else{openNow = false;}
+
+
+
+
+                    Restaurant restaurant = new Restaurant(crowdLevel, ratings, travelTime, name, address, lat, lng, photo, openNow);
+                    restaurantList.add(restaurant);
+                }
             }
-        }
+        }catch(JSONException e){e.printStackTrace();}
+
+        
     }
 
 
