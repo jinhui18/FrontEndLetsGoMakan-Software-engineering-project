@@ -136,7 +136,7 @@ public class FirebaseRetrieval {
                         TypesOfDietaryRequirements defaultDietaryRequirement = userProfile.getDietaryRequirements();
                         float defaultMaxTravelTime = userProfile.getPreferredMaximumTravelTime();
 
-                        //There are only 2 default filtering criteria
+                        //There are only x many default filtering criteria
                         for (int i=0; i<2; i++){
                             Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
                             for (int j=0; j<hashy.size();j++){
