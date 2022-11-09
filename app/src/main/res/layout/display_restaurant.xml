@@ -117,7 +117,7 @@
         android:id="@+id/textView_restaurant_review_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:text="Review: "
         android:textColor="@color/black"
@@ -137,7 +137,7 @@
         android:id="@+id/textView_restaurant_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="28dp"
         android:text="See all reviews"
         android:textColor="#0E2EE1"
 
@@ -251,5 +251,14 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView1"
         app:layout_constraintTop_toTopOf="@+id/imageView1"
         app:srcCompat="@drawable/bookmarked_not_pressed" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
+        app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_review_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

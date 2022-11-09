@@ -1,11 +1,11 @@
 package com.example.application;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +25,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
     private TextView textView_restaurant_name, textView_restaurant_address, textView_restaurant_opening_hours_time, textView_restaurant_crowd_level_value;
     private TextView textView_restaurant_travelling_time, textView_restaurant_review, textView_restaurant_link;
     private TextView textView_website_link, textView_make_reservation, textView_get_direction;
+    private RatingBar ratingBar;
 
     private String restaurant_url;
     private String restaurant_name;
@@ -32,6 +33,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
     private String restaurant_opening_hours_time;
     private String restaurant_crowd_level_value;
     private String restaurant_travelling_time;
+    private int ratings;
 
     private GoogleMap gMap;
     private double restaurant_latitude;
@@ -52,6 +54,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         textView_restaurant_opening_hours_time = findViewById(R.id.textView_restaurant_opening_hours_time);
         textView_restaurant_crowd_level_value = findViewById(R.id.textView_restaurant_crowd_level_value);
         textView_restaurant_travelling_time = findViewById(R.id.textView_restaurant_travelling_time);
+        ratingBar = findViewById(R.id.ratingBar);
 
         // all of the things below i cant get yet
         textView_restaurant_review = findViewById(R.id.textView_restaurant_review);
@@ -75,6 +78,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         restaurant_travelling_time = intent.getExtras().getString("restaurant_travelling_time");
         restaurant_latitude = intent.getExtras().getDouble("restaurant_latitude");
         restaurant_longitude = intent.getExtras().getDouble("restaurant_longitude");
+        ratings = intent.getExtras().getInt("ratings");
 
         //change the image of the restaurant
         /*
@@ -87,6 +91,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
 
         textView_restaurant_name.setText(restaurant_name);
         textView_restaurant_address.setText(restaurant_address);
+        ratingBar.setRating(ratings);
 
         // need to modify the string, i need to see what format opening hours is stored in database first
         // all three data below is the same, need change formatting
