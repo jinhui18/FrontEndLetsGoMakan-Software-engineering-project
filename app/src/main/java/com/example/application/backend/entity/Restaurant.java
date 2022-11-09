@@ -3,9 +3,8 @@ package com.example.application.backend.entity;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
 public class Restaurant {
-    private boolean bookmark;
-    private float crowdLevel;
-    private int ratings;
+    private int crowdLevel;
+    private float ratings;
     private float travellingTime;
     private String name;
     private String address;
@@ -13,14 +12,14 @@ public class Restaurant {
     private double longitude;
     private String description;
     private String image;
-    private String availableDietaryRequirements;
     //ArrayList<LocalTime> openCloseTimings;
-    private int openCloseTimings;
+    private boolean openNow;
 
-    public Restaurant() {}
+    public Restaurant() {
+    }
+
     //JSON control class will extract relevant attribute information and convert them into their correct form.
-    public Restaurant(boolean bm, float cl, int rtngs, float tt, String name, String adrs, double lati, double longi,String des, String img, int timings, TypesOfDietaryRequirements dreqs) {
-        this.bookmark = bm;
+    public Restaurant(int cl, float rtngs, float tt, String name, String adrs, double lati, double longi, String des, String img, boolean openNow) {
         this.crowdLevel = cl;
         this.ratings = rtngs;
         this.travellingTime = tt;
@@ -30,23 +29,15 @@ public class Restaurant {
         this.longitude = longi;
         this.description = des;
         this.image = img;
-        this.openCloseTimings = timings;
-        this.availableDietaryRequirements = dreqs.toString();
+        this.openNow = openNow;
     }
 
-    // Bookmark
-    public boolean isBookmark() {
-        return bookmark;
-    }
-
-    public void setBookmark(boolean bookmark) {
-        this.bookmark = bookmark;
-    }
 
     // CrowdLevel
     public float getCrowdLevel() {
         return crowdLevel;
     }
+
     public void setCrowdLevel(float crowdLevel) {
         this.crowdLevel = crowdLevel;
     }
@@ -55,6 +46,7 @@ public class Restaurant {
     public int getRatings() {
         return ratings;
     }
+
     public void setRatings(int ratings) {
         this.ratings = ratings;
     }
@@ -63,18 +55,25 @@ public class Restaurant {
     public float getTravellingTime() {
         return travellingTime;
     }
+
     public void setTravellingTime(float travelTime) {
         this.travellingTime = travelTime;
     }
 
     //Name
-    public String getName() {return name;}
-    public void setName(String name) {this.name = name;}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     //Address
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -83,6 +82,7 @@ public class Restaurant {
     public double getLatitude() {
         return latitude;
     }
+
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
@@ -91,6 +91,7 @@ public class Restaurant {
     public double getLongitude() {
         return longitude;
     }
+
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -99,6 +100,7 @@ public class Restaurant {
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -107,15 +109,9 @@ public class Restaurant {
     public String getImage() {
         return image;
     }
+
     public void setImage(String image) {
         this.image = image;
     }
 
-    //Available dietary requirements
-    public String getAvailableDietaryRequirements(){return this.availableDietaryRequirements;}
-    public void setAvailableDietaryRequirements(TypesOfDietaryRequirements typesOfDietaryRequirements){this.availableDietaryRequirements = typesOfDietaryRequirements.toString();}
-
-    //Opening and Closing time in array
-    public int getOpenCloseTimings() {return openCloseTimings;}
-    public void setOpenCloseTimings(int openCloseTimings) {this.openCloseTimings = openCloseTimings;}
 }

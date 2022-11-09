@@ -155,26 +155,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         myAdapter = new MyAdapter(DisplayRestaurantsList.this,null);
         recyclerView.setAdapter(myAdapter);
 
-        SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
-        ArrayList<Object> sortingList = new ArrayList<Object>();
-        sortingList.add(sortingCriteria);
 
-        //From selectedFilteringCriteria array instantiate required filteringCriteria objects
-        ArrayList<Object> filteringList = new ArrayList<Object>();
-        ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
-        for (int k=0; k<filteringCriteriaArray.length; k++) { //for default, need to use all filteringCriteria
-                selectedFilteringCriteria[k]=true;
-                System.out.println("Outside K value: "+k);
-                FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
-                //subCriteria to be added later on
-                filteringCriteriaList.add(filteringCriteria);
-        }//end for
-        System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
-        //Pass in everything to method
-        filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
-        filteringList.add(sortingListModel);
-        filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel);
+        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringCriteriaArray, sortingCriteriaArray, selectedFilteringCriteria, singlePosition, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel, sortingListModel);
 
         //add subcriteria2D in as well
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
@@ -437,11 +419,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(DisplayRestaurantsList.this, "Test "+String.valueOf(singlePosition), Toast.LENGTH_SHORT).show();
-                SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
-                ArrayList<Object> initialSortingList = new ArrayList<Object>();
-                initialSortingList.add(sortingCriteria);
-                FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel);
+                FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, sortingCriteriaArray, singlePosition, sortingListModel);
             }
         });
 
@@ -494,27 +472,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //get the sortingCriteria here using the singlePosition (keeps track of last-used sortingCriteria
-                    SortingCriteria sortingCriteria = SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition]);
-                    ArrayList<Object> sortingList = new ArrayList<Object>();
-                    sortingList.add(sortingCriteria);
-
-                    //From selectedFilteringCriteria array instantiate required filteringCriteria objects
-                    ArrayList<Object> filteringList = new ArrayList<Object>();
-                    ArrayList<FilteringCriteria> filteringCriteriaList = new ArrayList<>(); //Store all needed filtering criteria object
-                    for (int k=0; k<filteringCriteriaArray.length; k++) {
-                        System.out.println("boolean array: " + selectedFilteringCriteria[k]);
-                        if (selectedFilteringCriteria[k] == true){
-                            FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
-                            filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user selected that filtering option
-                            filteringCriteriaList.add(filteringCriteria);
-                        }//end if
-                    }//end for
-                    //Pass in everything to method
-                    filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
-                    filteringList.add(sortingListModel);
-                    filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-                    FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, filteringListModel);
+                    FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringCriteriaArray, sortingCriteriaArray, selectedSubCriteria,  selectedFilteringCriteria, singlePosition, filteringListModel, sortingListModel);
                 }
             });
 
@@ -553,7 +511,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             public void onClick(DialogInterface dialogInterface, int i) {
                 selectedSubCriteria[filteringCriteriaIndex] = subCriteriaList[subCriteriaPosition];
                 profileSubCriteriaChoice[filteringCriteriaIndex] = subCriteriaPosition;
-                for (int k=0; k<2; k++){
+                for (int k=0; k<filteringCriteriaArray.length; k++){
                     System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
                 }
             }
