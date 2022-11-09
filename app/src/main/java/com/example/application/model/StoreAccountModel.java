@@ -68,6 +68,12 @@ public class StoreAccountModel extends Model{
 
                                 account.setFullRestaurantList(restaurantArrayList);
                                 account.setRecommendedList(restaurantArrayList);
+                                account.setChosenLocation("");
+                                account.setCurrentLocation("");
+                                account.setChosenTime("");
+                                account.setCurrentTime("");
+                                account.setUseCurrentLocation(false);
+                                account.setUseCurrentTime(false);
                                 //Testing ends
 
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
