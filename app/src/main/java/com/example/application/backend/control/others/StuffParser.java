@@ -14,7 +14,7 @@ public class StuffParser {
         else return "walking";
     }
     public int getCrowdLevelFromPT(String pt){
-        if (pt == "Usually not too busy") return 1;
+        if (pt == "Usually not too busy" || pt == "Usually not busy") return 1;
         else if (pt == "Usually a little busy") return 2;
         else if (pt == "Usually as busy as it gets") return 3;
         else return 0;
