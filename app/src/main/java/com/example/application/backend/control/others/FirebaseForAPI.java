@@ -53,18 +53,18 @@ import okhttp3.ResponseBody;
 
 
 public class FirebaseForAPI {
+    static PreferredModeOfTransport travelMethod;
+    static float travelTime;
+    static LatLng location;
+    static Date date = new Date();
+    String time = new String();
+    static int date_as_int;
 
     public static void getAPIData(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         Profile[] profile = new Profile[1];
         FirebaseUser user = mAuth.getCurrentUser();
         String userID = user.getUid();
-        final PreferredModeOfTransport[] travelMethod = new PreferredModeOfTransport[1];
-        final float[] travelTime = new float[1];
-        final LatLng[] location = new LatLng[1];
-        final Date[] date = new Date[1];
-        String time = new String();
-        final int[] date_as_int = new int[1];
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -80,41 +80,41 @@ public class FirebaseForAPI {
                         System.out.println("Size of arrayList:" + arrayList.size());
                         //do api stuff here
                         profile[0] = arrayList.get(0).getProfile();
-                        travelMethod[0] = profile[0].getPreferredModeOfTransport();
-                        travelTime[0] = profile[0].getPreferredMaximumTravelTime();
+                        travelMethod = profile[0].getPreferredModeOfTransport();
+                        travelTime = profile[0].getPreferredMaximumTravelTime();
                         if (arrayList.get(0).getuseCurrentTime() == true) {
                             String timedata = arrayList.get(0).getCurrentTime();
                             SimpleDateFormat parser = new SimpleDateFormat("EEEE dd-mm-yyyy AAA BBBB hh:mm:ss CCC");
                             try {
-                                date[0] = parser.parse(timedata);
+                                date = parser.parse(timedata);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             Calendar cal = Calendar.getInstance();
-                            cal.setTime(date[0]);
-                            date_as_int[0] = cal.get(Calendar.DAY_OF_WEEK);
+                            cal.setTime(date);
+                            date_as_int = cal.get(Calendar.DAY_OF_WEEK);
                         } else {
                             String timedata = arrayList.get(0).getChosenTime();
                             SimpleDateFormat parser = new SimpleDateFormat("EEEE dd-mm-yyyy AAA BBBB hh:mm:ss CCC");
                             try {
-                                date[0] = parser.parse(timedata);
+                                date = parser.parse(timedata);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             Calendar cal = Calendar.getInstance();
-                            cal.setTime(date[0]);
-                            date_as_int[0] = cal.get(Calendar.DAY_OF_WEEK);
+                            cal.setTime(date);
+                            date_as_int = cal.get(Calendar.DAY_OF_WEEK);
                         }
                         if (arrayList.get(0).getuseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
                             double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
-                            location[0] = new LatLng(latitude, longitude);
+                            location = new LatLng(latitude, longitude);
                         } else {
                             String locdata = arrayList.get(0).getChosenLocation();
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
                             double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
-                            location[0] = new LatLng(latitude, longitude);
+                            location = new LatLng(latitude, longitude);
                         }
                     }
 
