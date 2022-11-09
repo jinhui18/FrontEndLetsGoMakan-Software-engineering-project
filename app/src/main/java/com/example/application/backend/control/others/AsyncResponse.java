@@ -5,6 +5,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public interface AsyncResponse {
-    void processFinish(ArrayList<JSONObject> output);
-    void processFinishJA(ArrayList<JSONArray> output);
+
+    ////Place Details
+    void processFinishPD(ArrayList<JSONObject> placeDetails);
+
+    //Popular Times
+    void processFinishPT(ArrayList<ArrayList<JSONArray>> popTimes);
+
+    void processFinishOneMap(ArrayList<Double> result);
+
+
 }

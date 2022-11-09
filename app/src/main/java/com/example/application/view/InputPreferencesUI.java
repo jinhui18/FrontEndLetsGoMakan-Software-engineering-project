@@ -1,7 +1,5 @@
 package com.example.application.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +7,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.application.CreateNewAccountVerifyEmail;
 import com.example.application.R;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
 import com.example.application.model.ChangePreferencesModel;
 import com.example.application.model.Model;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 public class InputPreferencesUI extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner transportMode;
-    private Spinner dietRequirement;
     private Spinner travelTime;
 
     private Button createProfile;
@@ -43,7 +41,6 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.input_preferences);
 
         transportMode = findViewById(R.id.transportSpinner);
-        dietRequirement = findViewById(R.id.dietSpinner);
         travelTime = findViewById(R.id.travelSpinner);
 
         createProfile = (Button) findViewById(R.id.createPreferences);
@@ -59,10 +56,6 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         ArrayAdapter<CharSequence> travelAdapter = ArrayAdapter.createFromResource(this, R.array.travelTime, android.R.layout.simple_spinner_item);
         travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         travelTime.setAdapter(travelAdapter);
-
-        ArrayAdapter<CharSequence> dietAdapter = ArrayAdapter.createFromResource(this, R.array.diet, android.R.layout.simple_spinner_item);
-        dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        dietRequirement.setAdapter(dietAdapter);
 
         inputPreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, InputPreferencesUI.this);
     }
@@ -82,7 +75,6 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
     private void createProfile() {
         String transport = transportMode.getSelectedItem().toString().trim();
         String travel = travelTime.getSelectedItem().toString().trim();
-        String diet = dietRequirement.getSelectedItem().toString().trim();
 
         switch (transport) {
             case "Walking":
@@ -97,31 +89,17 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         }
 
         switch (travel) {
-            case "0.5 hour":
+            case "15 minutes":
                 currentProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "1 hour":
+            case "30 minutes":
                 currentProfile.setPreferredMaximumTravelTime(30);
                 break;
-            case "1.5 hours":
+            case "45 minutes":
                 currentProfile.setPreferredMaximumTravelTime(45);
                 break;
-            case "2 hours":
+            case "1 hour":
                 currentProfile.setPreferredMaximumTravelTime(60);
-        }
-
-        switch (diet) {
-            case "None":
-                currentProfile.setDietaryRequirements(TypesOfDietaryRequirements.NONE);
-                break;
-            case "Halal":
-                currentProfile.setDietaryRequirements(TypesOfDietaryRequirements.HALAL);
-                break;
-            case "Vegetarian":
-                currentProfile.setDietaryRequirements(TypesOfDietaryRequirements.VEGETARIAN);
-                break;
-            case "Both":
-                currentProfile.setDietaryRequirements(TypesOfDietaryRequirements.BOTH);
                 break;
         }
     }

@@ -31,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +65,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     int[] profileSubCriteriaChoice; //used to pre-select subCriteria option according to users' default/previous selection
     String[] selectedSubCriteria; //used to store the selected subcriteria for filtering Criteria
     int subCriteriaPosition;
+    int numberOfDefaultCriteria = 1; //number of default filtering criteria (This needs to be set
 
     //Sorting dropdown stuff
     boolean[] selectedSortingCriteria;
@@ -172,7 +174,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         filteringList.add(sortingList); //needed to instantiate sorting controller in filteringModel class
         filteringList.add(sortingListModel);
         filteringList.add(filteringCriteriaList); //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, subCriteria2D, filteringListModel);
+        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringList, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel);
 
         //add subcriteria2D in as well
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
@@ -184,7 +186,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
         getUserLocation();
-        showOnMap();
     }
 
     public void getUserLocation() {
@@ -205,6 +206,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     public void showLocation(boolean useCurLoc) {
         if (useCurLoc == true) {
+            System.out.println("using current location");
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 showAlertDialog();
                 return;
@@ -232,6 +234,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         }
                     });
         } else {
+            System.out.println("use chosen location");
             mDatabase.child(userID).child("Account").child("Chosen Location")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("MissingPermission")
@@ -255,15 +258,38 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         }
     }
 
-    public void showOnMap() {
-        double latitude = 1.347078972102637;
-        double longitude = 103.68033412545849;
-        LatLng location = new LatLng(latitude, longitude);
-        LatLng location2 = new LatLng(1.34729,103.68080);
-        LatLng location3 = new LatLng(1.34268, 103.68240);
-        gMap.addMarker(new MarkerOptions().position(location).title("McDonald's"));
-        gMap.addMarker(new MarkerOptions().position(location2).title("KFC"));
-        gMap.addMarker(new MarkerOptions().position(location3).title("South Spine Fine Foods"));
+    public void showOnMap(ArrayList<Restaurant> restList) {
+        //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter getApplicationContext());
+        System.out.println("size " + restList.size());
+        for(int index = 0; index < restList.size(); index++){
+            System.out.println("index " + index);
+            LatLng restaurant_location = new LatLng(restList.get(index).getLatitude(), restList.get(index).getLongitude());
+            gMap.addMarker(new MarkerOptions().position(restaurant_location).title(restList.get(index).getName()));
+
+            //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList.get(index)));
+        }
+    }
+
+    public void retrieve(){
+        ArrayList<Restaurant> restList = new ArrayList<>();
+
+        mDatabase.child(userID).child("Account").child("recommendedList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+
+                for (DataSnapshot child : children) {
+                    Restaurant restaurant = child.getValue(Restaurant.class);
+                    restList.add(restaurant);
+                }
+                showOnMap(restList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void showAlertDialog(){
@@ -306,6 +332,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     @Override
     public void update(Observable observable, Object o) {
         this.retrieveAndDisplay();
+        this.retrieve();
         System.out.println("UPDATE IS CALLED");
     }
 

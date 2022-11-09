@@ -112,6 +112,7 @@ public class FirebaseRetrieval {
             ArrayList<Object> filteringList,
             int[] profileSubCriteriaChoice,
             String[] selectedSubCriteria,
+            int numberOfDefaultCriteria,
             ArrayList<Object> subCriteria2D,
             Model filteringListModel
     ) {
@@ -133,22 +134,15 @@ public class FirebaseRetrieval {
                         System.out.println("Size of arrayList 000 :" + arrayList.size());
                         Account userAccount = arrayList.get(0);
                         Profile userProfile = userAccount.getProfile();
-                        TypesOfDietaryRequirements defaultDietaryRequirement = userProfile.getDietaryRequirements();
+                        //TypesOfDietaryRequirements defaultDietaryRequirement = userProfile.getDietaryRequirements();
                         float defaultMaxTravelTime = userProfile.getPreferredMaximumTravelTime();
 
-                        //There are only 2 default filtering criteria
-                        for (int i=0; i<2; i++){
+                        //There are only x many default filtering criteria
+                        for (int i=0; i<numberOfDefaultCriteria; i++){ //changed from 2 to size here
                             Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
                             for (int j=0; j<hashy.size();j++){
+                                //For future extensions, add on more else if statements here
                                 if (i==0){
-                                    String subCriteria = hashy.get(String.valueOf(j));
-                                    if (defaultDietaryRequirement==TypesOfDietaryRequirements.valueOf(subCriteria.toUpperCase(Locale.ROOT))){
-                                        profileSubCriteriaChoice[i] = j;
-                                        selectedSubCriteria[i] = subCriteria;
-                                        break;
-                                    }
-                                }
-                                else if (i==1){
                                     String subCriteria = hashy.get(String.valueOf(j));
                                     String[] parts = subCriteria.split(" ");
                                     float maxTimeLimit = Float.parseFloat(parts[0]);
@@ -161,12 +155,12 @@ public class FirebaseRetrieval {
                             }//inner for
                         }//outer for
                         //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
-                        for (int k=0; k<2; k++){
+                        for (int k=0; k<numberOfDefaultCriteria; k++){
                             System.out.println("CHOSEN CRITERIA: "+selectedSubCriteria[k]);
                         }
                         ArrayList<FilteringCriteria> filteringCriteriaList = (ArrayList<FilteringCriteria>) filteringList.get(2); //Store all needed filtering criteria object
                         System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
-                        for (int k=0; k<2; k++) {
+                        for (int k=0; k<numberOfDefaultCriteria; k++) {
                             System.out.println("K value: "+k);
                             FilteringCriteria filteringCriteria = filteringCriteriaList.get(k);
                             filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user profile has that filtering option
