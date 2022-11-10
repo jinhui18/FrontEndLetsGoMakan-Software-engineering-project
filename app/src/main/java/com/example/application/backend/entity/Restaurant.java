@@ -14,6 +14,10 @@ public class Restaurant {
      */
     private int crowdLevel;
     /**
+     * priceLevel refers to how pricey the food is at the restaurant on scale of 1 to 5
+     */
+    private int priceLevel;
+    /**
      * Ratings are the ratings given to the restaurant
      */
     private float ratings;
@@ -64,6 +68,7 @@ public class Restaurant {
     /**
      *
      * @param cl refers
+     * @param pl
      * @param rtngs
      * @param tt
      * @param name
@@ -72,9 +77,11 @@ public class Restaurant {
      * @param longi
      * @param img
      * @param openNow
+     * @param takeOut
      */
-    public Restaurant(int cl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow) {
+    public Restaurant(int cl, int pl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut) {
         this.crowdLevel = cl;
+        this.priceLevel = pl;
         this.ratings = rtngs;
         this.travellingTime = tt;
         this.name = name;
@@ -83,6 +90,7 @@ public class Restaurant {
         this.longitude = longi;
         this.image = img;
         this.openNow = openNow;
+        this.takeOut = takeOut;
     }
 
 
@@ -90,10 +98,13 @@ public class Restaurant {
     public int getCrowdLevel() {
         return crowdLevel;
     }
-
     public void setCrowdLevel(int crowdLevel) {
         this.crowdLevel = crowdLevel;
     }
+
+    //priceLevel
+    public int getPriceLevel() { return priceLevel;}
+    public void setPriceLevel(int priceLevel) {this.priceLevel=priceLevel;}
 
     //Ratings
     public float getRatings() {

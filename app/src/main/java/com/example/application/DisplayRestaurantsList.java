@@ -364,7 +364,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             int count=0; int index=0;
             while(subCriteriaConfigurationReader.hasNextLine()) {
                 if (count==0){
-                    subCriteria2D.add(new HashMap<String, String>());
+                    subCriteria2D.add(new HashMap<String, String>()); //size can be zero if there are no subCriteria
                 }
                 String line  = subCriteriaConfigurationReader.nextLine();
                 if (line.compareTo("NEXT")==0) {
@@ -405,7 +405,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         for (int i=0; i<filteringConfiguration.size(); i++){
             selectedSubCriteria[i] = null;
         }
-        System.out.println("hiiiiiiiiiiiiiiii" + selectedSubCriteria.length );
+
 
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){
@@ -479,12 +479,12 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         //get hashmap with all sub criteria
                         Map<String, String> hashy = (Map<String, String>) subCriteria2D.get(i);
                         //create string array with sub criteria
-                        String[] subCriterialist = new String[hashy.size()];
+                        String[] subCriterialist = new String[hashy.size()]; //This array can have size zero when no subCriteria
                         for (int j = 0; j < hashy.size(); j++) {
                             subCriterialist[j] = hashy.get(String.valueOf(j));
                         }
-
-                        subCriteriaDropDown(subCriterialist, i); //pass in filtering criteria index for sub criteria retrieval
+                        //if subCriteriaList size is 0, there are no subCriteria so no dropdown
+                        if (subCriterialist.length!=0) subCriteriaDropDown(subCriterialist, i); //pass in filtering criteria index for sub criteria retrieval
                         clickCounter1[i]++;
                     }
                     else{clickCounter1[i]++;}
