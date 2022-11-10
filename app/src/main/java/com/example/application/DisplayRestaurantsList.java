@@ -62,7 +62,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     boolean[] selectedFilteringCriteria;
     String[] filteringCriteriaArray;
     ArrayList<Object> subCriteria2D = new ArrayList<>();
-    int[] clickCounter1;
     int[] profileSubCriteriaChoice; //used to pre-select subCriteria option according to users' default/previous selection
     String[] selectedSubCriteria; //used to store the selected subcriteria for filtering Criteria
     int subCriteriaPosition;
@@ -392,10 +391,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             filteringCriteriaArray[i] = filteringConfiguration.get(String.valueOf(i));
         }
 
-        clickCounter1 = new int[filteringConfiguration.size()];
-        for (int i=0; i<filteringConfiguration.size(); i++){
-            clickCounter1[i] = 0;
-        }
         profileSubCriteriaChoice = new int[filteringConfiguration.size()];
         for (int i=0; i<filteringConfiguration.size(); i++){
             profileSubCriteriaChoice[i] = 0;
@@ -475,7 +470,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                     System.out.println("NUMBER: "+i);
-                    if (clickCounter1[i]%2==1) { //Can also use selectedFilteringCriteria
+                    if (selectedFilteringCriteria[i]) { //Can also use selectedFilteringCriteria
                         //get hashmap with all sub criteria
                         Map<String, String> hashy = (Map<String, String>) subCriteria2D.get(i);
                         //create string array with sub criteria
@@ -485,11 +480,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         }
                         //if subCriteriaList size is 0, there are no subCriteria so no dropdown
                         if (subCriterialist.length!=0) subCriteriaDropDown(subCriterialist, i); //pass in filtering criteria index for sub criteria retrieval
-                        clickCounter1[i]++;
-                    }
-                    else{clickCounter1[i]++;}
-                    System.out.println("clickCounter: "+clickCounter1[i]);
-                }
+                    }//end if
+                }//end onClick
             });
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
