@@ -7,11 +7,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.view.InputPreferencesUI;
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
-import com.example.application.backend.entity.Restaurant;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
+import com.example.application.view.InputPreferencesUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -20,8 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 public class StoreAccountModel extends Model{
 
@@ -56,6 +52,7 @@ public class StoreAccountModel extends Model{
                                 Account account = new Account(name, email, null);
                                 //Testing
 
+                                /*
                                 ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
 
                                 Restaurant r1 = new Restaurant(1, (float) 1, 5.0, "KFC", "76 Nanyang Dr, #01-04 NTU North Spine Plaza, Singapore 637331", 1.34729, 103.68080, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", true);
@@ -69,6 +66,8 @@ public class StoreAccountModel extends Model{
                                 account.setCurrentTime("");
                                 account.setUseCurrentLocation(false);
                                 account.setUseCurrentTime(false);
+                                */
+
 
                                 /*
                                 Restaurant r1 = new Restaurant(true, (float) 1, 5, (float) 5, "KFC", "76 Nanyang Dr, #01-04 NTU North Spine Plaza, Singapore 637331", 1.34729, 103.68080,"Sedapz", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Green_Dot_logo.svg/1200px-Green_Dot_logo.svg.png", 12, TypesOfDietaryRequirements.NONE);

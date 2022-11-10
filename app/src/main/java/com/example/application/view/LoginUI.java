@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.DisplayRestaurantsList;
 import com.example.application.R;
 import com.example.application.ShowMap;
 import com.example.application.controller.Controller;
@@ -88,7 +87,7 @@ public class LoginUI extends AppCompatActivity {
         textView_hp5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginUI.this, DisplayRestaurantsList.class);
+                Intent intent = new Intent(LoginUI.this, ChangePreferencesUI.class);
                 startActivity(intent);
             }
         });

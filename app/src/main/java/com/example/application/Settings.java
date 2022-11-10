@@ -12,8 +12,8 @@ import com.example.application.view.LoginUI;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Settings extends AppCompatActivity implements View.OnClickListener {
-    private Button buttonChangePreferences, buttonSignOut;
 
+    private Button buttonChangePreferences, buttonSignOut, buttonContactUs, buttonTermsAndConditions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +23,13 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         // this function sets the back button on top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        buttonContactUs = findViewById(R.id.buttonContactUs);
+        buttonTermsAndConditions = findViewById(R.id.buttonTermsAndConditions);
         buttonChangePreferences = findViewById(R.id.buttonChangePreference);
         buttonSignOut = findViewById(R.id.buttonSignOut);
 
+        buttonContactUs.setOnClickListener(this);
+        buttonTermsAndConditions.setOnClickListener(this);
         buttonChangePreferences.setOnClickListener(this);
         buttonSignOut.setOnClickListener(this);
 
@@ -43,6 +47,14 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 case R.id.buttonSignOut: {
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(this, LoginUI.class));
+                    break;
+                }
+                case R.id.buttonContactUs: {
+                    startActivity(new Intent(this, SettingsContactUs.class));
+                    break;
+                }
+                case R.id.buttonTermsAndConditions: {
+                    startActivity(new Intent(this, SettingTermsAndConditions.class));
                 }
             }
     }
