@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,17 +90,17 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         }
 
         switch (travel) {
+            case "5 minutes":
+                currentProfile.setPreferredMaximumTravelTime(5);
+                break;
+            case "10 minutes":
+                currentProfile.setPreferredMaximumTravelTime(10);
+                break;
             case "15 minutes":
                 currentProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "30 minutes":
-                currentProfile.setPreferredMaximumTravelTime(30);
-                break;
-            case "45 minutes":
-                currentProfile.setPreferredMaximumTravelTime(45);
-                break;
-            case "1 hour":
-                currentProfile.setPreferredMaximumTravelTime(60);
+            case "20 minutes":
+                currentProfile.setPreferredMaximumTravelTime(20);
                 break;
         }
     }

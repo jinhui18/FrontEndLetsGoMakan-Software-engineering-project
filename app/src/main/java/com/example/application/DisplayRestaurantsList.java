@@ -3,6 +3,7 @@ package com.example.application;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -88,6 +89,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     private LocationRequest locationRequest;
     private static final int DEFAULT_ZOOM = 15;
     boolean useCurLoc;
+    private Restaurant restaurant;
+    ArrayList<Restaurant> restList = new ArrayList<>();
 
     // store data store configuration
     private final static Map<String, String> sortingConfiguration = new HashMap<String, String>();
@@ -243,18 +246,36 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     public void showOnMap(ArrayList<Restaurant> restList) {
         //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter getApplicationContext());
         System.out.println("size " + restList.size());
+        gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList));
         for(int index = 0; index < restList.size(); index++){
             System.out.println("index " + index);
             LatLng restaurant_location = new LatLng(restList.get(index).getLatitude(), restList.get(index).getLongitude());
             gMap.addMarker(new MarkerOptions().position(restaurant_location).title(restList.get(index).getName()));
-
-            //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter(this, restList.get(index)));
         }
+        gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(@NonNull Marker marker) {
+                String name = marker.getTitle();
+                for(int index = 0; index < restList.size(); index++) {
+                    if (name.equals(restList.get(index).getName())) {
+                        restaurant = restList.get(index);
+                    }
+                }
+                Toast.makeText(DisplayRestaurantsList.this, "Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DisplayRestaurantsList.this, DisplayRestaurant.class);
+                intent.putExtra("restaurant_url", restaurant.getImage());
+                intent.putExtra("restaurant_name", restaurant.getName());
+                intent.putExtra("restaurant_address", restaurant.getAddress());
+                intent.putExtra("restaurant_latitude", restaurant.getLatitude());
+                intent.putExtra("restaurant_longitude", restaurant.getLongitude());
+                //intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
+                intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
+                intent.putExtra("ratings", restaurant.getRatings());
+                startActivity(intent);
+        }});
     }
 
     public void retrieve(){
-        ArrayList<Restaurant> restList = new ArrayList<>();
-
         mDatabase.child(userID).child("Account").child("recommendedList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -384,6 +405,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         for (int i=0; i<filteringConfiguration.size(); i++){
             selectedSubCriteria[i] = null;
         }
+        System.out.println("hiiiiiiiiiiiiiiii" + selectedSubCriteria.length );
 
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){
@@ -405,7 +427,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     public void sortingDropDown(){
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
-        builder.setTitle("Select Sorting Criteria");
+        builder.setTitle("Select Sorting Criteria text");
 
 
         builder.setSingleChoiceItems(sortingCriteriaArray, singlePosition, new DialogInterface.OnClickListener() {
@@ -419,6 +441,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                System.out.println("Hello I am Isaac");
                 FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, sortingCriteriaArray, singlePosition, sortingListModel);
             }
         });

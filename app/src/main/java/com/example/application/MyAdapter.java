@@ -1,11 +1,14 @@
 package com.example.application;
 
+import static java.lang.Math.floor;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +47,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
         holder.textView_restaurant_name1.setText(restaurant.getName());
         holder.textView_restaurant_address1.setText(restaurant.getAddress());
+        holder.textView_ratings.setText("Ratings: " + floor(restaurant.getRatings()) );
+        holder.textView_restaurant_time1.setText(( String.format( "%.2f", restaurant.getTravellingTime()) + "mins"));
+        holder.crowdLevel.setText("Crowd Level: " + restaurant.getCrowdLevel());
+        holder.ratingBar.setRating((float) floor(restaurant.getRatings()));
+        //holder.ratingBar.setNumStars(5);
+        //holder.ratingBar.setRating(5);
 
-        holder.textView_restaurant_time1.setText(( restaurant.getTravellingTime() + " mins") );
+
 
         Picasso.get()
                 .load(restaurant.getImage())
@@ -64,8 +73,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_latitude", restaurant.getLatitude());
                 intent.putExtra("restaurant_longitude", restaurant.getLongitude());
                 intent.putExtra("restaurant_opening_hours_time", restaurant.isOpenNow());
-                intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
-                intent.putExtra("restaurant_travelling_time", restaurant.getTravellingTime());
+                intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel() );
+                intent.putExtra("ratings", restaurant.getRatings() );
+                intent.putExtra("restaurant_travelling_time", String.format( "%.2f", restaurant.getTravellingTime()));
                 context.startActivity(intent);
 
             }
@@ -81,10 +91,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1;
+        private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1, crowdLevel, textView_ratings;
         private ImageView imageView_bg1,imageView_restaurant1;
         String restaurant_url;
         CardView cardView;
+        RatingBar ratingBar;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -95,6 +106,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             imageView_bg1 = itemView.findViewById(R.id.imageView_bg1);
             imageView_restaurant1 = itemView.findViewById(R.id.imageView_restaurant1);
             cardView = itemView.findViewById(R.id.cardView);
+            crowdLevel = itemView.findViewById(R.id.textView_crowd_level);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
+            textView_ratings = itemView.findViewById(R.id.textView_rating);
         }
 
     }

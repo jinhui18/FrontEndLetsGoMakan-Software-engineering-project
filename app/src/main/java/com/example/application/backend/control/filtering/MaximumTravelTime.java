@@ -14,10 +14,10 @@ public class MaximumTravelTime extends FilteringCriteria{
         float maxTravelTime = (float) 0.0;
         ArrayList <Restaurant> filteredList = new ArrayList<Restaurant>();
         String travelTimeString = (String) super.criteria;
-        if (travelTimeString.compareTo("15 minutes")==0) maxTravelTime=15;
-        else if (travelTimeString.compareTo("30 minutes")==0) maxTravelTime=30;
-        else if (travelTimeString.compareTo("45 minutes")==0) maxTravelTime=45;
-        else if (travelTimeString.compareTo("60 minutes")==0) maxTravelTime=60;
+        if (travelTimeString.compareTo("5 minutes")==0) maxTravelTime=5;
+        else if (travelTimeString.compareTo("10 minutes")==0) maxTravelTime=10;
+        else if (travelTimeString.compareTo("15 minutes")==0) maxTravelTime=15;
+        else if (travelTimeString.compareTo("20 minutes")==0) maxTravelTime=20;
 
         for (int i=0; i<restaurantList.size(); i++) {
             if (restaurantList.get(i).getTravellingTime()<=maxTravelTime && restaurantList.get(i).getTravellingTime()>=0) {

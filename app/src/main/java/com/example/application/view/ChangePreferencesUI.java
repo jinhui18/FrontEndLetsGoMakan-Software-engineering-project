@@ -153,17 +153,18 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         }
 
         switch (travel) {
+            case "5 minutes":
+                newProfile.setPreferredMaximumTravelTime(5);
+                break;
+            case "10 minutes":
+                newProfile.setPreferredMaximumTravelTime(10);
+                break;
             case "15 minutes":
                 newProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "30 minutes":
-                newProfile.setPreferredMaximumTravelTime(30);
+            case "20 minutes":
+                newProfile.setPreferredMaximumTravelTime(20);
                 break;
-            case "45 minutes":
-                newProfile.setPreferredMaximumTravelTime(45);
-                break;
-            case "60 minutes":
-                newProfile.setPreferredMaximumTravelTime(60);
         }
     }
 }

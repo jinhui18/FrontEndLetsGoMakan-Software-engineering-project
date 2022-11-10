@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:maxWidth="200dp"
-        android:maxHeight="200dp"
+        android:maxHeight="140dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,16 +24,17 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/mr_bean_restaurant" />
 
+
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
-        android:maxWidth="380dp"
-        android:maxHeight="480dp"
+        android:maxWidth="400dp"
+        android:maxHeight="500dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_restaurant"
         app:srcCompat="@drawable/bg_yellow" />
@@ -42,44 +43,36 @@
         android:id="@+id/textView_restaurant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:text="Mr  Bean"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView1"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/imageView1"
         app:layout_constraintTop_toTopOf="@+id/imageView1" />
 
     <TextView
         android:id="@+id/textView_restaurant_address"
-        android:layout_width="200dp"
+        android:layout_width="393dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="50 Nanyang Avenue, #01-16"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_name"
+        app:layout_constraintStart_toStartOf="@+id/imageView1"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_name" />
 
     <TextView
         android:id="@+id/textView_restaurant_opening_hours_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="Opening hours: "
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_address"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_address" />
-
-    <TextView
-        android:id="@+id/textView_restaurant_opening_hours_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="8am - 1 30pm"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/textView_restaurant_opening_hours_text"
-        app:layout_constraintTop_toTopOf="@+id/textView_restaurant_opening_hours_text" />
 
     <TextView
         android:id="@+id/textView_restaurant_crowd_level_text"
@@ -91,27 +84,16 @@
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_opening_hours_text"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_opening_hours_text" />
 
-    <TextView
-        android:id="@+id/textView_restaurant_crowd_level_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:text="3/5"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_crowd_level_text"
-        app:layout_constraintTop_toTopOf="@+id/textView_restaurant_crowd_level_text" />
-
 
     <TextView
         android:id="@+id/textView_restaurant_travelling_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="44dp"
         android:text="30 mins away"
         android:textColor="@color/black"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_restaurant_address"
-        app:layout_constraintEnd_toEndOf="@+id/imageView1" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView1"
+        app:layout_constraintTop_toTopOf="@+id/textView_restaurant_opening_hours_text" />
 
     <TextView
         android:id="@+id/textView_restaurant_review_text"
@@ -119,114 +101,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
-        android:text="Review: "
+        android:text="Ratings: "
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_travelling_time"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_travelling_time" />
-
-    <TextView
-        android:id="@+id/textView_restaurant_review"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="4.5/5"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/textView_restaurant_review_text"
-        app:layout_constraintTop_toTopOf="@+id/textView_restaurant_review_text" />
-
-    <TextView
-        android:id="@+id/textView_restaurant_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="See all reviews"
-        android:textColor="#0E2EE1"
-
-        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
-        app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_review_text" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="200dp"
-        android:maxHeight="70dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView1"
-        app:layout_constraintTop_toBottomOf="@+id/imageView1"
-        app:srcCompat="@drawable/bg_yellow" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="200dp"
-        android:maxHeight="70dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView1"
-        app:layout_constraintTop_toBottomOf="@+id/imageView1"
-        app:srcCompat="@drawable/bg_yellow" />
-
-    <ImageView
-        android:id="@+id/imageView_website"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:adjustViewBounds="true"
-        android:maxHeight="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.4"
-        app:srcCompat="@drawable/website" />
-
-    <TextView
-        android:id="@+id/textView_website_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="26dp"
-        android:clickable="true"
-        android:text="Website Link"
-        android:textColor="#0E2EE1"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageView
-        android:id="@+id/imageView_make_reservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp"
-        android:adjustViewBounds="true"
-        android:maxHeight="45dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/make_reservation" />
-
-    <TextView
-        android:id="@+id/textView_make_reservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:text="Make reservation"
-        android:textColor="#0E2EE1"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <androidx.fragment.app.FragmentContainerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="390dp"
-        android:layout_height="260dp"
+        android:layout_height="320dp"
         android:id="@+id/mapRestaurant"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         tools:context=".DisplayRestaurant"
@@ -235,22 +119,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/buttonWebsite"
         app:layout_constraintVertical_bias="0.448"/>
-
-    <ImageView
-        android:id="@+id/imageView_bookmarked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:maxWidth="30dp"
-        android:maxHeight="30dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView1"
-        app:layout_constraintTop_toTopOf="@+id/imageView1"
-        app:srcCompat="@drawable/bookmarked_not_pressed" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -260,5 +130,18 @@
         android:numStars="5"
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_review_text" />
+
+    <Button
+        android:id="@+id/buttonWebsite"
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FFFFE0"
+        android:text="Website link"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

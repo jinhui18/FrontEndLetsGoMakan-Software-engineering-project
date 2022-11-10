@@ -15,14 +15,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.backend.control.others.FirebaseForAPI;
+import com.example.application.view.ChangePreferencesUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -38,6 +41,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +66,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     private CheckBox useCurrentLocation, useCurrentTime;
     private TextInputLayout textInputLocation;
     private TextInputEditText editLocation;
+    private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -93,6 +98,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         imageView_3 = (ImageView) findViewById(R.id.greyBox2);
         imageView_5 = (ImageView) findViewById(R.id.orangeBox);
 
+        progressBar = findViewById(R.id.progressBar);
         useCurrentLocation = (CheckBox) findViewById(R.id.useCurrentLocation);
         useCurrentTime = (CheckBox) findViewById(R.id.useCurrentTime);
 
@@ -121,6 +127,9 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         useCurTime = false;
         choseTime = false;
         choseLoc = false;
+
+        mDatabase.child(userID).child("Account").child("useCurrentLocation").setValue(false);
+        mDatabase.child(userID).child("Account").child("useCurrentTime").setValue(false);
 
         getLocation();
 
@@ -171,10 +180,52 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if(useCurTime){
                     getCurrentTime();
                 }
+
                 FirebaseForAPI fb = new FirebaseForAPI();
                 fb.getAPIData(mAuth, mDatabase, this);
 
-                /*startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));*/
+                startActivity(new Intent(SetTimeLocation.this, LoadingPage.class));
+
+                /*
+                mDatabase.child(userID).child("Account").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        //progressBar.setVisibility(View.GONE);
+                        //System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE1");
+                        //startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        progressBar.setVisibility(View.GONE);
+                        System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE2");
+
+                        startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                 */
+
+
+
+                //progressBar.setVisibility(View.GONE);
+
+                //startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
             }
             else{
                 showTimeDialog();

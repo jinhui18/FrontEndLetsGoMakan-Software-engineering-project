@@ -5,7 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,20 +21,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCallback {
 
-    private ImageView imageView_restaurant, imageView_bookmarked;
+    private ImageView imageView_restaurant;
     private TextView textView_restaurant_name, textView_restaurant_address, textView_restaurant_opening_hours_time, textView_restaurant_crowd_level_value;
     private TextView textView_restaurant_travelling_time, textView_restaurant_review, textView_restaurant_link;
     private TextView textView_website_link, textView_make_reservation, textView_get_direction;
+    private RatingBar ratingBar;
+    private Button buttonWebsite;
 
     private String restaurant_url;
     private String restaurant_name;
     private String restaurant_address;
-    private String restaurant_opening_hours_time;
-    private String restaurant_crowd_level_value;
+    private boolean restaurant_opening_hours_time;
+    private int restaurant_crowd_level_value;
     private String restaurant_travelling_time;
+    private float ratings;
+
 
     private GoogleMap gMap;
     private double restaurant_latitude;
@@ -45,19 +53,16 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.display_restaurant);
 
         imageView_restaurant = findViewById(R.id.imageView_restaurant);
-        imageView_bookmarked = findViewById(R.id.imageView_bookmarked);
+        textView_restaurant_opening_hours_time = findViewById(R.id.textView_restaurant_opening_hours_text);
+        textView_restaurant_crowd_level_value = findViewById(R.id.textView_restaurant_crowd_level_text);
 
         textView_restaurant_name = findViewById(R.id.textView_restaurant_name);
         textView_restaurant_address = findViewById(R.id.textView_restaurant_address);
-        textView_restaurant_opening_hours_time = findViewById(R.id.textView_restaurant_opening_hours_time);
-        textView_restaurant_crowd_level_value = findViewById(R.id.textView_restaurant_crowd_level_value);
         textView_restaurant_travelling_time = findViewById(R.id.textView_restaurant_travelling_time);
+        ratingBar = findViewById(R.id.ratingBar);
+        buttonWebsite = findViewById(R.id.buttonWebsite);
 
         // all of the things below i cant get yet
-        textView_restaurant_review = findViewById(R.id.textView_restaurant_review);
-        textView_restaurant_link = findViewById(R.id.textView_restaurant_link);
-        textView_website_link = findViewById(R.id.textView_website_link);
-        textView_make_reservation = findViewById(R.id.textView_make_reservation);
 
         // this function sets the back button on top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,29 +75,39 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         restaurant_url = intent.getExtras().getString("restaurant_url");
         restaurant_name = intent.getExtras().getString("restaurant_name");
         restaurant_address = intent.getExtras().getString("restaurant_address");
-        restaurant_opening_hours_time = intent.getExtras().getString("restaurant_opening_hours_time");
-        restaurant_crowd_level_value = intent.getExtras().getString("restaurant_crowd_level_value");
+        restaurant_opening_hours_time = intent.getExtras().getBoolean("restaurant_opening_hours_time");
+        restaurant_crowd_level_value = intent.getExtras().getInt("restaurant_crowd_level_value");
         restaurant_travelling_time = intent.getExtras().getString("restaurant_travelling_time");
         restaurant_latitude = intent.getExtras().getDouble("restaurant_latitude");
         restaurant_longitude = intent.getExtras().getDouble("restaurant_longitude");
+        ratings = intent.getExtras().getFloat("ratings");
 
         //change the image of the restaurant
-        /*
+        System.out.println("sadasdasdsad" + restaurant_url);
         Picasso.get()
                 .load(restaurant_url)
-                .fit()
                 .into(imageView_restaurant);
 
-         */
-
+        textView_restaurant_travelling_time.setText(restaurant_travelling_time + "mins away");
         textView_restaurant_name.setText(restaurant_name);
         textView_restaurant_address.setText(restaurant_address);
+        ratingBar.setRating(ratings);
 
         // need to modify the string, i need to see what format opening hours is stored in database first
         // all three data below is the same, need change formatting
-        textView_restaurant_opening_hours_time.setText(restaurant_opening_hours_time);
-        textView_restaurant_crowd_level_value.setText(restaurant_crowd_level_value);
-        //textView_restaurant_travelling_time.setText(restaurant_travelling_time);
+        if (restaurant_opening_hours_time == true){
+            textView_restaurant_opening_hours_time.setText("Open/Closed: " + "Open");
+        }else{
+            textView_restaurant_opening_hours_time.setText("Open/Closed: " + "Closed");
+        }
+        textView_restaurant_crowd_level_value.setText("Crowd Level :" + restaurant_crowd_level_value + "/5");
+
+        buttonWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //implement URL
+            }
+        });
     }
 
     @Override

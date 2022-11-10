@@ -81,6 +81,9 @@
             android:name=".DisplayRestaurant"
             android:parentActivityName=".DisplayRestaurantsList" />
         <activity android:name=".ResetPasswordLinkSent" />
+        <activity android:name=".LoadingPage" />
+
+
     </application>
 
 </manifest>

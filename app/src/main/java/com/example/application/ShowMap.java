@@ -118,6 +118,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         switch(v.getId()){
             case R.id.mapToRec: {
                 startActivity(new Intent(this, SetTimeLocation.class));
+                //startActivity(new Intent(this, SetTimeLocation.class));
                 break;
             }
             case R.id.settings: {

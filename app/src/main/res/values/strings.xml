@@ -10,10 +10,10 @@
     </string-array>
     <string name="maximum_travel_time">Maximum Travel Time</string>
     <string-array name="travelTime">
-        <item>0.5 hour</item>
-        <item>1 hour</item>
-        <item>1.5 hours</item>
-        <item>2 hours</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
     </string-array>
     <string name="dietary_requirements">Dietary Requirements</string>
     <string-array name="diet">

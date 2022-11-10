@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -122,7 +123,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             time = arrayList.get(0).getCurrentTime().substring(28, 33);
                         } else {
 
-                            String timedata = arrayList.get(0).getChosenTime().substring(5, 15);
+                            String timedata = arrayList.get(0).getCurrentTime().substring(5, 15);
                             SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
                             try {
                                 date = parser.parse(timedata);
@@ -132,7 +133,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
-                            time = arrayList.get(0).getChosenTime().substring(28, 33);
+                            time = arrayList.get(0).getChosenTime().substring(0, 4);
                         }
                         if (arrayList.get(0).getuseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
@@ -237,20 +238,26 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     int currentHour = Integer.valueOf(time.substring(0,2));
 
-                    System.out.println("Before and");
                     int popTimeIndex = currentHour - 6;
 
+
+
+
                     String popTime;
-                    if (popTimeList.get(i).get(date_as_int - 1).getJSONArray(1).getJSONArray(popTimeIndex).getString(2) != null)
-                        popTime = popTimeList.get(i).get(date_as_int - 1).getJSONArray(1).getJSONArray(popTimeIndex).getString(2);
-                    else
-                        popTime = "1";
+                    try {
+                        popTime = ((JSONArray) ((JSONArray) popTimeList.get(i).get(date_as_int - 1).get(1)).get(popTimeIndex)).getString(2);
+                    }catch (Exception e){popTime = "1";}
 
                     System.out.println (popTime);
 
+
                     int crowdLevel = stuffParser.getCrowdLevelFromPT(popTime);
 
-                    int currentTime = (Integer.valueOf(time.substring(0,2)) * 100 )+ Integer.valueOf(time.substring(3,5));
+                    System.out.println(time);
+
+                    int currentTime = (Integer.valueOf(time.substring(0,1)) * 100 )+ Integer.valueOf(time.substring(3,4));
+
+                    System.out.println(currentTime);
 
                     boolean openNow;
 
@@ -556,7 +563,7 @@ public class FirebaseForAPI implements AsyncResponse{
                 try {
                     ResponseBody response = client.newCall(request).execute().body();
                     JSONObject responseObject = new JSONObject(response.string());
-                    result.add(responseObject.getJSONObject("route_summary").getDouble("total_time"));
+                    result.add(responseObject.getJSONObject("route_summary").getDouble("total_time")/60);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

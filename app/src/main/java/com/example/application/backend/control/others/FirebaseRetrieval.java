@@ -197,15 +197,19 @@ public class FirebaseRetrieval {
                         //There are only x many default filtering criteria
                         for (int i=0; i<numberOfDefaultCriteria; i++){ //changed from 2 to size here
                             Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
+                            System.out.print("yyyyyyyyyy" + hashy.size());
                             for (int j=0; j<hashy.size();j++){
                                 //For future extensions, add on more else if statements here
                                 if (i==0){
                                     String subCriteria = hashy.get(String.valueOf(j));
+                                    System.out.print("hhhhhh" + subCriteria);
                                     String[] parts = subCriteria.split(" ");
                                     float maxTimeLimit = Float.parseFloat(parts[0]);
                                     if (defaultMaxTravelTime<=maxTimeLimit){ //maxTimeLimit will be in ascending order as per txt file
                                         profileSubCriteriaChoice[i] = j;
+                                        System.out.println("Is This Null?: " + subCriteria);
                                         selectedSubCriteria[i] = subCriteria;
+                                        System.out.println("dadsadadas" + selectedSubCriteria[0]);
                                         break;
                                     }
                                 }
