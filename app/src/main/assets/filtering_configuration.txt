@@ -1,2 +1,3 @@
 0=MaximumTravelTime
-1=TakeOut
+1=PriceLevel
+2=TakeOut

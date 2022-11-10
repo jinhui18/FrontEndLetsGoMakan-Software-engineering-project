@@ -1,3 +1,4 @@
 0=CrowdLevel
 1=Ratings
 2=TravellingTime
+3=PriceLevel

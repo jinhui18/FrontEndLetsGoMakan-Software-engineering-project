@@ -195,21 +195,17 @@ public class FirebaseRetrieval {
                         float defaultMaxTravelTime = userProfile.getPreferredMaximumTravelTime();
 
                         //There are only x many default filtering criteria
-                        for (int i=0; i<numberOfDefaultCriteria; i++){ //changed from 2 to size here
+                        for (int i=0; i<numberOfDefaultCriteria; i++){
                             Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
-                            System.out.print("yyyyyyyyyy" + hashy.size());
                             for (int j=0; j<hashy.size();j++){
                                 //For future extensions, add on more else if statements here
                                 if (i==0){
                                     String subCriteria = hashy.get(String.valueOf(j));
-                                    System.out.print("hhhhhh" + subCriteria);
                                     String[] parts = subCriteria.split(" ");
                                     float maxTimeLimit = Float.parseFloat(parts[0]);
                                     if (defaultMaxTravelTime<=maxTimeLimit){ //maxTimeLimit will be in ascending order as per txt file
                                         profileSubCriteriaChoice[i] = j;
-                                        System.out.println("Is This Null?: " + subCriteria);
                                         selectedSubCriteria[i] = subCriteria;
-                                        System.out.println("dadsadadas" + selectedSubCriteria[0]);
                                         break;
                                     }
                                 }
@@ -223,7 +219,7 @@ public class FirebaseRetrieval {
                         System.out.println("FilteringCriteriaList length: "+filteringCriteriaList.size());
                         for (int k=0; k<numberOfDefaultCriteria; k++) {
                             System.out.println("K value: "+k);
-                            selectedFilteringCriteria[k]=true;
+                            selectedFilteringCriteria[k]=true; //This is to check the box in the UI dropdown
                             FilteringCriteria filteringCriteria = FilteringStoreFactory.getDatastore(filteringCriteriaArray[k]);
                             filteringCriteria.addCriteria(selectedSubCriteria[k]); //add Corresponding criteria if user profile has that filtering option
                             filteringCriteriaList.add(filteringCriteria);

@@ -44,11 +44,5 @@ public class PriceLevel extends SortingCriteria {
         restaurantList.addAll(r1);
         restaurantList.addAll(r0);
 
-        //debug
-        for (int i=0; i<restaurantList.size();i++){
-            System.out.println(restaurantList.get(i).getAddress());
-        }
-        System.out.println();
-    }
     }
 }

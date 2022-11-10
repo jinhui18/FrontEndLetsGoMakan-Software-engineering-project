@@ -3,3 +3,8 @@
 2=15 minutes
 3=20 minutes
 NEXT
+0=Inexpensive $
+1=Moderate $$
+2=Expensive $$$
+3=Very Expensive $$$$
+NEXT
