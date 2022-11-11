@@ -27,11 +27,11 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
 
     private ImageView imageView_restaurant;
     private TextView textView_restaurant_name, textView_restaurant_address, textView_restaurant_opening_hours_time, textView_restaurant_crowd_level_value;
-    private TextView textView_restaurant_travelling_time, textView_price_level, textView_takeout;
+    private TextView textView_restaurant_travelling_time, textView_price_level, textView_takeout, textView_phone_number;
     private RatingBar ratingBar;
     private Button buttonWebsite;
 
-    private String restaurant_image_url, restaurant_website_url;
+    private String restaurant_image_url, restaurant_website_url, phone_number;
     private String restaurant_name;
     private String restaurant_address;
     private boolean restaurant_opening_hours_time;
@@ -55,6 +55,8 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         imageView_restaurant = findViewById(R.id.imageView_restaurant);
         textView_restaurant_opening_hours_time = findViewById(R.id.textView_restaurant_opening_hours_text);
         textView_restaurant_crowd_level_value = findViewById(R.id.textView_restaurant_crowd_level_text);
+        textView_phone_number = findViewById(R.id.textView_phone_number);
+
 
         textView_restaurant_name = findViewById(R.id.textView_restaurant_name);
         textView_restaurant_address = findViewById(R.id.textView_restaurant_address);
@@ -64,6 +66,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
 
         textView_price_level = findViewById(R.id.textView_price_level);
         textView_takeout = findViewById(R.id.textView_takeout);
+
 
 
         // all of the things below i cant get yet
@@ -88,6 +91,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         restaurant_price_level = intent.getExtras().getInt("restaurant_price_level");
         restaurant_website_url = intent.getExtras().getString("restaurant_website");
         restaurant_takeout = intent.getExtras().getBoolean("restaurant_takeout");
+        phone_number = intent.getExtras().getString("restaurant_phone_number");
 
 
         //change the image of the restaurant
@@ -95,12 +99,16 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
                 .load(restaurant_image_url)
                 .into(imageView_restaurant);
 
-        textView_restaurant_travelling_time.setText(restaurant_travelling_time + "mins away");
+        textView_restaurant_travelling_time.setText(restaurant_travelling_time + " mins away");
         textView_restaurant_name.setText(restaurant_name);
         textView_restaurant_address.setText(restaurant_address);
         textView_price_level.setText("Price: " + restaurant_price_level);
         ratingBar.setRating(ratings);
-        textView_takeout.setText("Take out: " + restaurant_takeout);
+        if (restaurant_takeout){
+            textView_takeout.setText("Take out: Available" );
+        }else{
+            textView_takeout.setText("Take out: Not available" );
+        }
 
         // need to modify the string, i need to see what format opening hours is stored in database first
         // all three data below is the same, need change formatting
@@ -110,6 +118,15 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
             textView_restaurant_opening_hours_time.setText("Open/Closed: " + "Closed");
         }
         textView_restaurant_crowd_level_value.setText("Crowd Level :" + restaurant_crowd_level_value + "/5");
+
+        textView_phone_number.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse(phone_number ));
+                startActivity(callIntent);
+            }
+        });
 
         buttonWebsite.setOnClickListener(new View.OnClickListener() {
             @Override

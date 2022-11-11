@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Opening hours: "
+        android:text="Open/ Closed: "
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_address"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_address" />
@@ -106,6 +106,7 @@
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_travelling_time"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_travelling_time" />
 
+
     <androidx.fragment.app.FragmentContainerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -121,6 +122,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonWebsite"
         app:layout_constraintVertical_bias="0.448"/>
+
 
 
     <RatingBar
@@ -139,7 +141,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFFFE0"
-        android:text="Website link"
+        android:text="Click here for more information"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -165,5 +167,16 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <TextView
+        android:id="@+id/textView_phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Call restaurant"
+        android:clickable="true"
+        android:textColor="#0D2DDF"
+        app:layout_constraintStart_toStartOf="@+id/textView_price_level"
+        app:layout_constraintTop_toBottomOf="@+id/textView_price_level" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

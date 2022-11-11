@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/imageView_bg1"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="0dp"
@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView_bg1"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="10dp"
@@ -53,47 +54,52 @@
 
             <TextView
                 android:id="@+id/textView_restaurant_address1"
-                android:layout_width="180dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView_restaurant1"
                 android:layout_marginStart="11dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageView_restaurant1"
-                android:text="76 Nanyang Drive, Food Court Level 2 S637331" />
+                android:text="76 Nanyang Drive, Food Court Level 2 S637331"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textView_restaurant_time1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/imageView_bg1"
+                android:layout_alignTop="@+id/textView_crowd_level"
                 android:layout_alignEnd="@+id/imageView_bg1"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:text="5 mins away" />
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="65dp"
+                android:fontFamily="@font/montserrat"
+                android:text="5 mins away"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textView_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_restaurant_time1"
                 android:layout_alignStart="@+id/textView_restaurant_time1"
+                android:layout_alignTop="@+id/textView_price_level"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="-1dp"
                 android:layout_marginEnd="22dp"
-                android:text="Ratings" />
+                android:fontFamily="@font/montserrat"
+                android:text="Ratings"
+                android:textColor="@color/black" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
                 style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="101dp"
+                android:layout_width="78dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_rating"
                 android:layout_alignStart="@+id/textView_rating"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
-                android:layout_marginEnd="18dp"
+                android:layout_marginEnd="74dp"
                 android:numStars="5"
                 android:rating="3" />
 
@@ -101,6 +107,8 @@
                 android:id="@+id/textView_crowd_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat"
                 android:layout_below="@+id/textView_restaurant_address1"
                 android:layout_alignStart="@+id/textView_restaurant_address1"
                 android:layout_marginStart="1dp"
@@ -111,21 +119,37 @@
                 android:id="@+id/textView_price_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_rating"
-                android:layout_alignStart="@+id/textView_rating"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="25dp"
-                android:text="Price:" />
+                android:layout_below="@+id/textView_crowd_level"
+                android:layout_alignStart="@+id/textView_crowd_level"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Price:"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textView_takeout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_price_level"
                 android:layout_alignStart="@+id/textView_price_level"
-                android:layout_alignTop="@+id/textView_price_level"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="30dp"
-                android:text="Take out:" />
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Take out:"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textView_open_closed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView_rating"
+                android:layout_alignTop="@+id/ratingBar"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Open/Closed: "
+                android:textColor="@color/black" />
 
 
         </RelativeLayout>

@@ -4,6 +4,7 @@ import static java.lang.Math.floor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +60,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         holder.textView_restaurant_name1.setText(restaurant.getName());
         holder.textView_restaurant_address1.setText(restaurant.getAddress());
         holder.textView_ratings.setText("Ratings: " + floor(restaurant.getRatings()) );
-        holder.textView_restaurant_time1.setText(( String.format( "%.2f", restaurant.getTravellingTime()) + "mins"));
+        holder.textView_restaurant_time1.setText(( String.format( "%.2f", restaurant.getTravellingTime()) + " mins away"));
         holder.crowdLevel.setText("Crowd Level: " + restaurant.getCrowdLevel());
         holder.ratingBar.setRating((float) floor(restaurant.getRatings()));
-        holder.textView_restaurant_takeout.setText("Take out: " +restaurant.isTakeOut());
+
+        if (restaurant.isOpenNow()){
+            holder.textView_restaurant_open_closed.setText("Open/Closed: Open");
+        }else{
+            holder.textView_restaurant_open_closed.setText("Open/Closed: Closed");
+            holder.textView_restaurant_open_closed.setTextColor(Color.RED);
+        }
+
+
+        if (restaurant.isTakeOut()){
+            holder.textView_restaurant_takeout.setText("Take out: Available ");
+        }
+        else{
+            holder.textView_restaurant_takeout.setText("Take out: Not available");
+        }
 
 
 
@@ -108,6 +123,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 //intent.putExtra("restaurant_website", restaurant.getWebsite());
                 intent.putExtra("restaurant_price_level", restaurant.getPriceLevel());
                 intent.putExtra("restaurant_takeout", restaurant.isTakeOut());
+                intent.putExtra("restaurant_phone_number", restaurant.getPhoneNumber());
                 context.startActivity(intent);
 
             }
@@ -124,7 +140,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1, crowdLevel, textView_ratings, textView_price_level;
-        private TextView textView_restaurant_takeout;
+        private TextView textView_restaurant_takeout, textView_restaurant_open_closed;
         private ImageView imageView_bg1,imageView_restaurant1;
         String restaurant_url;
         CardView cardView;
@@ -144,6 +160,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             textView_ratings = itemView.findViewById(R.id.textView_rating);
             textView_price_level = itemView.findViewById(R.id.textView_price_level);
             textView_restaurant_takeout = itemView.findViewById(R.id.textView_takeout);
+            textView_restaurant_open_closed = itemView.findViewById(R.id.textView_open_closed);
 
         }
 
