@@ -3,9 +3,20 @@ package com.example.application.backend.entity;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
+/**
+ * Profile is the entity class storing all profile information of the user.
+ * It stores the maximum travel time the user is comfortabel with,
+ * and the user's preferred mode of transportation
+ * @author celest
+ * @version 1.0
+ * @since 2022-10-07
+ */
 public class Profile {
 
-
+    /**
+     * This refers to the maximum travelling time the user is comfortable with
+     * This will be used to filter the recommended restaurant list by default (filter by maximum travel time)
+     */
     private float maxTravel;
 
     /**
