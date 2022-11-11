@@ -5,11 +5,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.backend.control.others.FirebaseRetrieval;
 import com.example.application.backend.control.sorting.SortingCriteria;
-import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Restaurant;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

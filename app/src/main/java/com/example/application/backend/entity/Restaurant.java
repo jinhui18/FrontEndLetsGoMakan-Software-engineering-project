@@ -1,7 +1,5 @@
 package com.example.application.backend.entity;
 
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
-
 /**
  *This is our Restaurant entity class that stores all related information about Restaurants
  * @author Isaac

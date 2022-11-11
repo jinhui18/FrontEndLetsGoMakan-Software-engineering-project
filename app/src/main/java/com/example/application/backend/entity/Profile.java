@@ -1,7 +1,6 @@
 package com.example.application.backend.entity;
 
 import com.example.application.backend.enums.PreferredModeOfTransport;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
 
 /**
  * Profile is the entity class storing all profile information of the user.
