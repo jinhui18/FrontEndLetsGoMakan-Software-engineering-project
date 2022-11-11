@@ -84,9 +84,10 @@ public class Restaurant {
      * @param openNow
      * @param takeOut
      */
-    public Restaurant(int cl, int pl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut, String website) {
+    public Restaurant(int cl, int pl, String phoneNumber, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut, String website) {
         this.crowdLevel = cl;
         this.priceLevel = pl;
+        this.phoneNumber = phoneNumber;
         this.ratings = rtngs;
         this.travellingTime = tt;
         this.name = name;
