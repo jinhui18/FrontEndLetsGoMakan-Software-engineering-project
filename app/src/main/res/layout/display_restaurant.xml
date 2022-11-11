@@ -16,6 +16,7 @@
         android:maxWidth="200dp"
         android:maxHeight="140dp"
         android:scaleType="fitCenter"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -29,12 +30,12 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:adjustViewBounds="true"
         android:maxWidth="400dp"
         android:maxHeight="500dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_restaurant"
         app:srcCompat="@drawable/bg_yellow" />
@@ -106,7 +107,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView_restaurant_travelling_time"
         app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_travelling_time" />
 
-
     <androidx.fragment.app.FragmentContainerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -122,7 +122,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonWebsite"
         app:layout_constraintVertical_bias="0.448"/>
-
 
 
     <RatingBar
