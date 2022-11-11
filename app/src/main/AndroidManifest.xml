@@ -56,7 +56,7 @@
             android:parentActivityName=".view.LoginUI" />
         <activity
             android:name=".view.InputPreferencesUI"
-            android:parentActivityName=".CreateNewAccountVerifyEmail" />
+             />
         <activity
             android:name=".view.ChangePreferencesUI"
             android:parentActivityName=".ShowMap" /> <!-- Change to HomePage class -->
