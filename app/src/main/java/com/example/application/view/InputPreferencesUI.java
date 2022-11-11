@@ -95,10 +95,10 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
                 currentProfile.setPreferredMaximumTravelTime(10);
                 break;
             case "20 minutes":
-                currentProfile.setPreferredMaximumTravelTime(15);
+                currentProfile.setPreferredMaximumTravelTime(20);
                 break;
             case "40 minutes":
-                currentProfile.setPreferredMaximumTravelTime(20);
+                currentProfile.setPreferredMaximumTravelTime(40);
                 break;
         }
     }
