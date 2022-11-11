@@ -61,7 +61,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     private String userID;
 
     private String day, month, year, hour, minute;
-    private int currentDay, currentMonth, currentYear, currentHour, currentMinute, currentSecond;
+    private String currentDay, currentMonth, currentYear, currentHour, currentMinute, currentSecond;
 
 
     private boolean useCurLoc, useCurDateTime, choseDateTime, choseLoc;
@@ -252,8 +252,8 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 if(selectedDay<10){
                     day = "0"+selectedDay;
                 }
-                if(selectedMonth<10){
-                    month = "0"+selectedMonth;
+                if((selectedMonth+1)<10){
+                    month = "0"+(selectedMonth+1);
                 }
                 String date = day+"-"+month+"-"+year;
                 mDatabase.child(userID).child("Account").child("chosenDate").setValue(date);
@@ -289,7 +289,31 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         System.out.println("getting current time");
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-        String dateTime = "Date "+today.monthDay+"-"+today.month+"-"+today.year+" and Time "+today.hour+":"+today.minute+":"+today.second+" SGT";
+
+        currentYear = Integer.toString(today.year);
+        currentMonth = Integer.toString(today.month + 1);
+        currentDay = Integer.toString(today.monthDay);
+        currentHour = Integer.toString(today.hour);
+        currentMinute = Integer.toString(today.minute);
+        currentSecond = Integer.toString(today.second);
+
+        if((today.month+1) < 10){
+            currentMonth = "0"+(today.month+1);
+        }
+        if(today.monthDay < 10){
+            currentDay = "0"+today.monthDay;
+        }
+        if(today.hour < 10){
+            currentHour = "0"+today.hour;
+        }
+        if(today.minute < 10){
+            currentMinute = "0"+today.minute;
+        }
+        if(today.second < 10){
+            currentSecond = "0"+today.second;
+        }
+
+        String dateTime = "Date "+currentDay+"-"+currentMonth+"-"+currentYear+" and Time "+currentHour+":"+currentMinute+":"+currentSecond+" SGT";
         mDatabase.child(userID).child("Account").child("currentDateTime").setValue(dateTime);
     }
 
