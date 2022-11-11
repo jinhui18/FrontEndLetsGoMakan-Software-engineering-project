@@ -20,12 +20,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * FilteringListModel is the model child class that inherits from the abstract Model parent class
+ * It inherits and implements the service() method with the logic to filter the retrieved full restaurant list, and pass the filtered list to the sorting controller to handle the sorting event and storing of the final list in the database.
+ * To perform its service logic, FilteringListModel needs an attribute list containing a sortingList, sortingListModel reference, an arraylist of filtering criteria, and the full restaurant list
+ * The sortingList is the attribute list needed by the sortingListModel to perform its service logic of sorting the recommended list
+ * The sortingList will contain the sorting criteria as well has an empty slot to hold the filtered restaurant list.
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class FilteringListModel extends Model{
 
+    /**
+     * This is the overridden constructor for FilteringListModel
+     * @param mAuth refers to our firebase authenticator reference
+     * @param mDatabase refers to our firebase realtime database reference
+     * @param context refers to the UI activity page (View class) in which the event happened
+     */
     public FilteringListModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }
 
+    /**
+     * This is the inherited and implemented service() model containing the logic to filter the full restaurant list and trigger the sorting of the filtered list
+     * The process involves first retrieving the full restaurant list from the database,
+     * filtering the full restaurant list with the filtering criteria, which contains the filtering sub criteria as its attribute (see filtering criteria class) that passed in from the attribute list
+     * Instantiates a sortingListController controller object with the sortingListModel and sortingList to handle the event of sorting the filtered list with the sorting criteria passed in via the attribute list
+     * sortingListController object invokes handleEvent() to sort the list
+     */
     @Override
     public void service() {
         //Format: [sortingList, sortingListModel, ArrayList<FC> FCList, FullRestList]
@@ -48,12 +71,3 @@ public class FilteringListModel extends Model{
     }
 }
 
-/*
-        //Retrieve account object and sort recommended list
-        FilteringCriteria filteringCriteria = (FilteringCriteria) super.attributeList.get(0);
-        filteringCriteria.addCriteria(super.attributeList.get(1));
-        ArrayList<Restaurant> fullRestaurantList = (ArrayList<Restaurant>) super.attributeList.get(2);
-        System.out.println("\nRecommendedList size before: "+ fullRestaurantList.size());
-        ArrayList<Restaurant> recommendedList = filteringCriteria.filter(fullRestaurantList);
-        System.out.println("\nRecommendedList size before: "+ recommendedList.size());
- */
