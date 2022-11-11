@@ -45,14 +45,43 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
         Restaurant restaurant = arrayList.get(position);
 
+        //testing only
+        /*
+        holder.textView_restaurant_name1.setText("Pizza Hut Express - NTU");
+        holder.textView_restaurant_address1.setText("76 #01-04 Nanyang Drive Block N2, #1, Singapore 637331");
+        holder.textView_ratings.setText("Ratings: " + floor(restaurant.getRatings()) );
+        holder.textView_restaurant_time1.setText(( "5" + "mins"));
+        holder.crowdLevel.setText("Crowd Level: " + "1");
+        holder.ratingBar.setRating(3);
+         */
+
+
         holder.textView_restaurant_name1.setText(restaurant.getName());
         holder.textView_restaurant_address1.setText(restaurant.getAddress());
         holder.textView_ratings.setText("Ratings: " + floor(restaurant.getRatings()) );
         holder.textView_restaurant_time1.setText(( String.format( "%.2f", restaurant.getTravellingTime()) + "mins"));
         holder.crowdLevel.setText("Crowd Level: " + restaurant.getCrowdLevel());
         holder.ratingBar.setRating((float) floor(restaurant.getRatings()));
-        //holder.ratingBar.setNumStars(5);
-        //holder.ratingBar.setRating(5);
+        holder.textView_restaurant_takeout.setText("Take out: " +restaurant.isTakeOut());
+
+
+
+        int price_level = restaurant.getPriceLevel();
+        String price_level_text = "$";
+        switch(price_level){
+            case 0:
+            case 1:
+                price_level_text = "Price: $";
+                break;
+            case 2:
+                price_level_text = "Price: $$";
+                break;
+            case 3:
+                price_level_text = "Price: $$$";
+                //
+                break;
+        }
+        holder.textView_price_level.setText(price_level_text);
 
 
 
@@ -76,6 +105,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel() );
                 intent.putExtra("ratings", restaurant.getRatings() );
                 intent.putExtra("restaurant_travelling_time", String.format( "%.2f", restaurant.getTravellingTime()));
+                //intent.putExtra("restaurant_website", restaurant.getWebsite());
+                intent.putExtra("restaurant_price_level", restaurant.getPriceLevel());
+                intent.putExtra("restaurant_takeout", restaurant.isTakeOut());
                 context.startActivity(intent);
 
             }
@@ -91,7 +123,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1, crowdLevel, textView_ratings;
+        private TextView textView,textView_restaurant_name1,textView_restaurant_address1,textView_restaurant_time1, crowdLevel, textView_ratings, textView_price_level;
+        private TextView textView_restaurant_takeout;
         private ImageView imageView_bg1,imageView_restaurant1;
         String restaurant_url;
         CardView cardView;
@@ -109,6 +142,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             crowdLevel = itemView.findViewById(R.id.textView_crowd_level);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             textView_ratings = itemView.findViewById(R.id.textView_rating);
+            textView_price_level = itemView.findViewById(R.id.textView_price_level);
+            textView_restaurant_takeout = itemView.findViewById(R.id.textView_takeout);
+
         }
 
     }

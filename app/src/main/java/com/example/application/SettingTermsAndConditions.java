@@ -20,7 +20,7 @@ public class SettingTermsAndConditions extends AppCompatActivity {
         textView_terms_and_conditions = findViewById(R.id.textView_terms_and_conditions);
         textView_terms_and_conditions.setText("This website is owned and operate by Let’s Go Makan! Pte Ltd, a company incorporated in the Republic of Singapore (“Let’s Go Makan!”, “we” or “us”). By using these services provided by Let’s Go Makan! including any mobile application or any tool made available by Let’s Go Makan! (“Let’s Go Makan! Services”) you are agreeing to be bound by the following terms and conditions (\"Terms of Use\") and Privacy Policy. From time to time, Let’s Go Makan! may publish terms and conditions for the use of specific products, tools or functionalities that must be read in conjunction with these Terms of Use and Privacy Policy.\n" +
         "\n" +
-        "A. Terms of Use\n" +
+        "A. Terms of Use\n\n" +
         "If you are using this website or any Let’s Go Makan! Services for your individual non- commercial purposes, you must be 13 years old or older, and if you are below 21 years of age, you must obtain the permission of a parent or legal guardian.\n" +
         "\u200D\n" +
         "If you are using this website or any Let’s Go Makan! Services for commercial purposes on behalf of a business, partnership, company or any other type of entity, you must be, and you hereby represent that you are, a duly authorised representative of the relevant entity.\n" +
@@ -61,7 +61,7 @@ public class SettingTermsAndConditions extends AppCompatActivity {
         "\n" +
         "If you have any vested interest such as any affiliation with any business reviewed, you must disclose the same to Let’s Go Makan!. We reserve the sole right to remove any such Content.\n" +
         "\n" +
-        "General Conditions\n" +
+        "General Conditions\n\n" +
         "We reserve the right to modify or terminate Let’s Go Makan!’s website(s) or the Let’s Go Makan! Services for any reason, without notice at any time. Notwithstanding any other provision of these Terms of Use or Privacy Policy, we also reserve the right to suspend or terminate your account at any time without prior notice to you or any other party.\n" +
         "\n" +
         "We reserve the right to alter these Terms of Use or Privacy Policy at any time. If the alterations constitute a material change to these Terms of Use or Privacy Policy, we will notify you using such means which we deem to be reasonable. What constitutes a \"material change\" will be determined at our sole discretion, in good faith and using common sense and reasonable judgement.\n" +
@@ -101,7 +101,7 @@ public class SettingTermsAndConditions extends AppCompatActivity {
         "\n" +
         "If you have any claim to make against Let’s Go Makan! you must do so within one year after such claim arose; failing which, your claim is permanently barred.\n" +
         "\n" +
-        "Legal Disclaimers\n" +
+        "Legal Disclaimers\n\n" +
         "You agree to indemnify, hold harmless, and defend Let’s Go Makan! and its affiliated companies, and their respective predecessors, successors, and assigns, and all of their respective current and former officers, directors, shareholders, agents, and employees (the “Indemnified Parties”) from any and all actions, causes of action, suits, proceedings, claims, and/or demands of any third party (and all resulting judgments, bona fide settlements, penalties, damages, losses, liabilities, costs, and expenses, including without limitation, reasonable attorneys’ fees and costs), which arise out of: (a) your actual or alleged breach of these Terms of Use and Privacy Policy, (b) your negligent acts or omissions, or (c) any third party claim, action, or demand related to your use of Let’s Go Makan!’s website(s) or the Let’s Go Makan! Services.\n" +
         "\u200D\n" +
         "Let’s Go Makan! provides its website(s) and the Let’s Go Makan! Services “as is” and hereby disclaims all warranties and representations, whether express, implied, or otherwise, including the warranties of merchantability or fitness for a particular purpose, non-infringement, title, or quiet enjoyment and from viruses and other harmful devices. Let’s Go Makan! does not warrant that Let’s Go Makan!’s website(s) or the Let’s Go Makan! Services are error-free or will operate without interruption. You use Let’s Go Makan!’s website(s) or the Let’s Go Makan! Services entirely at your own risk.\n" +
@@ -118,7 +118,7 @@ public class SettingTermsAndConditions extends AppCompatActivity {
         "From time to time, we may provide the ability to pay for products or services on Let’s Go Makan!’s website(s) or using the Let’s Go Makan! Services. Such payment facilities are operated or owned by third parties. Please refer to the terms and conditions imposed by such payment service providers to understand your rights and responsibilities when using such payment facilities. You agree that you will not hold Let’s Go Makan! responsible for any aspect of any interactions, rights and obligations between you and any payment service providers.\n" +
         "\n" +
         "B. Privacy Policy\n" +
-        "General Conditions\n" +
+        "General Conditions\n\n" +
         "If you have any questions or concerns regarding this Policy, please contact out Data Protection Officer at personaldata@Let’s Go Makan!.com.\n" +
         "\n" +
         "Let’s Go Makan!’s website(s) or the Let’s Go Makan! Services may, from time to time, contain links or other means of access to other sites that are not owned or controlled by us. Please note that this Terms of Use and Privacy Policy does not apply to the practices of third parties that Let’s Go Makan! does not own or control, or individuals that we do not employ or manage. If you wish to know more about the manner in which third parties use or treat your personal data, kindly study their privacy policies or the terms of use of their services or contact them directly.\n" +
@@ -166,7 +166,7 @@ public class SettingTermsAndConditions extends AppCompatActivity {
         "Transfer of Your Personal Data\n" +
         "If we transfer personal data overseas, we will take appropriate steps to ensure that we will comply with the Personal Data Protection Act in respect of the transferred personal data while such personal data remains in our possession or control; and if the personal data is transferred to a recipient in a country or territory outside Singapore, that the recipient is bound by legally enforceable obligations to provide to the personal data transferred a standard of protection that is comparable to that under the Personal Data Protection Act.\n" +
         "\n" +
-        "C. Miscellaneous Terms\n" +
+        "C. Miscellaneous Terms\n\n" +
         "If we fail to act with respect to your breach of these Terms of Use or the Privacy Policy or anyone else’s breach on any occasion, we are not waiving our right to act with respect to future or similar breaches.\n" +
         "\n" +
         "These Terms of use and Privacy Policy are governed by the laws of the Republic of Singapore. Any dispute arising out of or in connection with this contract, including any question regarding its existence, validity or termination, shall be referred to and finally resolved by arbitration in Singapore in accordance with the Arbitration Rules of the Singapore International Arbitration Centre (\"SIAC Rules\") for the time being in force, which rules are deemed to be incorporated by reference in this clause. The Tribunal shall consist of a single arbitrator. \n");

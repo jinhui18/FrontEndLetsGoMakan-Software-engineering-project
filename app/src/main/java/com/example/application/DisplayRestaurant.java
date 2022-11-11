@@ -1,9 +1,9 @@
 package com.example.application;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,18 +27,18 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
 
     private ImageView imageView_restaurant;
     private TextView textView_restaurant_name, textView_restaurant_address, textView_restaurant_opening_hours_time, textView_restaurant_crowd_level_value;
-    private TextView textView_restaurant_travelling_time, textView_restaurant_review, textView_restaurant_link;
-    private TextView textView_website_link, textView_make_reservation, textView_get_direction;
+    private TextView textView_restaurant_travelling_time, textView_price_level, textView_takeout;
     private RatingBar ratingBar;
     private Button buttonWebsite;
 
-    private String restaurant_url;
+    private String restaurant_image_url, restaurant_website_url;
     private String restaurant_name;
     private String restaurant_address;
     private boolean restaurant_opening_hours_time;
-    private int restaurant_crowd_level_value;
+    private int restaurant_crowd_level_value, restaurant_price_level;
     private String restaurant_travelling_time;
     private float ratings;
+    private Boolean restaurant_takeout;
 
 
     private GoogleMap gMap;
@@ -62,6 +62,10 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         ratingBar = findViewById(R.id.ratingBar);
         buttonWebsite = findViewById(R.id.buttonWebsite);
 
+        textView_price_level = findViewById(R.id.textView_price_level);
+        textView_takeout = findViewById(R.id.textView_takeout);
+
+
         // all of the things below i cant get yet
 
         // this function sets the back button on top of the screen
@@ -72,7 +76,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         Intent intent = getIntent();
-        restaurant_url = intent.getExtras().getString("restaurant_url");
+        restaurant_image_url = intent.getExtras().getString("restaurant_url");
         restaurant_name = intent.getExtras().getString("restaurant_name");
         restaurant_address = intent.getExtras().getString("restaurant_address");
         restaurant_opening_hours_time = intent.getExtras().getBoolean("restaurant_opening_hours_time");
@@ -81,17 +85,22 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         restaurant_latitude = intent.getExtras().getDouble("restaurant_latitude");
         restaurant_longitude = intent.getExtras().getDouble("restaurant_longitude");
         ratings = intent.getExtras().getFloat("ratings");
+        restaurant_price_level = intent.getExtras().getInt("restaurant_price_level");
+        restaurant_website_url = intent.getExtras().getString("restaurant_website");
+        restaurant_takeout = intent.getExtras().getBoolean("restaurant_takeout");
+
 
         //change the image of the restaurant
-        System.out.println("sadasdasdsad" + restaurant_url);
         Picasso.get()
-                .load(restaurant_url)
+                .load(restaurant_image_url)
                 .into(imageView_restaurant);
 
         textView_restaurant_travelling_time.setText(restaurant_travelling_time + "mins away");
         textView_restaurant_name.setText(restaurant_name);
         textView_restaurant_address.setText(restaurant_address);
+        textView_price_level.setText("Price: " + restaurant_price_level);
         ratingBar.setRating(ratings);
+        textView_takeout.setText("Take out: " + restaurant_takeout);
 
         // need to modify the string, i need to see what format opening hours is stored in database first
         // all three data below is the same, need change formatting
@@ -106,6 +115,9 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 //implement URL
+                Uri uri = Uri.parse(restaurant_website_url); // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
     }

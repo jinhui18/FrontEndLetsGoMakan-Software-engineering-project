@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/imageView_bg1"
                 android:layout_width="wrap_content"
-                android:layout_height="140dp"
+                android:layout_height="150dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="0dp"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView_restaurant1"
                 android:layout_marginStart="11dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageView_restaurant1"
                 android:text="76 Nanyang Drive, Food Court Level 2 S637331" />
 
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView_bg1"
                 android:layout_alignEnd="@+id/imageView_bg1"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="40dp"
                 android:text="5 mins away" />
 
@@ -106,6 +106,26 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="7dp"
                 android:text="Crowd Level: " />
+
+            <TextView
+                android:id="@+id/textView_price_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_rating"
+                android:layout_alignStart="@+id/textView_rating"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="25dp"
+                android:text="Price:" />
+
+            <TextView
+                android:id="@+id/textView_takeout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView_price_level"
+                android:layout_alignTop="@+id/textView_price_level"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="30dp"
+                android:text="Take out:" />
 
 
         </RelativeLayout>
