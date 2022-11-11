@@ -1,10 +1,13 @@
 package com.example.application.view;
 
+import static java.lang.Math.floor;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -43,9 +47,10 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         image = v.findViewById(R.id.restaurant_image);
         TextView restaurant_name = v.findViewById(R.id.restaurant_name);
         TextView restaurant_travel = v.findViewById(R.id.restaurant_travel);
+        TextView restaurant_crowd = v.findViewById(R.id.restaurant_crowd);
+        TextView restaurant_rating = v.findViewById(R.id.restaurant_rating);
+        RatingBar restaurant_rating_bar = v.findViewById(R.id.restaurant_rating_bar);
         TextView restaurant_details = v.findViewById(R.id.restaurant_details);
-
-        Picasso.get().setLoggingEnabled(true);
 
         String name = arg0.getTitle();
         System.out.println(name);
@@ -63,8 +68,13 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         restaurant_name.setText(restaurant.getName());
 
-        restaurant_travel.setText(String.valueOf(restaurant.getTravellingTime()));
+        DecimalFormat df = new DecimalFormat("#.00");
+        String time = df.format(restaurant.getTravellingTime());
+        restaurant_travel.setText(time+ " mins away");
 
+        restaurant_crowd.setText("Crowd Level: "+restaurant.getCrowdLevel());
+        restaurant_rating.setText("Rating: "+restaurant.getRatings());
+        restaurant_rating_bar.setRating((float) floor(restaurant.getRatings()));
         restaurant_details.setText("See more details");
 
         return v;

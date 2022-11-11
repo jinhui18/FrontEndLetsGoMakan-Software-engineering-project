@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F8EFE4"
     >
 
     <ImageView
         android:id="@+id/restaurant_image"
-        android:layout_width="77dp"
-        android:layout_height="77dp"
+        android:layout_width="98dp"
+        android:layout_height="106dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp" />
 
@@ -17,38 +19,80 @@
         android:id="@+id/restaurant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginLeft="133dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@id/restaurant_image"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="#504C4C"/>
 
     <TextView
         android:id="@+id/restaurant_travel"
-        android:layout_width="match_parent"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/restaurant_name"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginLeft="133dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@id/restaurant_image"
-        android:textColor="#CCCCCC" />
+        android:textColor="#504C4C" />
+
+    <TextView
+        android:id="@+id/restaurant_rating"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/restaurant_name"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="133dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@id/restaurant_travel"
+        android:textColor="#504C4C" />
+
+    <TextView
+        android:id="@+id/restaurant_crowd"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/restaurant_travel"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="133dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@id/restaurant_image"
+        android:textColor="#504C4C" />
+
+    <RatingBar
+        android:id="@+id/restaurant_rating_bar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@id/restaurant_rating"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/restaurant_crowd"
+        android:numStars="5"
+        android:rating="3" />
 
     <TextView
         android:id="@+id/restaurant_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/restaurant_travel"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="133dp"
+        android:layout_below="@id/restaurant_crowd"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:layout_toRightOf="@id/restaurant_image"
-        android:textColor="#CCCCCC"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:textAlignment="center"
+        android:textColor="#1338A6"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 </RelativeLayout>
