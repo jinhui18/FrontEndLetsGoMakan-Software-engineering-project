@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * TakeOut is our filtering child class that filters the full restaurant list according to whether the restaurants in the list have take out available as an option or not
- * This class inherits from FilteringCriteria and implements its filter() function.
+ * This class inherits from FilteringCriteria and implements its filter(ArrayList<Restaurant>) function.
  * @author Isaac
  * @version 1.0
  * @since 2022-11-10

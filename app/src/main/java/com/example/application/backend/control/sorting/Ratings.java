@@ -3,11 +3,25 @@ package com.example.application.backend.control.sorting;
 import com.example.application.backend.entity.Restaurant;
 
 import java.util.ArrayList;
-
+/**
+ * Ratings is a sorting criteria sub class that inherits from the abstract parent class SortingCriteria
+ * It implements and overrides its sort(ArrayList<Restaurant>) method to sort the provided restaurant list according to the ratings of the restaurant
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-10
+ */
 public class Ratings extends SortingCriteria {
-
+    /**
+     * Class constructor.
+     * Creates the sorting criteria crowd level.
+     */
     public Ratings() {}
 
+    /**
+     * This is the overrided implemented method from the abstract parent class with the logic to sort the restaurant list by ratings
+     * The restaurants are sorted in ascending price levels with restaurants with the highest ratings appearing at the front of the list (vice versa)
+     * @param restaurantList refers to the restaurant list to be sorted by ratings
+     */
     public void sort(ArrayList<Restaurant> restaurantList) {
         ArrayList<Restaurant> r0 = new ArrayList<Restaurant>();
         ArrayList<Restaurant> r1 = new ArrayList<Restaurant>();

@@ -18,7 +18,7 @@ import java.util.Scanner;
  */
 public class FilteringStoreFactory {
     /**
-     *
+     * This static method dynamically instantiates the object with filtering class type corresponding to the given filtering class name and returns its reference
      * @param classname refers to the class name of the filtering object to be instantiated
      * @return a reference to the instantiated filtering child class object
      */

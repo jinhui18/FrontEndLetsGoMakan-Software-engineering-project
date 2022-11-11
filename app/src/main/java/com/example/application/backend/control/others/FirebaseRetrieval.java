@@ -34,9 +34,9 @@ import java.util.Map;
 public class FirebaseRetrieval {
     /**
      * This static method is called whenever a user selects a sorting crietria and confirms the selection.
-     * The method will retrieve the display restaruant list from Firebase,
+     * The method will retrieve the recommended restaruant list from Firebase,
      * sort the list according to the seleceted sorting criteria via the MVC architecture path,
-     * push the changes back to Firebase,
+     * push the recommended restaurant list back to Firebase,
      * notifying our UI elements on the display restaurant list activity page,
      * update UI elements on the activity page via the observer pattern
      * @param mAuth refers to the Firebase authetication reference
@@ -99,7 +99,7 @@ public class FirebaseRetrieval {
      * The process involves retreiving the full restaurant list from the database,
      * filtering the full restaurant list according to the user's selected filtering criteria and their associated fitlering sub criteria followed by
      * sorting the filtered list according to the user's last selected sorting criteria by MVC architecture pathway,
-     * pushing the filtered and sorted restarant list back to the database,
+     * pushing the filtered and sorted restarant list back to the database (as the recommended restaurant list),
      * notifying UI elements on the display restaurant list page via the observer pattern,
      * which leads to the updating of the UI elements.
      * @param mAuth refers to the Firebase authetication reference
@@ -191,7 +191,7 @@ public class FirebaseRetrieval {
      * The process involves retrieving the full restaurant list from the database,
      * filtering the full restaurant list according to the default filtering criteria (which is maximum travel time the user is comfortable with) with the user's preference in his profile (sub criteria for this filtering criteria),
      * and sorting the filtered list according to travel time by MVC architecture pathway.
-     * Then the filtered and sorted restaurant list will be pushed back to the database,
+     * Then the filtered and sorted restaurant list will be pushed back to the database (as the recommended list),
      * followed by notification of all UI elements in Display Restaurant List UI activity where their update() method will be invoked to reflect the new restaurant list at runtime.
      * @param mAuth refers to the Firebase authetication reference
      * @param mDatabase refers to our Firebase realtime database reference

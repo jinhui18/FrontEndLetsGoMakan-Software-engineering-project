@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * TravellingTime is a class that facilitates the sorting of restaurants.
  * This class overrides the sort(ArrayList<Restaurant>) method in the parent SortingCriteria class
- * to sort restaurants based on their travelling time from the user's inputed location.
+ * to sort restaurants based on their travelling time from the user's inputted location.
  * @author celest
  * @version 1.0
  * @since 2022-10-07

@@ -29,10 +29,3 @@ public abstract class FilteringCriteria {
      */
     public abstract ArrayList<Restaurant> filter(ArrayList<Restaurant> restaurantList);
 }
-
-/**
- * How to use this:
- * instantiate the filtering criteria object with static method of FilteringStoreFactory (dynamic loading)
- * use the addCriteria() method to add user's set preferences as criteria
- * lastly, just filter:)
- */
