@@ -4,7 +4,21 @@ import android.util.Patterns;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+/**
+ * FormatChecker class is solely responsible for checking the format of emails and passwords
+ * It contains two static methods to do so.
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-10
+ */
 public class FormatChecker {
+    /**
+     * This static method checks whether the format of the email is valid according to our functional requirements
+     * The email must have at least one character and have a valid domain
+     * @param email refers to the email to be format checked
+     * @param textInputEmail refers to the UI field widget where users enter their email address on the UI activity page
+     * @return a boolean value indicating whether the format of the email is valid or not
+     */
     public static boolean isValidEmail(String email, TextInputLayout textInputEmail) {
 
         if (email.isEmpty()) {
@@ -24,6 +38,13 @@ public class FormatChecker {
         }
     }
 
+    /**
+     * This static method checks whether the format of the password is valid according to our functional requirements
+     * The password must contain at least 8 characters, with at least 1 capital letter, 1 non-capital letter, 1 number and 1 special character
+     * @param password refers to the password that needs to be format checked
+     * @param textInputPassword refers to the UI field widget where users enter their email address on the UI activity page
+     * @returna boolean value indicating whether the format of the password is valid or not
+     */
     public static boolean isValidPassword(String password, TextInputLayout textInputPassword)
     {
         boolean isValid = true;
