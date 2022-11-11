@@ -1,5 +1,6 @@
 package com.example.application.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.R;
+import com.example.application.Settings;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.entity.Restaurant;
@@ -74,6 +76,7 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         list.add(newProfile);
         Controller changePreferencesController = new Controller(changePreferencesModel, list);
         changePreferencesController.handleEvent();
+        startActivity(new Intent(this, Settings.class));
     }
 
     public void initialiseDropDown(FirebaseAuth mAuth, DatabaseReference mDatabase){
