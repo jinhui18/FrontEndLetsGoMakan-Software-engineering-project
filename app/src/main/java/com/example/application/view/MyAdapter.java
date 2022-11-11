@@ -64,7 +64,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         holder.textView_restaurant_time1.setText(( String.format( "%.2f", restaurant.getTravellingTime()) + " mins away"));
         holder.crowdLevel.setText("Crowd Level: " + restaurant.getCrowdLevel());
         holder.ratingBar.setRating((float) floor(restaurant.getRatings()));
-
+        holder.textView_restaurant_open_closed.setTextColor(Color.BLACK);
         if (restaurant.isOpenNow()){
             holder.textView_restaurant_open_closed.setText("Open/Closed: Open");
         }else{

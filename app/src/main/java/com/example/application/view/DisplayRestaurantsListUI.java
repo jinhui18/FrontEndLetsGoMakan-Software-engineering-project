@@ -258,7 +258,6 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                         restaurant = restList.get(index);
                     }
                 }
-                Toast.makeText(DisplayRestaurantsListUI.this, "Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(DisplayRestaurantsListUI.this, DisplayRestaurantUI.class);
                 intent.putExtra("restaurant_url", restaurant.getImage());
                 intent.putExtra("restaurant_name", restaurant.getName());
