@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -230,7 +231,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                             LatLng location = new LatLng(latitude, longitude);
                             gMap.setMyLocationEnabled(true);
                             gMap.getUiSettings().setMyLocationButtonEnabled(true);
-                            gMap.addMarker(new MarkerOptions().position(location).title("Chosen Location"));
+                            gMap.addMarker(new MarkerOptions().position(location).title("Chosen Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     location, DEFAULT_ZOOM));
                         }
@@ -321,6 +322,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                             System.out.println("Size here: "+ arrayList.size());
                         }
                         myAdapter.notifyDataSetChanged();
+                        showOnMap(arrayList);
                         return;
                     }
                     @Override
@@ -333,8 +335,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
     @Override
     public void update(Observable observable, Object o) {
+        gMap.clear();
         this.retrieveAndDisplay();
-        this.retrieve();
         System.out.println("UPDATE IS CALLED");
     }
 
@@ -400,7 +402,6 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         for (int i=0; i<filteringConfiguration.size(); i++){
             selectedSubCriteria[i] = null;
         }
-
 
                                 //Testing
                                 for (int i=0; i<sortingConfiguration.size(); i++){

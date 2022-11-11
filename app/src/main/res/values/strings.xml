@@ -36,4 +36,7 @@
     <string name="create_account">Create Account</string>
     <string name="setting_up_new_profile">Setting up new profile</string>
     <string name="todo1">TODO</string>
+    <string name="use_current_date_and_time">Use current Date and Time</string>
+    <string name="date_time"><![CDATA[DATE & TIME]]></string>
+    <string name="enter_a_different_date_time"><font size="16"><![CDATA[Enter a different Date & Time]]></font></string>
 </resources>

@@ -87,9 +87,10 @@ public class StoreAccountModel extends Model{
                                 account.setChosenLocation("");
                                 account.setCurrentLocation("");
                                 account.setChosenTime("");
-                                account.setCurrentTime("");
+                                account.setChosenDate("");
+                                account.setCurrentDateTime("");
                                 account.setUseCurrentLocation(false);
-                                account.setUseCurrentTime(false);*/
+                                account.setUseCurrentDateTime(false);*/
                                 //Testing ends
 
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();

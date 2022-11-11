@@ -109,31 +109,31 @@ public class FirebaseForAPI implements AsyncResponse{
                         profile[0] = arrayList.get(0).getProfile();
                         travelMethod = profile[0].getPreferredModeOfTransport();
                         travelTime = profile[0].getPreferredMaximumTravelTime();
-                        if (arrayList.get(0).getuseCurrentTime() == true) {
-                            String timedata = arrayList.get(0).getCurrentTime().substring(5, 15);
+                        if (arrayList.get(0).getuseCurrentDateTime() == true) {
+                            String timeData = arrayList.get(0).getCurrentDateTime().substring(5, 15);
                             SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
                             try {
-                                date = parser.parse(timedata);
+                                date = parser.parse(timeData);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
-                            time = arrayList.get(0).getCurrentTime().substring(28, 33);
+                            time = arrayList.get(0).getCurrentDateTime().substring(28, 33);
                         } else {
 
-                            String timedata = arrayList.get(0).getCurrentTime().substring(5, 15);
+                            String dateData = arrayList.get(0).getChosenDate();
                             SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
                             try {
-                                date = parser.parse(timedata);
+                                date = parser.parse(dateData);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
-                            time = arrayList.get(0).getChosenTime().substring(0, 4);
+                            time = arrayList.get(0).getChosenTime();
                         }
                         if (arrayList.get(0).getuseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
@@ -217,7 +217,7 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     float ratings = Float.valueOf(restaurantDetails.get(i).getString("rating"));
 
-                    Double travelTime = travelTimeList.get(i);
+                    Double travellingTime = travelTimeList.get(i);
 
                     String name = restaurantDetails.get(i).getString("name");
 
@@ -268,10 +268,10 @@ public class FirebaseForAPI implements AsyncResponse{
                     }
                     else{openNow = false;}
 
+                    int priceLevel = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
+                    boolean takeOut = Boolean.valueOf(restaurantDetails.get(i).getString("takeout"));
 
-
-
-                    Restaurant restaurant = new Restaurant(crowdLevel, ratings, travelTime, name, address, lat, lng, photo, openNow);
+                    Restaurant restaurant = new Restaurant(crowdLevel, priceLevel, ratings, travellingTime, name, address, lat, lng, photo, openNow, takeOut);
 
                     System.out.println("Name: " + restaurant.getName());
 

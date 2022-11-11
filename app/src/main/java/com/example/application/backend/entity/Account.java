@@ -12,9 +12,10 @@ public class Account {
         private String chosenLocation;
         private String currentLocation;
         private boolean useCurrentLocation;
-        private boolean useCurrentTime;
-        private String currentTime;
+        private boolean useCurrentDateTime;
+        private String currentDateTime;
         private String chosenTime;
+        private String chosenDate;
 
         public Account(){}
         public Account(String name, String email, Profile profile) {
@@ -45,8 +46,8 @@ public class Account {
         public void setRecommendedList(ArrayList<Restaurant> recommendedList) {
             this.recommendedList = recommendedList;
         }
-        public boolean getuseCurrentTime(){
-            return this.useCurrentTime;
+        public boolean getuseCurrentDateTime(){
+            return this.useCurrentDateTime;
         }
         public boolean getuseCurrentLocation(){
             return this.useCurrentLocation;
@@ -66,14 +67,14 @@ public class Account {
         public void setUseCurrentLocation(boolean useCurrentLocation){
             this.useCurrentLocation = useCurrentLocation;
         }
-        public void setUseCurrentTime(boolean useCurrentTime){
-            this.useCurrentTime = useCurrentTime;
+        public void setUseCurrentDateTime(boolean useCurrentTime){
+            this.useCurrentDateTime = useCurrentTime;
         }
-        public void setCurrentTime(String currentTime){
-            this.currentTime = currentTime;
+        public void setCurrentDateTime(String currentDateTime){
+            this.currentDateTime = currentDateTime;
         }
-        public String getCurrentTime(){
-            return this.currentTime;
+        public String getCurrentDateTime(){
+            return this.currentDateTime;
         }
         public void setChosenTime(String chosenTime){
             this.chosenTime = chosenTime;
@@ -81,4 +82,11 @@ public class Account {
         public String getChosenTime(){
             return this.chosenTime;
         }
+
+    public String getChosenDate() {
+        return chosenDate;
+    }
+    public void setChosenDate(String chosenDate) {
+        this.chosenDate = chosenDate;
+    }
 }

@@ -109,7 +109,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="233dp"
-        android:text="@string/time"
+        android:text="@string/date_time"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -132,17 +132,15 @@
         app:srcCompat="@drawable/rectangle_box" />
 
     <Button
-        android:id="@+id/changeTimeButton"
+        android:id="@+id/changeDateTimeButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/transparent"
         android:fontFamily="sans-serif-condensed-medium"
-        android:onClick="popTimePicker"
-        android:text="@string/enter_a_different_time"
-        android:textAllCaps="false"
+        android:hint="@string/enter_a_different_date_time"
+        android:textSize="20dp"
         android:textColor="@color/black"
-        android:textColorHint="#000000"
-        android:textSize="20sp"
+        android:textColorHint="@color/grey"
         app:layout_constraintBottom_toBottomOf="@+id/greyBox2"
         app:layout_constraintEnd_toEndOf="@+id/greyBox2"
         app:layout_constraintHorizontal_bias="0.0"
@@ -179,11 +177,11 @@
         app:layout_constraintTop_toTopOf="@+id/orangeBox" />
 
     <CheckBox
-        android:id="@+id/useCurrentTime"
+        android:id="@+id/useCurrentDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/use_current_time"
+        android:text="@string/use_current_date_and_time"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/orangeBox"
         app:layout_constraintEnd_toEndOf="@+id/whiteBox"
