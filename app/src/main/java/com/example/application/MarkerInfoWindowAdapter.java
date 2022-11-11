@@ -2,13 +2,10 @@ package com.example.application;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -57,7 +54,7 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                 restaurant = restaurant_list.get(index);
             }
         }
-        System.out.println(restaurant.getName());
+        //System.out.println(restaurant.getName());
 
         Picasso.get()
                 .load(restaurant.getImage())

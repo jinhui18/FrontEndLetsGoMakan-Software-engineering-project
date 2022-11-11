@@ -120,10 +120,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel() );
                 intent.putExtra("ratings", restaurant.getRatings() );
                 intent.putExtra("restaurant_travelling_time", String.format( "%.2f", restaurant.getTravellingTime()));
-                //intent.putExtra("restaurant_website", restaurant.getWebsite());
+                intent.putExtra("restaurant_website", restaurant.getWebsite());
                 intent.putExtra("restaurant_price_level", restaurant.getPriceLevel());
                 intent.putExtra("restaurant_takeout", restaurant.isTakeOut());
                 intent.putExtra("restaurant_phone_number", restaurant.getPhoneNumber());
+                System.out.print("heyyyyyyyyyyyy" +restaurant.getPhoneNumber());
                 context.startActivity(intent);
 
             }

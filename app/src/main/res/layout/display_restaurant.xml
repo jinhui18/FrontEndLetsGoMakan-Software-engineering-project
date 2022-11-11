@@ -58,7 +58,7 @@
         android:layout_width="393dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="50 Nanyang Avenue, #01-16"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/imageView1"
@@ -172,11 +172,13 @@
         android:id="@+id/textView_phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Call restaurant"
+        android:layout_marginTop="5dp"
         android:clickable="true"
+        android:text="Call restaurant"
         android:textColor="#0D2DDF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView1"
         app:layout_constraintStart_toStartOf="@+id/textView_price_level"
-        app:layout_constraintTop_toBottomOf="@+id/textView_price_level" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_price_level"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

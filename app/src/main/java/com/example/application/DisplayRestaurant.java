@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -102,7 +103,23 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         textView_restaurant_travelling_time.setText(restaurant_travelling_time + " mins away");
         textView_restaurant_name.setText(restaurant_name);
         textView_restaurant_address.setText(restaurant_address);
-        textView_price_level.setText("Price: " + restaurant_price_level);
+
+        int price_level = restaurant_price_level;
+        String price_level_text = "$";
+        switch(price_level){
+            case 0:
+            case 1:
+                price_level_text = "Price: $";
+                break;
+            case 2:
+                price_level_text = "Price: $$";
+                break;
+            case 3:
+                price_level_text = "Price: $$$";
+                //
+                break;
+        }
+        textView_price_level.setText("Price: " + price_level_text);
         ratingBar.setRating(ratings);
         if (restaurant_takeout){
             textView_takeout.setText("Take out: Available" );
@@ -119,14 +136,22 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
         }
         textView_restaurant_crowd_level_value.setText("Crowd Level :" + restaurant_crowd_level_value + "/5");
 
+
         textView_phone_number.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse(phone_number ));
-                startActivity(callIntent);
-            }
-        });
+                @Override
+                public void onClick(View view) {
+                    if (phone_number != null) {
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                        callIntent.setData(Uri.parse("tel:" +phone_number));
+                        startActivity(callIntent);
+                    }else{
+                        Toast.makeText(DisplayRestaurant.this, "No phone number.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+
 
         buttonWebsite.setOnClickListener(new View.OnClickListener() {
             @Override

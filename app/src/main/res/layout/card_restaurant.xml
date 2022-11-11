@@ -70,7 +70,7 @@
                 android:layout_alignTop="@+id/textView_crowd_level"
                 android:layout_alignEnd="@+id/imageView_bg1"
                 android:layout_marginTop="0dp"
-                android:layout_marginEnd="65dp"
+                android:layout_marginEnd="40dp"
                 android:fontFamily="@font/montserrat"
                 android:text="5 mins away"
                 android:textColor="@color/black" />
@@ -96,10 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_rating"
                 android:layout_alignStart="@+id/textView_rating"
-                android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
-                android:layout_marginEnd="74dp"
                 android:numStars="5"
                 android:rating="3" />
 
@@ -144,9 +142,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/textView_rating"
-                android:layout_alignTop="@+id/ratingBar"
+                android:layout_alignTop="@+id/textView_takeout"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="0dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Open/Closed: "
                 android:textColor="@color/black" />
