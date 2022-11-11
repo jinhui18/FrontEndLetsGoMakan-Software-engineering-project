@@ -148,7 +148,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
                             location = new LatLng(latitude, longitude);
                         }
-                        int radius = stuffParser.convertToSpeed(travelMethod) * (int) travelTime;
+                        int radius = (int) (stuffParser.convertToSpeed(travelMethod) * travelTime/60);
                         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                                 "location=" + location.latitude + "%2C" + location.longitude +
                                 "&radius=" + radius +
@@ -448,10 +448,10 @@ public class FirebaseForAPI implements AsyncResponse{
         protected ArrayList<ArrayList<JSONArray>> doInBackground(ArrayList<ArrayList<String>>... stringsL) {
             ArrayList<ArrayList<JSONArray>> result = new ArrayList<ArrayList<JSONArray>>();
 
-            try {
                 ArrayList<ArrayList<String>> strings = stringsL[0];
 
                 for (int i = 0; i < strings.size(); i++) {
+                    try{
                     ArrayList<JSONArray> popTimeL = new ArrayList<JSONArray>();
 
                     ArrayList<String> details = strings.get(i);
@@ -463,8 +463,8 @@ public class FirebaseForAPI implements AsyncResponse{
                     String appender = "tbm=map" + "&hl=sg" + "&tch=1" + "&q=" + URLEncoder.encode(q, "UTF-8");
                     String searchUrl = "https://www.google.de/search?" + appender;
 
-
                     String json = downloadWeirdStuff(searchUrl);
+
 
                     int jEnd = json.lastIndexOf("}");
                     if (jEnd >= 0)
@@ -472,49 +472,55 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     //now parse
 
-                    JSONObject jb = new JSONObject(json);
+                    JSONObject jb = null;
+                        jb = new JSONObject(json);
 
-                    //now read
-                    String jdata = (String) jb.get("d"); //read the data String
-                    jdata = jdata.substring(4); //cut it to get the JSONArray again
 
-                    //reparse
-                    JSONArray data = new JSONArray(jdata);
+                        //now read
+                        String jdata = (String) jb.get("d"); //read the data String
+                        jdata = jdata.substring(4); //cut it to get the JSONArray again
 
-                    if (((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)).length() > 11 &&
-                            (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)) != null) {
-                        //get information array
-                        JSONArray info = (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0))
-                                .get(14);
+                        //reparse
+                        JSONArray data = new JSONArray(jdata);
 
-                        if (info.get(84) instanceof JSONArray) {
-                            JSONArray popTime = (JSONArray) ((JSONArray) info.get(84)).get(0); //get popular times
-                            System.out.println(popTime.toString());
-                            for (int j = 0; j < popTime.length(); j++) {
-                                popTimeL.add((JSONArray) popTime.get(j));
+                        if (((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)).length() > 11 &&
+                                (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)) != null) {
+                            //get information array
+                            JSONArray info = (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0))
+                                    .get(14);
+
+                            if (info.get(84) instanceof JSONArray) {
+                                JSONArray popTime = (JSONArray) ((JSONArray) info.get(84)).get(0); //get popular times
+                                System.out.println(popTime.toString());
+                                for (int j = 0; j < popTime.length(); j++) {
+                                    popTimeL.add((JSONArray) popTime.get(j));
+                                }
+                            } else {
+                                JSONObject jo = new JSONObject();
+                                jo.put("Pat", "Guan");
+                                JSONArray ja = new JSONArray();
+                                ja.put(jo);
+                                ja.put(jo);
+                                popTimeL.add(ja);
                             }
+                            result.add(popTimeL);
                         } else {
                             JSONObject jo = new JSONObject();
-                            jo.put("Pat", "Guan");
                             JSONArray ja = new JSONArray();
                             ja.put(jo);
-                            ja.put(jo);
                             popTimeL.add(ja);
+                            result.add(popTimeL);
                         }
-                        result.add(popTimeL);
-                    } else {
+                    }catch(Exception e)
+                    {
                         JSONObject jo = new JSONObject();
                         JSONArray ja = new JSONArray();
                         ja.put(jo);
-                        popTimeL.add(ja);
-                        result.add(popTimeL);
+                        ja.put(jo);
+                        ArrayList<JSONArray> a = new ArrayList<JSONArray>();
+                        result.add(a);
                     }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             return result;
         }

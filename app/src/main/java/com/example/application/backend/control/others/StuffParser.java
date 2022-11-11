@@ -4,9 +4,9 @@ import com.example.application.backend.enums.PreferredModeOfTransport;
 
 public class StuffParser {
     public int convertToSpeed(PreferredModeOfTransport obj){
-        if (obj == PreferredModeOfTransport.PUBLIC_TRANSPORT) return 25;
-        else if (obj == PreferredModeOfTransport.CAR) return 40;
-        else return 5;
+        if (obj == PreferredModeOfTransport.PUBLIC_TRANSPORT) return 25000;
+        else if (obj == PreferredModeOfTransport.CAR) return 40000;
+        else return 5000;
     }
     public String convertToLower(PreferredModeOfTransport obj){
         if(obj == PreferredModeOfTransport.PUBLIC_TRANSPORT) return "pt";

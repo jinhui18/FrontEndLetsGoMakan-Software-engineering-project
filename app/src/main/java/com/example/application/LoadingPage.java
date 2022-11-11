@@ -36,8 +36,6 @@ public class LoadingPage extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
 
-        FirebaseForAPI fb = new FirebaseForAPI();
-        fb.getAPIData(mAuth, mDatabase, this);
 
 
         mDatabase.child(userID).child("Account").addChildEventListener(new ChildEventListener() {
