@@ -60,7 +60,8 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     private String coordinates;
     private String userID;
 
-    private int day, month, year, hour, minute;
+    private String day, month, year, hour, minute;
+    private int currentDay, currentMonth, currentYear, currentHour, currentMinute, currentSecond;
 
 
     private boolean useCurLoc, useCurDateTime, choseDateTime, choseLoc;
@@ -245,32 +246,38 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     public void pickDateTime(){
         changeDateTimeButton.setOnClickListener(view -> {
             DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-                year = selectedYear;
-                month = selectedMonth;
-                day = selectedDay;
+                year = Integer.toString(selectedYear);
+                month = Integer.toString(selectedMonth+1);
+                day = Integer.toString(selectedDay);
+                if(selectedDay<10){
+                    day = "0"+selectedDay;
+                }
+                if(selectedMonth<10){
+                    month = "0"+selectedMonth;
+                }
                 String date = day+"-"+month+"-"+year;
                 mDatabase.child(userID).child("Account").child("chosenDate").setValue(date);
                 TimePickerDialog.OnTimeSetListener onTimeSetListener = (view1, selectedHour, selectedMinute) -> {
-                    hour = selectedHour;
-                    minute = selectedMinute;
-                    if(minute<10){
-                        mDatabase.child(userID).child("Account").child("chosenTime").setValue(hour+":0"+minute);
+                    hour = Integer.toString(selectedHour);
+                    minute = Integer.toString(selectedMinute);
+                    if(selectedHour<10){
+                        hour = "0"+selectedHour;
                     }
-                    else {
-                        mDatabase.child(userID).child("Account").child("chosenTime").setValue(hour + ":" + minute);
+                    if(selectedMinute<10){
+                        minute = "0"+selectedMinute;
                     }
+                    mDatabase.child(userID).child("Account").child("chosenTime").setValue(hour+":"+minute);
                     choseDateTime = true;
-                    changeDateTimeButton.setText(String.format(Locale.getDefault(), "%d-%d-%d %02d:%02d", day, month, year, hour, minute));
+                    changeDateTimeButton.setText(String.format(Locale.getDefault(), "%s-%s-%s %s:%s", day, month, year, hour, minute));
                 };
                 int style = AlertDialog.THEME_HOLO_DARK;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(SetTimeLocation.this, style, onTimeSetListener, hour, minute, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(SetTimeLocation.this, style, onTimeSetListener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
             };
-            DatePickerDialog datePickerDialog = new DatePickerDialog(SetTimeLocation.this, onDateSetListener, year, month, day);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(SetTimeLocation.this, onDateSetListener, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
             datePickerDialog.setTitle("Select Date");
             Calendar c = Calendar.getInstance();
-            datePickerDialog.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
             c.add(Calendar.DAY_OF_MONTH,6);
             datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
