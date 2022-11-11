@@ -4,10 +4,15 @@ import com.example.application.backend.entity.Restaurant;
 
 import java.util.ArrayList;
 
+/**
+ * MaximumTravelTime is our filtering child class that filters the full restaurant list according to the given maximum travel time sub criteria set by the user
+ * This class inherits from FilteringCriteria and implements its filter() function.
+ */
 public class MaximumTravelTime extends FilteringCriteria{
     /**
-     * This method returns an ArrayList of all those restaurants whose traveling times are less than
-     * (or equal to) the maximum traveling time.
+     * This is the implemented filter method inherited from Filtering Criteria abstract class
+     * @param restaurantList refers to the full restaurant list to be filtered
+     * @return returns the filtered restaurant list
      */
     @Override
     public ArrayList<Restaurant> filter(ArrayList<Restaurant>restaurantList) {

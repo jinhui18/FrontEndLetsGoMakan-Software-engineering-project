@@ -38,11 +38,11 @@ public class PriceLevel extends SortingCriteria {
 
         // Add all separate lists into the displayed restaurant list
         restaurantList.clear();
-        restaurantList.addAll(r4);
-        restaurantList.addAll(r3);
-        restaurantList.addAll(r2);
-        restaurantList.addAll(r1);
         restaurantList.addAll(r0);
+        restaurantList.addAll(r1);
+        restaurantList.addAll(r2);
+        restaurantList.addAll(r3);
+        restaurantList.addAll(r4);
 
     }
 }

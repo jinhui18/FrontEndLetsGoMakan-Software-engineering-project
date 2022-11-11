@@ -9,8 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * FilteringStoreFactory is our class that is responsible for the dynamic loading of filtering child class objects
+ * It dynamically instantiates these class objects from the class name provided to its static function
+ */
 public class FilteringStoreFactory {
-
+    /**
+     *
+     * @param classname refers to the class name of the filtering object to be instantiated
+     * @return a reference to the instantiated filtering child class object
+     */
     public static FilteringCriteria getDatastore(String classname) {
         FilteringCriteria datastore = null;
 
