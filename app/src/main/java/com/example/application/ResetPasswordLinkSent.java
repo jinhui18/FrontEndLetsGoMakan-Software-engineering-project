@@ -52,7 +52,7 @@ public class ResetPasswordLinkSent extends AppCompatActivity implements View.OnC
                  @Override
                  public void onComplete(@NonNull Task<Void> task) {
                      if (task.isSuccessful()){
-                         Toast.makeText(ResetPasswordLinkSent.this, "Password reset link has been resent.", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(ResetPasswordLinkSent.this, "Password reset link has been resent", Toast.LENGTH_SHORT).show();
                      }
                  }
              }
