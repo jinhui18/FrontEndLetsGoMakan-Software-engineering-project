@@ -249,7 +249,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 year = Integer.toString(selectedYear);
                 month = Integer.toString(selectedMonth+1);
                 day = Integer.toString(selectedDay);
-                if(selectedDay<10){
+                if(selectedDay<10   ){
                     day = "0"+selectedDay;
                 }
                 if((selectedMonth+1)<10){
@@ -314,6 +314,11 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
         }
 
         String dateTime = "Date "+currentDay+"-"+currentMonth+"-"+currentYear+" and Time "+currentHour+":"+currentMinute+":"+currentSecond+" SGT";
+
+        System.out.println(currentMonth);
+        System.out.println(currentDay);
+        System.out.println(dateTime);
+
         mDatabase.child(userID).child("Account").child("currentDateTime").setValue(dateTime);
     }
 

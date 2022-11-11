@@ -69,6 +69,7 @@ public class FirebaseForAPI implements AsyncResponse{
     StuffParser stuffParser = new StuffParser();
 
     private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36";
+    String dateData;
 
     PreferredModeOfTransport travelMethod;
     float travelTime;
@@ -105,26 +106,26 @@ public class FirebaseForAPI implements AsyncResponse{
                             arrayList.add(account);
                         }
                         System.out.println("Size of arrayList:" + arrayList.size());
-                        //do api stuff here
+                        //do api stuff herez
                         profile[0] = arrayList.get(0).getProfile();
                         travelMethod = profile[0].getPreferredModeOfTransport();
                         travelTime = profile[0].getPreferredMaximumTravelTime();
                         if (arrayList.get(0).getuseCurrentDateTime() == true) {
-                            String timeData = arrayList.get(0).getCurrentDateTime().substring(5, 15);
-                            SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
+                            dateData = arrayList.get(0).getCurrentDateTime().substring(5, 15);
+                            SimpleDateFormat parser = new SimpleDateFormat("dd-MM-yyyy");
                             try {
-                                date = parser.parse(timeData);
+                                date = parser.parse(dateData);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date);
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
-                            time = arrayList.get(0).getCurrentDateTime().substring(28, 33);
+                            time = arrayList.get(0).getCurrentDateTime().substring(25, 30);
                         } else {
 
-                            String dateData = arrayList.get(0).getChosenDate();
-                            SimpleDateFormat parser = new SimpleDateFormat("dd-mm-yyyy");
+                            dateData = arrayList.get(0).getChosenDate();
+                            SimpleDateFormat parser = new SimpleDateFormat("dd-MM-yyyy");
                             try {
                                 date = parser.parse(dateData);
                             } catch (ParseException e) {
@@ -135,6 +136,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
                             time = arrayList.get(0).getChosenTime();
                         }
+                        System.out.println("DTEASEADW: " + date);
                         if (arrayList.get(0).getuseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
@@ -236,17 +238,20 @@ public class FirebaseForAPI implements AsyncResponse{
                     System.out.println("Before and");
 
 
-                    int currentHour = Integer.valueOf(time.substring(0,1));
+                    int currentHour = Integer.valueOf(time.substring(0,2));
 
                     int popTimeIndex = currentHour - 6;
+
+                    System.out.println(popTimeIndex);
 
 
 
 
                     String popTime;
                     try {
-                        popTime = ((JSONArray) ((JSONArray) popTimeList.get(i).get(date_as_int - 1).get(1)).get(popTimeIndex)).getString(2);
-                    }catch (Exception e){popTime = "1";}
+                        popTime = ((JSONArray) ((JSONArray) popTimeList.get(i).get(date_as_int - 1))).getJSONArray(1).getJSONArray(popTimeIndex).getString(2);//
+                        System.out.println(popTime);
+                    }catch (Exception e){popTime = "No Data";}
 
                     System.out.println (popTime);
 
@@ -255,7 +260,7 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     System.out.println(time);
 
-                    int currentTime = (Integer.valueOf(time.substring(0,1)) * 100 )+ Integer.valueOf(time.substring(3,4));
+                    int currentTime = (Integer.valueOf(time.substring(0,2)) * 100 )+ Integer.valueOf(time.substring(3,4));
 
                     System.out.println(currentTime);
 
@@ -276,7 +281,9 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     String website = restaurantDetails.get(i).getString("website");
 
-                    Restaurant restaurant = new Restaurant(crowdLevel, 0, ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
+                    int pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
+
+                    Restaurant restaurant = new Restaurant(crowdLevel, pl, ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
 
                     System.out.println("Name: " + restaurant.getName());
 
@@ -376,7 +383,7 @@ public class FirebaseForAPI implements AsyncResponse{
             ArrayList<String> placeIDs = arrayLists[0];
             ArrayList<JSONObject> result = new ArrayList<JSONObject>();
 
-            for (int i = 0; i < placeIDs.size(); i++) {
+            for (int i = 0; i < 5; i++) {
                 String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeIDs.get(i) +
                         "&fields=name%2Crating%2Cformatted_address%2Copening_hours%2Cphotos%2Cgeometry" +
                         "%2Cformatted_phone_number%2Cprice_level%2Ctakeout%2Cwebsite" +
@@ -456,6 +463,7 @@ public class FirebaseForAPI implements AsyncResponse{
                     String appender = "tbm=map" + "&hl=sg" + "&tch=1" + "&q=" + URLEncoder.encode(q, "UTF-8");
                     String searchUrl = "https://www.google.de/search?" + appender;
 
+
                     String json = downloadWeirdStuff(searchUrl);
 
                     int jEnd = json.lastIndexOf("}");
@@ -481,6 +489,7 @@ public class FirebaseForAPI implements AsyncResponse{
 
                         if (info.get(84) instanceof JSONArray) {
                             JSONArray popTime = (JSONArray) ((JSONArray) info.get(84)).get(0); //get popular times
+                            System.out.println(popTime.toString());
                             for (int j = 0; j < popTime.length(); j++) {
                                 popTimeL.add((JSONArray) popTime.get(j));
                             }
@@ -550,12 +559,19 @@ public class FirebaseForAPI implements AsyncResponse{
                 ArrayList<String> latlng = latlngs.get(i);
                 String lat = latlng.get(0);
                 String lng = latlng.get(1);
+                boolean pt = false;
 
-
+                String travel = stuffParser.convertToLower(travelMethod);
+                if (travel.compareTo("pt") == 0){
+                    pt = true;
+                    String YMD = dateData.substring(6,10) + dateData.substring(2,5) + "-" + dateData.substring(0,2);
+                    System.out.println(YMD);
+                    travel = travel + "&date=" + YMD + "&time=" + time + "&mode=TRANSIT&maxWalkDistance=2000";
+                }
 
                 String url = "https://developers.onemap.sg//privateapi/routingsvc/route?start=" + location.latitude + "," + location.longitude +
                         "&end=" + lat + "," + lng +
-                        "&routeType=" + stuffParser.convertToLower(travelMethod) +
+                        "&routeType=" + travel +
                         "&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjkzNDgsInVzZXJfaWQiOjkzNDgsImVtYWlsIjoidGFucGF0Z3VhbkB5YWhvby5jb20uc2ciLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2Njc5NzYwNDMsImV4cCI6MTY2ODQwODA0MywibmJmIjoxNjY3OTc2MDQzLCJqdGkiOiIzZTk4Y2JhMDM4ZGQwMjY4Y2VjMzliODFmNDgyNmFhNSJ9.CpZ5iOu5LPmJmF43Hj5Vu2O37np2FzjfvP8MMYMpEAY";
 
                 System.out.println(url);
@@ -571,7 +587,12 @@ public class FirebaseForAPI implements AsyncResponse{
                 try {
                     ResponseBody response = client.newCall(request).execute().body();
                     JSONObject responseObject = new JSONObject(response.string());
-                    result.add(responseObject.getJSONObject("route_summary").getDouble("total_time")/60);
+                    if(pt){
+                        result.add(responseObject.getJSONObject("plan").getJSONArray("itineraries").getJSONObject(0).getDouble("duration") / 60);
+                    }
+                    else {
+                        result.add(responseObject.getJSONObject("route_summary").getDouble("total_time") / 60);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
