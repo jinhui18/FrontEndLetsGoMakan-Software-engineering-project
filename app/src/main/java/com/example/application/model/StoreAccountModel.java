@@ -116,7 +116,7 @@ public class StoreAccountModel extends Model{
                                             });
                                         }
                                         else{
-                                            Toast.makeText(context, "Failed to create an account 1", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Failed to create an account", Toast.LENGTH_SHORT).show();
                                             //delete user here if he fails
                                             mAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -131,7 +131,7 @@ public class StoreAccountModel extends Model{
                                 });
 
                             } else { //when user account was already created before
-                                Toast.makeText(context, "Failed to create an account 2", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "User already exists", Toast.LENGTH_LONG).show();
                             }
                         }
 
