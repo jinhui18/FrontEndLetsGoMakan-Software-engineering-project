@@ -1,7 +1,7 @@
 0=5 minutes
 1=10 minutes
-2=15 minutes
-3=20 minutes
+2=20 minutes
+3=40 minutes
 NEXT
 0=Inexpensive $
 1=Moderate $$

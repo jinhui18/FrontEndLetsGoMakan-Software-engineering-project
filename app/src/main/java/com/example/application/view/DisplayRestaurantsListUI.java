@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,11 +17,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.application.backend.control.filtering.FilteringCriteria;
-import com.example.application.backend.control.filtering.FilteringStoreFactory;
+import com.example.application.R;
 import com.example.application.backend.control.others.FirebaseRetrieval;
-import com.example.application.backend.control.sorting.SortingCriteria;
-import com.example.application.backend.control.sorting.SortingStoreFactory;
 import com.example.application.backend.entity.Restaurant;
 import com.example.application.model.FilteringListModel;
 import com.example.application.model.Model;
@@ -51,7 +48,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-public class DisplayRestaurantsList extends AppCompatActivity implements Observer, OnMapReadyCallback {
+public class DisplayRestaurantsListUI extends AppCompatActivity implements Observer, OnMapReadyCallback {
     //Widgets and associated stuff
     //private TextView textView;
     private Button buttonSortBy, buttonFilterBy;
@@ -124,8 +121,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         locationRequest.setFastestInterval(2000);
 
         //MVC Stuff and Observer Pattern
-        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
-        filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsList.this);
+        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
+        filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
         sortingListModel.addObserver(this);
         //filteringListModel.addObserver(this);
 
@@ -153,13 +150,13 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
         recyclerView = findViewById(R.id.recycler_id);
         selectedFilteringCriteria = new boolean[filteringCriteriaArray.length];
         selectedSortingCriteria = new boolean[sortingCriteriaArray.length];
-        linearLayoutManager = new LinearLayoutManager(DisplayRestaurantsList.this);
+        linearLayoutManager = new LinearLayoutManager(DisplayRestaurantsListUI.this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        myAdapter = new MyAdapter(DisplayRestaurantsList.this,null);
+        myAdapter = new MyAdapter(DisplayRestaurantsListUI.this,null);
         recyclerView.setAdapter(myAdapter);
 
 
-        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringCriteriaArray, sortingCriteriaArray, selectedFilteringCriteria, singlePosition, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel, sortingListModel);
+        FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsListUI.this, filteringCriteriaArray, sortingCriteriaArray, selectedFilteringCriteria, singlePosition, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel, sortingListModel);
 
         //add subcriteria2D in as well
         //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
@@ -184,7 +181,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -215,7 +212,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
@@ -237,7 +234,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -261,8 +258,8 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                         restaurant = restList.get(index);
                     }
                 }
-                Toast.makeText(DisplayRestaurantsList.this, "Clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DisplayRestaurantsList.this, DisplayRestaurant.class);
+                Toast.makeText(DisplayRestaurantsListUI.this, "Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DisplayRestaurantsListUI.this, DisplayRestaurantUI.class);
                 intent.putExtra("restaurant_url", restaurant.getImage());
                 intent.putExtra("restaurant_name", restaurant.getName());
                 intent.putExtra("restaurant_address", restaurant.getAddress());
@@ -290,13 +287,13 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void showAlertDialog(){
-        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DisplayRestaurantsList.this);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Need Location Permission!");
         builder.setMessage("This app needs location permission. Close the app and allow location permission in phone settings.");
         builder.setPositiveButton("Close App", (dialog, which) -> {
@@ -327,7 +324,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(DisplayRestaurantsList.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
         return;
@@ -422,7 +419,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     }
 
     public void sortingDropDown(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Select Sorting Criteria text");
 
 
@@ -438,7 +435,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 System.out.println("Hello I am Isaac");
-                FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, sortingCriteriaArray, singlePosition, sortingListModel);
+                FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsListUI.this, sortingCriteriaArray, singlePosition, sortingListModel);
             }
         });
 
@@ -462,7 +459,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     }
 
     public void filteringDropDown(){
-            AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
             builder.setTitle("Select Filtering Criteria");
             builder.setCancelable(false);
 
@@ -488,7 +485,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsList.this, filteringCriteriaArray, sortingCriteriaArray, selectedSubCriteria,  selectedFilteringCriteria, singlePosition, filteringListModel, sortingListModel);
+                    FirebaseRetrieval.filterAndSort(mAuth, mDatabase, DisplayRestaurantsListUI.this, filteringCriteriaArray, sortingCriteriaArray, selectedSubCriteria,  selectedFilteringCriteria, singlePosition, filteringListModel, sortingListModel);
                 }
             });
 
@@ -511,7 +508,7 @@ public class DisplayRestaurantsList extends AppCompatActivity implements Observe
     }
 
     public void subCriteriaDropDown(String[] subCriteriaList, int filteringCriteriaIndex){
-        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsList.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Select Sub Criteria");
 
 

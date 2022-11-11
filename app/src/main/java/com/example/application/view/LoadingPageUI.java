@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.backend.control.others.FirebaseForAPI;
+import com.example.application.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoadingPage extends AppCompatActivity {
+public class LoadingPageUI extends AppCompatActivity {
     private ProgressBar progressBar;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
@@ -50,7 +50,7 @@ public class LoadingPage extends AppCompatActivity {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 progressBar.setVisibility(View.GONE);
                 System.out.println("Callback 1");
-                startActivity(new Intent(LoadingPage.this, DisplayRestaurantsList.class));
+                startActivity(new Intent(LoadingPageUI.this, DisplayRestaurantsListUI.class));
                 mDatabase.child(userID).child("Account").removeEventListener(this);
             }
 

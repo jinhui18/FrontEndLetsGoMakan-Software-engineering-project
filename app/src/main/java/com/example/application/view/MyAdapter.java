@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import static java.lang.Math.floor;
 
@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.application.R;
 import com.example.application.backend.entity.Restaurant;
 import com.squareup.picasso.Picasso;
 
@@ -110,7 +111,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             @Override
             public void onClick(View view) {
                 Toast.makeText(context,"clicked",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, DisplayRestaurant.class);
+                Intent intent = new Intent(context, DisplayRestaurantUI.class);
                 intent.putExtra("restaurant_url", restaurant.getImage());
                 intent.putExtra("restaurant_name", restaurant.getName());
                 intent.putExtra("restaurant_address", restaurant.getAddress());

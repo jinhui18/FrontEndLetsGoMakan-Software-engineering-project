@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SettingsContactUs extends AppCompatActivity {
+import com.example.application.R;
+
+public class SettingsContactUsUI extends AppCompatActivity {
 
     private EditText editTextTextEmailAddress,editTextTextSubject, editTextTextMessage;
     private Button buttonSendEmail;
@@ -35,11 +37,11 @@ public class SettingsContactUs extends AppCompatActivity {
                     if(!editTextTextMessage.getText().toString().isEmpty()){
                         sendMail();
                     }else{
-                        Toast.makeText(SettingsContactUs.this, "Message cannot be empty", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsContactUsUI.this, "Message cannot be empty", Toast.LENGTH_SHORT).show();
                         editTextTextMessage.requestFocus();
                     }
                 }else{
-                    Toast.makeText(SettingsContactUs.this, "Subject cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsContactUsUI.this, "Subject cannot be empty", Toast.LENGTH_SHORT).show();
                     editTextTextSubject.requestFocus();
                 }
             }

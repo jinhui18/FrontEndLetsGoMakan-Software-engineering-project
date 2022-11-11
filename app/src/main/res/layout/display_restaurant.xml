@@ -114,7 +114,7 @@
         android:layout_height="320dp"
         android:id="@+id/mapRestaurant"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context=".DisplayRestaurant"
+        tools:context=".view.DisplayRestaurantUI"
         tools:layout="@layout/display_restaurant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import static android.content.ContentValues.TAG;
 
@@ -6,27 +6,24 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.R;
 import com.example.application.backend.control.others.FirebaseForAPI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,7 +39,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class SetTimeLocation extends AppCompatActivity implements View.OnClickListener{
+public class SetTimeLocationUI extends AppCompatActivity implements View.OnClickListener{
 
     private TextView textView_1, textView_2, textView_3;
     private ImageView imageView_1;
@@ -167,7 +164,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                 FirebaseForAPI fb = new FirebaseForAPI();
                 fb.getAPIData(mAuth, mDatabase, this);
 
-                startActivity(new Intent(SetTimeLocation.this, LoadingPage.class));
+                startActivity(new Intent(SetTimeLocationUI.this, LoadingPageUI.class));
 
                 /*
                 mDatabase.child(userID).child("Account").addChildEventListener(new ChildEventListener() {
@@ -271,11 +268,11 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
                     changeDateTimeButton.setText(String.format(Locale.getDefault(), "%s-%s-%s %s:%s", day, month, year, hour, minute));
                 };
                 int style = AlertDialog.THEME_HOLO_DARK;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(SetTimeLocation.this, style, onTimeSetListener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(SetTimeLocationUI.this, style, onTimeSetListener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
                 timePickerDialog.setTitle("Select Time");
                 timePickerDialog.show();
             };
-            DatePickerDialog datePickerDialog = new DatePickerDialog(SetTimeLocation.this, onDateSetListener, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(SetTimeLocationUI.this, onDateSetListener, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
             datePickerDialog.setTitle("Select Date");
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH,6);
@@ -323,7 +320,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showTimeDialog(){
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(SetTimeLocation.this);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(SetTimeLocationUI.this);
         builder1.setTitle("Choose a Time");
         builder1.setMessage("Please select a time or click the 'Use Current Time' checkbox to continue");
         builder1.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());
@@ -331,7 +328,7 @@ public class SetTimeLocation extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showLocDialog(){
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(SetTimeLocation.this);
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(SetTimeLocationUI.this);
         builder2.setTitle("Choose a Location");
         builder2.setMessage("Please select a location or click the 'Use Current Location' checkbox to continue");
         builder2.setPositiveButton("Ok", (dialog, which) -> dialog.cancel());

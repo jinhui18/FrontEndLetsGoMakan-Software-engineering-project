@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.application.R;
 import com.example.application.backend.entity.Restaurant;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;

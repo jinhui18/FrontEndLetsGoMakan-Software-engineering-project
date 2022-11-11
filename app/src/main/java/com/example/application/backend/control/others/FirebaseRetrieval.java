@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.DisplayRestaurantsList;
 import com.example.application.backend.control.filtering.FilteringCriteria;
 import com.example.application.backend.control.filtering.FilteringStoreFactory;
 import com.example.application.backend.control.sorting.SortingCriteria;
@@ -13,7 +12,6 @@ import com.example.application.backend.control.sorting.SortingStoreFactory;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.entity.Restaurant;
-import com.example.application.backend.enums.TypesOfDietaryRequirements;
 import com.example.application.controller.Controller;
 import com.example.application.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,9 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 
 public class FirebaseRetrieval {

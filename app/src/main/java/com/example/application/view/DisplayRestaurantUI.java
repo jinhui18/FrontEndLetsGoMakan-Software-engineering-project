@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.application.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,7 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
-public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCallback {
+public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageView imageView_restaurant;
     private TextView textView_restaurant_name, textView_restaurant_address, textView_restaurant_opening_hours_time, textView_restaurant_crowd_level_value;
@@ -145,7 +146,7 @@ public class DisplayRestaurant extends AppCompatActivity implements OnMapReadyCa
                         callIntent.setData(Uri.parse("tel:" +phone_number));
                         startActivity(callIntent);
                     }else{
-                        Toast.makeText(DisplayRestaurant.this, "No phone number.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DisplayRestaurantUI.this, "No phone number.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.CreateNewAccountVerifyEmail;
 import com.example.application.R;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
@@ -70,7 +68,7 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         list.add(currentProfile);
         Controller changePreferencesController = new Controller(inputPreferencesModel, list);
         changePreferencesController.handleEvent();
-        startActivity(new Intent(InputPreferencesUI.this, CreateNewAccountVerifyEmail.class));
+        startActivity(new Intent(InputPreferencesUI.this, CreateNewAccountVerifyEmailPageUI.class));
     }
 
     private void createProfile() {
@@ -96,10 +94,10 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
             case "10 minutes":
                 currentProfile.setPreferredMaximumTravelTime(10);
                 break;
-            case "15 minutes":
+            case "20 minutes":
                 currentProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "20 minutes":
+            case "40 minutes":
                 currentProfile.setPreferredMaximumTravelTime(20);
                 break;
         }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.R;
-import com.example.application.ShowMap;
 import com.example.application.controller.Controller;
 import com.example.application.model.LoginUserModel;
 import com.example.application.model.Model;

@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/mapRestaurantList"
-        tools:context=".DisplayRestaurantsList"
+        tools:context=".view.DisplayRestaurantsListUI"
         tools:layout="@layout/display_restaurants_list"
         app:layout_constraintBottom_toTopOf="@+id/recycler_id"
         app:layout_constraintEnd_toEndOf="parent"

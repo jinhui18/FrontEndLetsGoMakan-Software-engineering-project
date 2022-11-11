@@ -30,15 +30,15 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".SetTimeLocation"
+            android:name=".view.SetTimeLocationUI"
             android:exported="false"
-            android:parentActivityName=".ShowMap">
+            android:parentActivityName=".view.ShowMap">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ShowMap"
+            android:name=".view.ShowMap"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -61,26 +61,26 @@
              />
         <activity
             android:name=".view.ChangePreferencesUI"
-            android:parentActivityName=".Settings" /> <!-- Change to HomePage class -->
+            android:parentActivityName=".view.SettingsPageUI" /> <!-- Change to HomePage class -->
         <activity
             android:name=".view.ResetPasswordUI"
             android:parentActivityName=".view.LoginUI" />
         <activity
-            android:name=".Settings"
-            android:parentActivityName=".ShowMap" />
-        <activity android:name=".CreateNewAccountVerifyEmail" />
+            android:name=".view.SettingsPageUI"
+            android:parentActivityName=".view.ShowMap" />
+        <activity android:name=".view.CreateNewAccountVerifyEmailPageUI" />
         <activity
-            android:name=".DisplayRestaurantsList"
-            android:parentActivityName=".ShowMap"/>
+            android:name=".view.DisplayRestaurantsListUI"
+            android:parentActivityName=".view.ShowMap"/>
         <activity
-            android:name=".DisplayRestaurant"
-            android:parentActivityName=".DisplayRestaurantsList" />
+            android:name=".view.DisplayRestaurantUI"
+            android:parentActivityName=".view.DisplayRestaurantsListUI" />
         <activity android:name=".view.ResetPasswordLinkSentUI" />
-        <activity android:name=".LoadingPage" />
-        <activity android:name=".SettingTermsAndConditions"
-            android:parentActivityName=".Settings"/>
-        <activity android:name=".SettingsContactUs"
-            android:parentActivityName=".Settings"/>
+        <activity android:name=".view.LoadingPageUI" />
+        <activity android:name=".view.SettingTermsAndConditionsUI"
+            android:parentActivityName=".view.SettingsPageUI"/>
+        <activity android:name=".view.SettingsContactUsUI"
+            android:parentActivityName=".view.SettingsPageUI"/>
 
 
 

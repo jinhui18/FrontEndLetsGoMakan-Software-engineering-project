@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.view.ChangePreferencesUI;
-import com.example.application.view.LoginUI;
+import com.example.application.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Settings extends AppCompatActivity implements View.OnClickListener {
+public class SettingsPageUI extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonChangePreferences, buttonSignOut, buttonContactUs, buttonTermsAndConditions;
 
@@ -50,11 +49,11 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                     break;
                 }
                 case R.id.buttonContactUs: {
-                    startActivity(new Intent(this, SettingsContactUs.class));
+                    startActivity(new Intent(this, SettingsContactUsUI.class));
                     break;
                 }
                 case R.id.buttonTermsAndConditions: {
-                    startActivity(new Intent(this, SettingTermsAndConditions.class));
+                    startActivity(new Intent(this, SettingTermsAndConditionsUI.class));
                 }
             }
     }

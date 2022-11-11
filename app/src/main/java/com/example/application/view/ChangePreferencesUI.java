@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.R;
-import com.example.application.Settings;
 import com.example.application.backend.entity.Account;
 import com.example.application.backend.entity.Profile;
 import com.example.application.backend.entity.Restaurant;
@@ -76,7 +75,7 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         list.add(newProfile);
         Controller changePreferencesController = new Controller(changePreferencesModel, list);
         changePreferencesController.handleEvent();
-        startActivity(new Intent(this, Settings.class));
+        startActivity(new Intent(this, SettingsPageUI.class));
     }
 
     public void initialiseDropDown(FirebaseAuth mAuth, DatabaseReference mDatabase){
@@ -162,10 +161,10 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
             case "10 minutes":
                 newProfile.setPreferredMaximumTravelTime(10);
                 break;
-            case "15 minutes":
+            case "20 minutes":
                 newProfile.setPreferredMaximumTravelTime(15);
                 break;
-            case "20 minutes":
+            case "40 minutes":
                 newProfile.setPreferredMaximumTravelTime(20);
                 break;
         }

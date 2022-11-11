@@ -1,11 +1,13 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SettingTermsAndConditions extends AppCompatActivity {
+import com.example.application.R;
+
+public class SettingTermsAndConditionsUI extends AppCompatActivity {
 
     private TextView textView_terms_and_conditions;
 

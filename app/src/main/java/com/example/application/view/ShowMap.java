@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -22,8 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.application.backend.control.others.AsyncResponse;
-import com.example.application.view.LoginUI;
+import com.example.application.R;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -37,22 +35,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.ResponseBody;
 
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
@@ -118,12 +103,12 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.mapToRec: {
-                startActivity(new Intent(this, SetTimeLocation.class));
+                startActivity(new Intent(this, SetTimeLocationUI.class));
                 //startActivity(new Intent(this, SetTimeLocation.class));
                 break;
             }
             case R.id.settings: {
-                startActivity(new Intent(this, Settings.class));
+                startActivity(new Intent(this, SettingsPageUI.class));
                 break;
             }
         }

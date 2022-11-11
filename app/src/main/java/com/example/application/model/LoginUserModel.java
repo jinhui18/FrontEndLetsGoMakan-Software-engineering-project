@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.application.ShowMap;
+import com.example.application.view.ShowMap;
 import com.example.application.backend.control.others.FormatChecker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
