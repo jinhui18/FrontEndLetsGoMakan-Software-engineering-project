@@ -57,7 +57,7 @@ public class LoginUserModel extends Model{
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     if (e.getMessage().equals("The password is invalid or the user does not have a password")){
-                        Toast.makeText(context, "That's not the right password! Please try again or click on \"Forgot password\". ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "That's not the right password! Please try again or click on \"Forgot password\" ", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(context, "Invalid account. Please try a new email address or create a new account", Toast.LENGTH_SHORT).show();
