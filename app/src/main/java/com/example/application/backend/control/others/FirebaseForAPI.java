@@ -207,7 +207,7 @@ public class FirebaseForAPI implements AsyncResponse{
         try{
             for (int i = 0; i < restaurantDetails.size(); i++)
             {
-                if (restaurantDetails.get(i).names().length() != 6 || popTimeList.get(i).size() != 7) {
+                if (restaurantDetails.get(i).names().length() != 10 || popTimeList.get(i).size() != 7) {
                     System.out.println("Mistake");
                     continue;
 
@@ -217,7 +217,7 @@ public class FirebaseForAPI implements AsyncResponse{
 
                     float ratings = Float.valueOf(restaurantDetails.get(i).getString("rating"));
 
-                    Double travellingTime = travelTimeList.get(i);
+                    Double travelTime = travelTimeList.get(i);
 
                     String name = restaurantDetails.get(i).getString("name");
 
@@ -236,7 +236,7 @@ public class FirebaseForAPI implements AsyncResponse{
                     System.out.println("Before and");
 
 
-                    int currentHour = Integer.valueOf(time.substring(0,2));
+                    int currentHour = Integer.valueOf(time.substring(0,1));
 
                     int popTimeIndex = currentHour - 6;
 
@@ -268,10 +268,15 @@ public class FirebaseForAPI implements AsyncResponse{
                     }
                     else{openNow = false;}
 
-                    int priceLevel = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
-                    boolean takeOut = Boolean.valueOf(restaurantDetails.get(i).getString("takeout"));
 
-                    Restaurant restaurant = new Restaurant(crowdLevel, priceLevel, ratings, travellingTime, name, address, lat, lng, photo, openNow, takeOut);
+
+                    boolean takeout = restaurantDetails.get(i).getBoolean("takeout");
+
+                    String phoneNumber = restaurantDetails.get(i).getString("formatted_phone_number");
+
+                    String website = restaurantDetails.get(i).getString("website");
+
+                    Restaurant restaurant = new Restaurant(crowdLevel, 0, ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
 
                     System.out.println("Name: " + restaurant.getName());
 
@@ -296,7 +301,7 @@ public class FirebaseForAPI implements AsyncResponse{
         }
         catch(JSONException e){e.printStackTrace();}
 
-        
+
     }
 
 
@@ -374,11 +379,14 @@ public class FirebaseForAPI implements AsyncResponse{
             for (int i = 0; i < placeIDs.size(); i++) {
                 String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeIDs.get(i) +
                         "&fields=name%2Crating%2Cformatted_address%2Copening_hours%2Cphotos%2Cgeometry" +
+                        "%2Cformatted_phone_number%2Cprice_level%2Ctakeout%2Cwebsite" +
                         "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
                 MediaType mediaType = MediaType.parse("text/plain");
+
+                System.out.println("Google URL: " + url);
 
 
                 Request request = new Request.Builder()
@@ -546,7 +554,7 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
                 String url = "https://developers.onemap.sg//privateapi/routingsvc/route?start=" + location.latitude + "," + location.longitude +
-                        ",&end=" + lat + "," + lng +
+                        "&end=" + lat + "," + lng +
                         "&routeType=" + stuffParser.convertToLower(travelMethod) +
                         "&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjkzNDgsInVzZXJfaWQiOjkzNDgsImVtYWlsIjoidGFucGF0Z3VhbkB5YWhvby5jb20uc2ciLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2Njc5NzYwNDMsImV4cCI6MTY2ODQwODA0MywibmJmIjoxNjY3OTc2MDQzLCJqdGkiOiIzZTk4Y2JhMDM4ZGQwMjY4Y2VjMzliODFmNDgyNmFhNSJ9.CpZ5iOu5LPmJmF43Hj5Vu2O37np2FzjfvP8MMYMpEAY";
 

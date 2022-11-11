@@ -59,6 +59,11 @@ public class Restaurant {
      */
     private boolean takeOut;
 
+    /**
+     * website of restaurant
+     */
+    private String website;
+
 
     public Restaurant() {
     }
@@ -79,7 +84,7 @@ public class Restaurant {
      * @param openNow
      * @param takeOut
      */
-    public Restaurant(int cl, int pl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut) {
+    public Restaurant(int cl, int pl, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut, String website) {
         this.crowdLevel = cl;
         this.priceLevel = pl;
         this.ratings = rtngs;
@@ -91,6 +96,7 @@ public class Restaurant {
         this.image = img;
         this.openNow = openNow;
         this.takeOut = takeOut;
+        this.website = website;
     }
 
 
@@ -182,5 +188,8 @@ public class Restaurant {
 
     public boolean isTakeOut() {return takeOut;}
     public void setTakeOut(boolean takeOut) {this.takeOut = takeOut;}
+
+    public String getWebsite() {return website;}
+    public void setWebsite(String website){this.website = website;}
 
 }
