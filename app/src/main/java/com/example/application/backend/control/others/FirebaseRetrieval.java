@@ -24,7 +24,28 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * FirebaseRetrieval is our facade class that aggregates all sorting and filtering methods relating to different classes into three methods
+ * These methods are pureSort() for sorting only, filterAndSort() for filtering then sorting, and defaultFilterAndSort() for the initial filter and sorting of the restaurant list by default criteria
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-10
+ */
 public class FirebaseRetrieval {
+    /**
+     * This static method is called whenever a user selects a sorting crietria and confirms the selection.
+     * The method will retrieve the display restaruant list from Firebase,
+     * sort the list according to the seleceted sorting criteria via the MVC architecture path,
+     * push the changes back to Firebase,
+     * notifying our UI elements on the display restaurant list activity page,
+     * update UI elements on the activity page via the observer pattern
+     * @param mAuth refers to the Firebase authetication reference
+     * @param mDatabase refers to the reference to our Firebase realtime database
+     * @param context refers to the current activity of the application when the function is called
+     * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
+     * @param singlePosition refers to the position of the user's selected sorting crietria in sortingCriteriaArray
+     * @param sortingListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen sorting criteria
+     */
     public static void pureSorting(
             FirebaseAuth mAuth,
             DatabaseReference mDatabase,
@@ -73,6 +94,25 @@ public class FirebaseRetrieval {
         return;
     }
 
+    /**
+     * This static method is called whenever a user selects one or more filtering criteria and confirms the selection
+     * The process involves retreiving the full restaurant list from the database,
+     * filtering the full restaurant list according to the user's selected filtering criteria and their associated fitlering sub criteria followed by
+     * sorting the filtered list according to the user's last selected sorting criteria by MVC architecture pathway,
+     * pushing the filtered and sorted restarant list back to the database,
+     * notifying UI elements on the display restaurant list page via the observer pattern,
+     * which leads to the updating of the UI elements.
+     * @param mAuth refers to the Firebase authetication reference
+     * @param mDatabase refers to our Firebase realtime database reference
+     * @param context refers to the current activity of the application when the function is called
+     * @param filteringCriteriaArray refers to the array containing the String selections of all our different filtering criteria
+     * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
+     * @param selectedSubCriteria refers to the array containing the selected sub criteria for the type of filtering represented by each index in the array
+     * @param selectedFilteringCriteria refers to the array containing the String selections of all our different filtering criteria
+     * @param singlePosition refers to the position of the user's selected sorting crietria in sortingCriteriaArray
+     * @param filteringListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen filtering criteria
+     * @param sortingListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen sorting criteria
+     */
     public static void filterAndSort(
             FirebaseAuth mAuth,
             DatabaseReference mDatabase,
@@ -146,6 +186,27 @@ public class FirebaseRetrieval {
         return;
     }
 
+    /**
+     * This static method is called upon the creation of Display Restaurnt List UI activity to filter and sort the full restaurant list according to default criteria
+     * The process involves retrieving the full restaurant list from the database,
+     * filtering the full restaurant list according to the default filtering criteria (which is maximum travel time the user is comfortable with) with the user's preference in his profile (sub criteria for this filtering criteria),
+     * and sorting the filtered list according to travel time by MVC architecture pathway.
+     * Then the filtered and sorted restaurant list will be pushed back to the database,
+     * followed by notification of all UI elements in Display Restaurant List UI activity where their update() method will be invoked to reflect the new restaurant list at runtime.
+     * @param mAuth refers to the Firebase authetication reference
+     * @param mDatabase refers to our Firebase realtime database reference
+     * @param context context refers to the current activity of the application when the function is called
+     * @param filteringCriteriaArray refers to the array containing the String selections of all our different filtering criteria
+     * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
+     * @param selectedFilteringCriteria refers to the array containing the String selections of all our different filtering criteria
+     * @param singlePosition refers to the position of the user's selected sorting crietria in sortingCriteriaArray
+     * @param profileSubCriteriaChoice refers to our user's preferences for the default fitlering criteria which will be used in this method
+     * @param selectedSubCriteria refers to the array containing the selected sub criteria for the type of filtering represented by each index in the array
+     * @param numberOfDefaultCriteria refers to the number of default filtering criteria in our application
+     * @param subCriteria2D refers to an array list of hash maps where each hash map contains all possible sub criteria of the filtering criteria repreented at that position in the array list
+     * @param filteringListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen filtering criteria
+     * @param sortingListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen sorting criteria
+     */
     public static void defaultFilterAndSort(
             FirebaseAuth mAuth,
             DatabaseReference mDatabase,

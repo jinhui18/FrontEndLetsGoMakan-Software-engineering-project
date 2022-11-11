@@ -7,6 +7,9 @@ import java.util.ArrayList;
 /**
  * PriceLevel is our filtering child class that filters the full restaurant list according to the given price level sub criteria set by the user
  * This class inherits from FilteringCriteria and implements its filter() function.
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-10
  */
 public class PriceLevel extends FilteringCriteria{
     /**

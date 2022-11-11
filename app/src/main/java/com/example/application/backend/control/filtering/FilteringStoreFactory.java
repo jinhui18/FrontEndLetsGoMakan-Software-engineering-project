@@ -12,6 +12,9 @@ import java.util.Scanner;
 /**
  * FilteringStoreFactory is our class that is responsible for the dynamic loading of filtering child class objects
  * It dynamically instantiates these class objects from the class name provided to its static function
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-11
  */
 public class FilteringStoreFactory {
     /**
