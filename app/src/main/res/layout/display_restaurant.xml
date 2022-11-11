@@ -89,7 +89,7 @@
         android:id="@+id/textView_restaurant_travelling_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="70dp"
         android:text="30 mins away"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/imageView1"
@@ -122,14 +122,16 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonWebsite"
         app:layout_constraintVertical_bias="0.448"/>
 
+
     <RatingBar
         android:id="@+id/ratingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
         android:numStars="5"
-        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
-        app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_review_text" />
+        app:layout_constraintStart_toEndOf="@+id/textView_restaurant_review_text"
+        app:layout_constraintTop_toTopOf="@+id/textView_restaurant_review_text" />
 
     <Button
         android:id="@+id/buttonWebsite"
@@ -143,5 +145,25 @@
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView1" />
+
+    <TextView
+        android:id="@+id/textView_price_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: "
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_crowd_level_text"
+        app:layout_constraintTop_toBottomOf="@+id/textView_restaurant_crowd_level_text" />
+
+    <TextView
+        android:id="@+id/textView_takeout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Take out: "
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/textView_restaurant_review_text"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

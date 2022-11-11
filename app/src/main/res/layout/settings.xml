@@ -43,20 +43,20 @@
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
     <Button
         android:id="@+id/buttonChangePreference"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="#8F8E8E"
         android:text="Change Preferences"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -72,27 +72,27 @@
 
     <Button
         android:id="@+id/buttonContactUs"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:backgroundTint="#8F8E8E"
         android:text="Contact us"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonChangePreference" />
 
     <Button
         android:id="@+id/buttonTermsAndConditions"
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:backgroundTint="#8F8E8E"
         android:text="Terms of service"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonContactUs" />
 
