@@ -65,8 +65,5 @@ public class LoginUserModel extends Model{
                 }
             });
         } //end of if
-        else {
-            Toast.makeText(context, "Invalid email address", Toast.LENGTH_SHORT).show();
-        }
     }
 }

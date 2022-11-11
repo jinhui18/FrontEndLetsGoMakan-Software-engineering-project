@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.backend.control.others.FormatChecker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -57,6 +58,7 @@ public class ResetPassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // need to check if email is valid and in the system
+                if (FormatChecker.isValidEmail(email.getText().toString(), textInputEmail)){
                 FirebaseAuth.getInstance().sendPasswordResetEmail( email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -74,8 +76,7 @@ public class ResetPassword extends AppCompatActivity {
                         Toast.makeText(ResetPassword.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
+                }
             }
         });
     }
