@@ -99,7 +99,7 @@ public class FirebaseForAPI implements AsyncResponse{
                         profile[0] = arrayList.get(0).getProfile();
                         travelMethod = profile[0].getPreferredModeOfTransport();
                         travelTime = profile[0].getPreferredMaximumTravelTime();
-                        if (arrayList.get(0).getuseCurrentDateTime() == true) {
+                        if (arrayList.get(0).getUseCurrentDateTime() == true) {
                             dateData = arrayList.get(0).getCurrentDateTime().substring(5, 15);
                             SimpleDateFormat parser = new SimpleDateFormat("dd-MM-yyyy");
                             try {
@@ -126,7 +126,7 @@ public class FirebaseForAPI implements AsyncResponse{
                             time = arrayList.get(0).getChosenTime();
                         }
                         System.out.println("DTEASEADW: " + date);
-                        if (arrayList.get(0).getuseCurrentLocation() == true) {
+                        if (arrayList.get(0).getUseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
                             double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
