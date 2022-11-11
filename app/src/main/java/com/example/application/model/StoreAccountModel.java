@@ -19,9 +19,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * StoreAccountModel is the model child class that inherits from the abstract Model parent class
+ * It inherits and implements the service() method with the logic to create and store the account object with user inputted details in the database.
+ * To perform its service logic, SortingListModel needs an attribute list containing the user's name, email, password, and references to the fields for user to enter their email and password in the UI activity class (View class)
+ * The sortingList is the attribute list needed by the sortingListModel to perform its service logic of sorting the recommended list
+ * The sortingList will contain the sorting criteria as well as the restaurant list to be sorted
+ * @author Isaac
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class StoreAccountModel extends Model{
 
-
+    /**
+     * This is the overridden constructor for StoreAccountModel
+     * @param mAuth
+     * @param mDatabase
+     * @param context
+     */
     public StoreAccountModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }
