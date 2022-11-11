@@ -14,7 +14,7 @@ public class FormatChecker {
         }
         // use function to check email address pattern
         if ( !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            textInputEmail.setError("Enter valid Email address !");
+            textInputEmail.setError("Enter valid Email address");
             textInputEmail.requestFocus();
             return false;
         }
@@ -29,7 +29,7 @@ public class FormatChecker {
         boolean isValid = true;
         if ( password.length() < 8)
         {
-            textInputPassword.setError("Invalid password.");
+            textInputPassword.setError("Invalid password");
             textInputPassword.requestFocus();
             isValid = false;
             return isValid;
@@ -37,7 +37,7 @@ public class FormatChecker {
         String upperCaseChars = "(.*[A-Z].*)";
         if (!password.matches(upperCaseChars ))
         {
-            textInputPassword.setError("Invalid password.");
+            textInputPassword.setError("Invalid password");
             textInputPassword.requestFocus();
             isValid = false;
             return isValid;
@@ -45,7 +45,7 @@ public class FormatChecker {
         String lowerCaseChars = "(.*[a-z].*)";
         if (!password.matches(lowerCaseChars ))
         {
-            textInputPassword.setError("Invalid password.");
+            textInputPassword.setError("Invalid password");
             textInputPassword.requestFocus();
             isValid = false;
             return isValid;
@@ -53,7 +53,7 @@ public class FormatChecker {
         String numbers = "(.*[0-9].*)";
         if (!password.matches(numbers ))
         {
-            textInputPassword.setError("Invalid password.");
+            textInputPassword.setError("Invalid password");
             textInputPassword.requestFocus();
             isValid = false;
             return isValid;
@@ -61,7 +61,7 @@ public class FormatChecker {
         String specialChars = "(.*[@,#,$,%,!,&,*].*$)";
         if (!password.matches(specialChars ))
         {
-            textInputPassword.setError("Invalid password.");
+            textInputPassword.setError("Invalid password");
             textInputPassword.requestFocus();
             isValid = false;
             return isValid;
