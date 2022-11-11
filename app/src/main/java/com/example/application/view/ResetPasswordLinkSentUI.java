@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.application.view.LoginUI;
+import com.example.application.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ResetPasswordLinkSent extends AppCompatActivity implements View.OnClickListener {
+public class ResetPasswordLinkSentUI extends AppCompatActivity implements View.OnClickListener {
 
     Button buttonReturnLoginPage;
     TextView textViewResendLink;
@@ -52,14 +52,14 @@ public class ResetPasswordLinkSent extends AppCompatActivity implements View.OnC
                  @Override
                  public void onComplete(@NonNull Task<Void> task) {
                      if (task.isSuccessful()){
-                         Toast.makeText(ResetPasswordLinkSent.this, "Password reset link has been resent", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(ResetPasswordLinkSentUI.this, "Password reset link has been resent", Toast.LENGTH_SHORT).show();
                      }
                  }
              }
                 ).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ResetPasswordLinkSent.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPasswordLinkSentUI.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

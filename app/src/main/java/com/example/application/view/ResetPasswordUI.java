@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.application.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.application.R;
 import com.example.application.backend.control.others.FormatChecker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,7 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ResetPassword extends AppCompatActivity {
+public class ResetPasswordUI extends AppCompatActivity {
 
     private TextView textView1,textView2,textView3;
     private ImageView imageView1,imageView2,imageView3;
@@ -63,8 +64,8 @@ public class ResetPassword extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(ResetPassword.this, "Please check your email to reset your password", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ResetPassword.this, ResetPasswordLinkSent.class  );
+                            Toast.makeText(ResetPasswordUI.this, "Please check your email to reset your password", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ResetPasswordUI.this, ResetPasswordLinkSentUI.class  );
                             intent.putExtra("email", email.getText().toString());
                             startActivity(intent);
                         }
@@ -73,7 +74,7 @@ public class ResetPassword extends AppCompatActivity {
                 ).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ResetPassword.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPasswordUI.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 }
