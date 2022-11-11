@@ -56,12 +56,12 @@
             android:parentActivityName=".view.LoginUI" />
         <activity
             android:name=".view.InputPreferencesUI"
-            android:parentActivityName=".CreateNewAccountVerifyEmail" />
+             />
         <activity
             android:name=".view.ChangePreferencesUI"
-            android:parentActivityName=".ShowMap" /> <!-- Change to HomePage class -->
+            android:parentActivityName=".Settings" /> <!-- Change to HomePage class -->
         <activity
-            android:name=".ResetPassword"
+            android:name=".view.ResetPasswordUI"
             android:parentActivityName=".view.LoginUI" />
         <activity
             android:name=".Settings"
@@ -73,7 +73,7 @@
         <activity
             android:name=".DisplayRestaurant"
             android:parentActivityName=".DisplayRestaurantsList" />
-        <activity android:name=".ResetPasswordLinkSent" />
+        <activity android:name=".view.ResetPasswordLinkSentUI" />
         <activity android:name=".LoadingPage" />
         <activity android:name=".SettingTermsAndConditions"
             android:parentActivityName=".Settings"/>

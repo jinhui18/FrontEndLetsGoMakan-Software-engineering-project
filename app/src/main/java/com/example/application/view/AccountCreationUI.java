@@ -3,6 +3,7 @@ package com.example.application.view;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -73,10 +74,17 @@ public class AccountCreationUI extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
 
         ArrayList<Object> list = new ArrayList<Object>();
-        list.add(name); list.add(email); list.add(textInputEmail);
-        list.add(password); list.add(textInputPassword);
+        if (!name.getText().toString().isEmpty()){
+            list.add(name); list.add(email); list.add(textInputEmail);
+            list.add(password); list.add(textInputPassword);
 
-        Controller storeAccountController = new Controller(storeAccountModel,list);
-        storeAccountController.handleEvent();
+            Controller storeAccountController = new Controller(storeAccountModel,list);
+            storeAccountController.handleEvent();
+        }
+        else{
+            Toast.makeText(AccountCreationUI.this,"Name cannot be empty", Toast.LENGTH_SHORT).show();
+            name.requestFocus();
+        }
+
     }
 }
