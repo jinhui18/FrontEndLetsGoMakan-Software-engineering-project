@@ -110,7 +110,7 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
 
                         if (pmt==5) {travelTimeNum=0;}
                         else if (pmt==10) {travelTimeNum=1;}
-                        else if (pmt==15) {travelTimeNum=2;}
+                        else if (pmt==20) {travelTimeNum=2;}
                         else {travelTimeNum=3;}
 
                         ArrayAdapter<CharSequence> transportAdapter = ArrayAdapter.createFromResource(ChangePreferencesUI.this, R.array.transportMode, android.R.layout.simple_spinner_item);
