@@ -46,7 +46,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 
-
+/**
+ * This class sends requests to the Google APIs and stores the resulting list of restaurants in firebase for use by the sorting and filtering classes.
+ * @author Pratham
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class FirebaseForAPI implements AsyncResponse{
 
     ArrayList<JSONObject> restaurantDetails = new ArrayList<JSONObject>();
@@ -70,7 +75,15 @@ public class FirebaseForAPI implements AsyncResponse{
     DatabaseReference mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
 
 
-
+    /**
+     * This method gets all the parameters from the database needed call the API methods and creates a URL out of them that's used to send API requests.
+     * The APIs return a list of restaurants ready for sorting/filtering.
+     * This list is then pushed to the database.
+     *
+     * @param mAuth the Firebase authentication reference
+     * @param mDatabase a real-time reference to the database hosted on firebase
+     * @param context the current activity of the app
+     */
     public void getAPIData(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         final ArrayList<Account> arrayList = new ArrayList<>();
         Profile[] profile = new Profile[1];
@@ -182,16 +195,28 @@ public class FirebaseForAPI implements AsyncResponse{
 
     //AsyncTask Responses
     @Override
+    /**
+     * This method gets the output from the Places Details API and assigns it to an ArrayList so it can be accessed by getAPIData().
+     * @param output The output from the Places Details API
+     */
     public void processFinishPD(ArrayList<JSONObject> output) {
         restaurantDetails = output;
     }
 
 
-
+    /**
+     * This method gets the output from the OneMap API and assigns it to an ArrayList so it can be accessed by getAPIData().
+     * @param result The output from the OneMap API
+     */
     public void processFinishOneMap(ArrayList<Double> result) {
         travelTimeList = result;
     }
-
+    /**
+     * This method combines the results from the popular times web crawler and the places details search and
+     * parses them to fit the format of our records in the database.
+     * It returns the final result to processFinishPD().
+     * @param output The output from the popular times crawler.
+     */
     @Override
     public void processFinishPT(ArrayList<ArrayList<JSONArray>> output) {
         popTimeList = output;
@@ -352,7 +377,6 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
     }
-
 
     public class PlaceTask extends AsyncTask<String, String, String> {
 
@@ -569,7 +593,7 @@ public class FirebaseForAPI implements AsyncResponse{
                     }
                 }catch(Exception e)
                 {
-                    System.out.println("hello world leh");
+                    System.out.println("hello world");
                     JSONObject jo = new JSONObject();
                     JSONArray ja = new JSONArray();
                     ja.put(jo);

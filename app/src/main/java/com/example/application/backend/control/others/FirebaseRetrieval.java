@@ -34,12 +34,12 @@ import java.util.Map;
 public class FirebaseRetrieval {
     /**
      * This static method is called whenever a user selects a sorting crietria and confirms the selection.
-     * The method will retrieve the recommended restaruant list from Firebase,
-     * sort the list according to the seleceted sorting criteria via the MVC architecture path,
+     * The method will retrieve the recommended restaurant list from Firebase,
+     * sort the list according to the selected sorting criteria via the MVC architecture path,
      * push the recommended restaurant list back to Firebase,
      * notifying our UI elements on the display restaurant list activity page,
      * update UI elements on the activity page via the observer pattern
-     * @param mAuth refers to the Firebase authetication reference
+     * @param mAuth refers to the Firebase authentication reference
      * @param mDatabase refers to the reference to our Firebase realtime database
      * @param context refers to the current activity of the application when the function is called
      * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
