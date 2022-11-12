@@ -195,89 +195,140 @@ public class FirebaseForAPI implements AsyncResponse{
     @Override
     public void processFinishPT(ArrayList<ArrayList<JSONArray>> output) {
         popTimeList = output;
+        // this is to get the full rest list alr
+        System.out.println("sadasdsadsa size of restaurantDetails is " + restaurantDetails.size());
+        System.out.println("restaurantDetails is " + restaurantDetails);
         try{
             for (int i = 0; i < restaurantDetails.size(); i++)
             {
-                if (restaurantDetails.get(i).names().length() != 10 || popTimeList.get(i).size() != 7) {
-                    System.out.println("Mistake");
-                    continue;
+                //System.out.println("rest details in index "+ i + " " + restaurantDetails.get(i));
+                //System.out.println("size of rest details at index " + i + " is " + restaurantDetails.get(i).names().length());
+                //System.out.println("travelTimeList at index " + i + " is " + travelTimeList.get(i));
 
-                }else{
-                    Double lat =Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
-                    Double lng = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
+                // original code  in if bracket is restaurantDetails.get(i).names().length() != 10 || popTimeList.get(i).size() != 7
+                try {
+                    if (popTimeList.get(i).size() != 7) {
+                        System.out.println("Mistake");
+                        continue;
 
-                    float ratings = Float.valueOf(restaurantDetails.get(i).getString("rating"));
+                    } else {
+                        System.out.println("THIS IS ALL THE ACCEPTED ONES ");
+                        System.out.println(restaurantDetails.get(i));
+                        Double lat = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
+                        Double lng = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
-                    Double travelTime = travelTimeList.get(i);
+                        float ratings = Float.valueOf(restaurantDetails.get(i).getString("rating"));
 
-                    String name = restaurantDetails.get(i).getString("name");
+                        Double travelTime = travelTimeList.get(i);
 
-                    String address = restaurantDetails.get(i).getString("formatted_address");
+                        String name = restaurantDetails.get(i).getString("name");
 
-                    String photoRef = restaurantDetails.get(i).getJSONArray("photos").getJSONObject(0).getString("photo_reference");
+                        String address = restaurantDetails.get(i).getString("formatted_address");
 
-                    String photo = "https://maps.googleapis.com/maps/api/place/photo" +
-                            "?maxwidth=400" +
-                            "&photo_reference=" + photoRef +
-                            "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
+                        String photoRef = restaurantDetails.get(i).getJSONArray("photos").getJSONObject(0).getString("photo_reference");
 
-                    int currentDay = date_as_int;
+                        String photo = "https://maps.googleapis.com/maps/api/place/photo" +
+                                "?maxwidth=400" +
+                                "&photo_reference=" + photoRef +
+                                "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
-                    System.out.println(time);
-                    System.out.println("Before and");
+                        int currentDay = date_as_int;
 
-
-                    int currentHour = Integer.valueOf(time.substring(0,2));
-
-                    int popTimeIndex = currentHour - 6;
-
-                    System.out.println(popTimeIndex);
-
-
-
-
-                    String popTime;
-                    try {
-                        popTime = ((JSONArray) ((JSONArray) popTimeList.get(i).get(date_as_int - 1))).getJSONArray(1).getJSONArray(popTimeIndex).getString(2);//
-                        System.out.println(popTime);
-                    }catch (Exception e){popTime = "No Data";}
-
-                    System.out.println (popTime);
+                        System.out.println(time);
+                        System.out.println("Before and");
 
 
-                    int crowdLevel = stuffParser.getCrowdLevelFromPT(popTime);
+                        int currentHour = Integer.valueOf(time.substring(0, 2));
 
-                    System.out.println(time);
+                        int popTimeIndex = currentHour - 6;
 
-                    int currentTime = (Integer.valueOf(time.substring(0,2)) * 100 )+ Integer.valueOf(time.substring(3,4));
-
-                    System.out.println(currentTime);
-
-                    boolean openNow;
+                        System.out.println(popTimeIndex);
 
 
-                    if( currentTime < 2200 && restaurantDetails.get(i).getJSONObject("opening_hours").getBoolean("open_now"))
-                    {
-                        openNow = true;
+                        String popTime;
+                        try {
+                            popTime = ((JSONArray) ((JSONArray) popTimeList.get(i).get(date_as_int - 1))).getJSONArray(1).getJSONArray(popTimeIndex).getString(2);//
+                            System.out.println(popTime);
+                        } catch (Exception e) {
+                            popTime = "No Data";
+                        }
+
+                        System.out.println("hellllllllooooooooooooooooo" + popTime);
+
+
+                        int crowdLevel = stuffParser.getCrowdLevelFromPT(popTime);
+
+                        System.out.println(time);
+
+                        int currentTime = (Integer.valueOf(time.substring(0, 2)) * 100) + Integer.valueOf(time.substring(3, 4));
+
+                        System.out.println(currentTime);
+
+                        boolean openNow;
+
+                        try{
+                            if (currentTime < 2200 && restaurantDetails.get(i).getJSONObject("opening_hours").getBoolean("open_now")) {
+                                openNow = true;
+                            }
+                            else{
+                                openNow = false;
+                            }
+                        }catch(Exception e){
+                            if (currentTime <2200 && currentTime >1100){
+                                openNow = true;
+                            }
+                            else{
+                                openNow = false;
+                            }
+
+                        }
+
+                        /*
+                        if (currentTime < 2200 && restaurantDetails.get(i).getJSONObject("opening_hours").getBoolean("open_now")) {
+                            openNow = true;
+                        } else {
+                            openNow = false;
+                        }
+
+                         */
+
+
+                        boolean takeout = restaurantDetails.get(i).getBoolean("takeout");
+
+                        String phoneNumber = null;
+                        try{
+                            phoneNumber = restaurantDetails.get(i).getString("formatted_phone_number");
+                        }catch (Exception e){
+                            phoneNumber = null;
+                        }
+                        //String phoneNumber = restaurantDetails.get(i).getString("formatted_phone_number");
+
+                        String website = null;
+                        try{
+                            website = restaurantDetails.get(i).getString("website");
+                        }catch(Exception e){
+                            website = null;
+
+                        }
+                        //String website = restaurantDetails.get(i).getString("website");
+
+                        int pl = 1;
+                        try{
+                            pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
+                        }
+                        catch(Exception e){
+                            pl =1;
+                        }
+                        //int pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
+
+                        Restaurant restaurant = new Restaurant(crowdLevel, pl, phoneNumber, ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
+
+                        System.out.println("Name: " + restaurant.getName());
+
+                        restaurantList.add(restaurant);
                     }
-                    else{openNow = false;}
-
-
-
-                    boolean takeout = restaurantDetails.get(i).getBoolean("takeout");
-
-                    String phoneNumber = restaurantDetails.get(i).getString("formatted_phone_number");
-
-                    String website = restaurantDetails.get(i).getString("website");
-
-                    int pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
-
-                    Restaurant restaurant = new Restaurant(crowdLevel, pl, phoneNumber,ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
-
-                    System.out.println("Name: " + restaurant.getName());
-
-                    restaurantList.add(restaurant);
                 }
+                catch (Exception e){continue;}
             }
             System.out.println("list sizeeeeee" + restaurantList.size());
             Map<String, Object> map = new HashMap<>();
@@ -295,7 +346,9 @@ public class FirebaseForAPI implements AsyncResponse{
                 }
             });
         }
-        catch(JSONException e){e.printStackTrace();}
+        catch(Exception e){
+            System.out.println("here ah");
+            e.printStackTrace();}
 
 
     }
@@ -322,9 +375,12 @@ public class FirebaseForAPI implements AsyncResponse{
                 }
 
                 data = stringBuilder.toString();
+                System.out.println("heeehehehe "+ data);
+
 
                 bufferedReader.close();
             } catch (IOException e) {
+                System.out.println("sheeshhhhhhhhhhhhh");
                 e.printStackTrace();
             }
 
@@ -351,6 +407,7 @@ public class FirebaseForAPI implements AsyncResponse{
                     placeIDList.add(resultsArray.getJSONObject(i).getString("place_id"));
                 }
             } catch (JSONException e) {
+                System.out.println("sadsadasdsad");
                 e.printStackTrace();
             }
 
@@ -372,7 +429,9 @@ public class FirebaseForAPI implements AsyncResponse{
             ArrayList<String> placeIDs = arrayLists[0];
             ArrayList<JSONObject> result = new ArrayList<JSONObject>();
 
-            for (int i = 0; i < 5; i++) {
+            System.out.println("size of places ids is " + placeIDs.size());
+
+            for (int i = 0; i < placeIDs.size(); i++) {
                 String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeIDs.get(i) +
                         "&fields=name%2Crating%2Cformatted_address%2Copening_hours%2Cphotos%2Cgeometry" +
                         "%2Cformatted_phone_number%2Cprice_level%2Ctakeout%2Cwebsite" +
@@ -394,12 +453,15 @@ public class FirebaseForAPI implements AsyncResponse{
                     JSONObject resultObject = responseObject.getJSONObject("result");
                     result.add(resultObject);
                 } catch (IOException e) {
+                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    System.out.println("bbbbbbbbbbbbbbbbbbbbbbb");
                     e.printStackTrace();
                 }
             }
-
+            System.out.println("size of result is: " +result.size());
+            System.out.println("Result is: " +result);
             return result;
         }
 
@@ -408,6 +470,8 @@ public class FirebaseForAPI implements AsyncResponse{
             delegate.processFinishPD(jsonObjects);
             ArrayList<ArrayList<String>> restaurantNAList = new ArrayList<ArrayList<String>>();
             ArrayList<ArrayList<String>> latLngList = new ArrayList<ArrayList<String>>();
+            System.out.println("size of json object is " + jsonObjects.size());
+            System.out.println("json object is :" + jsonObjects);
             for (int i = 0; i < jsonObjects.size(); i++) {
                 ArrayList<String> restaurantDets = new ArrayList<String>();
                 ArrayList<String> latLng = new ArrayList<String>();
@@ -420,9 +484,11 @@ public class FirebaseForAPI implements AsyncResponse{
                     restaurantNAList.add(restaurantDets);
                     latLngList.add(latLng);
                 } catch (JSONException e) {
+                    System.out.print("Insanity");
                     e.printStackTrace();
                 }
             }
+            System.out.println("restaurantNAList size is " + restaurantNAList.size());
             new GetTotalTime().execute(latLngList);
 
             new GetPopularTimes().execute(restaurantNAList);
@@ -437,10 +503,10 @@ public class FirebaseForAPI implements AsyncResponse{
         protected ArrayList<ArrayList<JSONArray>> doInBackground(ArrayList<ArrayList<String>>... stringsL) {
             ArrayList<ArrayList<JSONArray>> result = new ArrayList<ArrayList<JSONArray>>();
 
-                ArrayList<ArrayList<String>> strings = stringsL[0];
+            ArrayList<ArrayList<String>> strings = stringsL[0];
 
-                for (int i = 0; i < strings.size(); i++) {
-                    try{
+            for (int i = 0; i < strings.size(); i++) {
+                try{
                     ArrayList<JSONArray> popTimeL = new ArrayList<JSONArray>();
 
                     ArrayList<String> details = strings.get(i);
@@ -462,55 +528,57 @@ public class FirebaseForAPI implements AsyncResponse{
                     //now parse
 
                     JSONObject jb = null;
-                        jb = new JSONObject(json);
+                    jb = new JSONObject(json);
 
 
-                        //now read
-                        String jdata = (String) jb.get("d"); //read the data String
-                        jdata = jdata.substring(4); //cut it to get the JSONArray again
+                    //now read
+                    String jdata = (String) jb.get("d"); //read the data String
+                    jdata = jdata.substring(4); //cut it to get the JSONArray again
 
-                        //reparse
-                        JSONArray data = new JSONArray(jdata);
+                    //reparse
+                    JSONArray data = new JSONArray(jdata);
 
-                        if (((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)).length() > 11 &&
-                                (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)) != null) {
-                            //get information array
-                            JSONArray info = (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0))
-                                    .get(14);
+                    if (((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)).length() > 11 &&
+                            (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0)) != null) {
+                        //get information array
+                        JSONArray info = (JSONArray) ((JSONArray) ((JSONArray) ((JSONArray) data.get(0)).get(1)).get(0))
+                                .get(14);
 
-                            if (info.get(84) instanceof JSONArray) {
-                                JSONArray popTime = (JSONArray) ((JSONArray) info.get(84)).get(0); //get popular times
-                                System.out.println(popTime.toString());
-                                for (int j = 0; j < popTime.length(); j++) {
-                                    popTimeL.add((JSONArray) popTime.get(j));
-                                }
-                            } else {
-                                JSONObject jo = new JSONObject();
-                                jo.put("Pat", "Guan");
-                                JSONArray ja = new JSONArray();
-                                ja.put(jo);
-                                ja.put(jo);
-                                popTimeL.add(ja);
+                        if (info.get(84) instanceof JSONArray) {
+                            JSONArray popTime = (JSONArray) ((JSONArray) info.get(84)).get(0); //get popular times
+                            System.out.println(popTime.toString());
+                            for (int j = 0; j < popTime.length(); j++) {
+                                popTimeL.add((JSONArray) popTime.get(j));
                             }
-                            result.add(popTimeL);
                         } else {
                             JSONObject jo = new JSONObject();
+                            jo.put("Pat", "Guan");
                             JSONArray ja = new JSONArray();
                             ja.put(jo);
+                            ja.put(jo);
                             popTimeL.add(ja);
-                            result.add(popTimeL);
                         }
-                    }catch(Exception e)
-                    {
+                        result.add(popTimeL);
+                    } else {
                         JSONObject jo = new JSONObject();
                         JSONArray ja = new JSONArray();
                         ja.put(jo);
-                        ja.put(jo);
-                        ArrayList<JSONArray> a = new ArrayList<JSONArray>();
-                        result.add(a);
+                        popTimeL.add(ja);
+                        result.add(popTimeL);
                     }
+                }catch(Exception e)
+                {
+                    System.out.println("hello world leh");
+                    JSONObject jo = new JSONObject();
+                    JSONArray ja = new JSONArray();
+                    ja.put(jo);
+                    ja.put(jo);
+                    ArrayList<JSONArray> a = new ArrayList<JSONArray>();
+                    result.add(a);
                 }
-
+            }
+            System.out.println("result is :" + result);
+            System.out.println("result size is :" + result.size());
             return result;
         }
 
@@ -589,8 +657,10 @@ public class FirebaseForAPI implements AsyncResponse{
                         result.add(responseObject.getJSONObject("route_summary").getDouble("total_time") / 60);
                     }
                 } catch (IOException e) {
+                    System.out.println("cccccccccccccccccccccccccc");
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    System.out.println("dddddddddddddddddddddddddddddddd");
                     e.printStackTrace();
                 }
 

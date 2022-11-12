@@ -159,9 +159,17 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 //implement URL
+                if (restaurant_website_url != null){
+                    Uri uri = Uri.parse(restaurant_website_url); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+                /*
                 Uri uri = Uri.parse(restaurant_website_url); // missing 'http://' will cause crashed
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+
+                 */
             }
         });
     }
