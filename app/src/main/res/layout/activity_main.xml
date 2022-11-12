@@ -27,7 +27,6 @@
         android:text="LETS GO MAKAN"
         android:textColor="@color/black"
         android:textSize="32dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +229,7 @@
         android:layout_marginBottom="28dp"
         android:clickable="true"
         android:text="Create new account"
-        android:textColor="@color/black"
+        android:textColor="#072AED"
         android:textSize="14dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
