@@ -48,6 +48,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+/**
+ * DisplayRestaurantListUI is the View class that displays the UI elements showing our recommended restaurant list in different representations
+ * It includes a scrollable list and an interactive map with pins demarcating the locations of the restaurants
+ * @author Isaac
+ * @version 2.0
+ * @since 2022-11-12
+ */
 public class DisplayRestaurantsListUI extends AppCompatActivity implements Observer, OnMapReadyCallback {
     //Widgets and associated stuff
     //private TextView textView;
@@ -93,6 +100,10 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
     private final static Map<String, String> sortingConfiguration = new HashMap<String, String>();
     private final static Map<String, String> filteringConfiguration = new HashMap<String, String>();
 
+    /**
+     * This is the onCreate() method that is called when the application first displays this activity class
+     * @param savedInstanceState
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,6 +314,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         permissionAlert.show();
     }
 
+    /**
+     * retrieveAndDisplay() is used by our scrollable list to fetch recommended restaurant list data from the database and reflect the changes during runtime
+     */
     public void retrieveAndDisplay(){
         ArrayList<Restaurant> arrayList = new ArrayList<>();
         myAdapter.setArrayList(arrayList);
@@ -329,6 +343,11 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         return;
     }
 
+    /**
+     * update() method is used in the Observer pattern when the Model clas notifies this class when it completes any changes in the database
+     * @param observable is the reference to the Model class (Observable)
+     * @param o
+     */
     @Override
     public void update(Observable observable, Object o) {
         gMap.clear();
@@ -336,6 +355,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         System.out.println("UPDATE IS CALLED");
     }
 
+    /**
+     * getAllCriteria() is used to read all sorting, filtering and filtering sub criteria from our mutable text files upon start up of this activity
+     */
     public void getAllCriteria(){
         //Retrieving all sorting criteria from sorting_configuration.txt
         try {
@@ -417,6 +439,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                                 }
     }
 
+    /**
+     * This is the UI element that shows a drop down list of all sorting criteria
+     */
     public void sortingDropDown(){
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Select Sorting Criteria text");
@@ -457,6 +482,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         mDialog.show();
     }
 
+    /**
+     * This is the UI element that shows a drop down list of all filtering criteria
+     */
     public void filteringDropDown(){
             AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
             builder.setTitle("Select Filtering Criteria");
@@ -506,6 +534,11 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
             builder.show();
     }
 
+    /**
+     * This is the UI element that shows a drop down list with all sub criteria of the user's selected filtering criteria
+     * @param subCriteriaList contains the list of all sub criteria
+     * @param filteringCriteriaIndex refers to the index of the selected filtering criteria
+     */
     public void subCriteriaDropDown(String[] subCriteriaList, int filteringCriteriaIndex){
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Select Sub Criteria");
@@ -548,33 +581,3 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         mDialog.show();
     } //end of function
 } //end of class
-
-
-
-/*
-//Testing
-                                for (String name: sortingConfiguration.keySet()) {
-                                        Toast.makeText(DisplayRestaurantsList.this, name, Toast.LENGTH_SHORT).show();
-                                        }
-
- */
-/*
-                    for (int k=0; k<2; k++)
-        System.out.println("boolean array: "+selectedFilteringCriteria[k]);
-        }
-
- */
-/*
-        //First time display (involves default filtering and sorting)
-            //Filter first then sort
-        ArrayList<Object> initialSortingList = new ArrayList<Object>(); //To put into controller
-        ArrayList<Object> initialFilteringList = new ArrayList<>();
-
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[0]));
-        initialFilteringList.add(FilteringStoreFactory.getDatastore(filteringCriteriaArray[1]));
-        initialSortingList.add(SortingStoreFactory.getDatastore(sortingCriteriaArray[singlePosition])); //this step adds the default sorting Criteria
-
-
-        FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsList.this, initialSortingList, sortingListModel); //add the list into this
-
- */
