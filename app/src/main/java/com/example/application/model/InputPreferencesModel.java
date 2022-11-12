@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -42,12 +41,11 @@ public class InputPreferencesModel extends Model{
      */
     public void service(){
         //Get current profile
-        Profile currentProfile = new Profile();
+        Profile changedProfile = (Profile) super.attributeList.get(0);
         String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
 
         //Getting Account object
         final ArrayList<Account> arrayList = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -61,7 +59,7 @@ public class InputPreferencesModel extends Model{
                         }
                         System.out.println("Size of arrayList 000 :" + arrayList.size());
                         Account userAccount = arrayList.get(0);
-                        userAccount.setProfile(currentProfile); //addCurrentProfile to account object
+                        userAccount.setProfile(changedProfile); //addCurrentProfile to account object
 
                         //add entire account object
                         mDatabase.child(userID).child("Account").setValue(userAccount).addOnCompleteListener(task1 -> {
