@@ -21,6 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * This class provides an interface for users to input their preferences during registration.
+ * @author Pratham
+ * @version 1.0
+ * @since 2022-11-10
+ */
+
 public class InputPreferencesUI extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner transportMode;
@@ -35,6 +42,11 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
     private Model inputPreferencesModel;
 
     @Override
+    /**
+     * This method is called after the activity is launched. It initializes all the widgets in the activity.
+     * It also sends the user's account details to the InputPreferencesModel class to be stored into the database.
+     * @param savedInstanceState Saves the current instance of the activity so that this data is not lost if the activity has to be recreated.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_preferences);
@@ -60,6 +72,11 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
     }
 
     @Override
+    /**
+     * Called immediately after the user inputs all the required information to create a new account.
+     * Calls the CreateNewAccountVerifyEmailPageUI class to verify the user's email after they enter their information.
+     * @param v The button that the user clicks to create their account after they input their email and password.
+     */
     public void onClick(View v){
         createProfile();
         String userID = mAuth.getCurrentUser().getUid(); //changed FirebaseAuth.getInstance() to mAuth
@@ -70,6 +87,11 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         changePreferencesController.handleEvent();
         startActivity(new Intent(InputPreferencesUI.this, CreateNewAccountVerifyEmailPageUI.class));
     }
+
+    /**
+     * This method is called after the user creates their account. It allows them to set their preferences
+     * for the maximum travel time and the mode of transport.
+     */
 
     private void createProfile() {
         String transport = transportMode.getSelectedItem().toString().trim();
