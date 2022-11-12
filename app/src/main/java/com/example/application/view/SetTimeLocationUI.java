@@ -152,6 +152,7 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
+        getCurrentLocation();
         System.out.println("useCurLoc: " + useCurLoc);
         System.out.println("choseLoc: " + choseLoc);
         System.out.println("useCurDateTime: " + useCurDateTime);

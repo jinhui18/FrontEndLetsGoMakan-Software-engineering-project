@@ -13,6 +13,8 @@ import com.example.application.R;
 import com.example.application.controller.Controller;
 import com.example.application.model.LoginUserModel;
 import com.example.application.model.Model;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
