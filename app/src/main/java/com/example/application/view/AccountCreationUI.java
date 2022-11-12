@@ -65,6 +65,8 @@ public class AccountCreationUI extends AppCompatActivity implements View.OnClick
         password = findViewById(R.id.TextInputEditPassword);
         confirmButton = (Button) findViewById(R.id.confirmButton);
 
+        textInputPassword.setError("Password must contain at least 8 characters,one letter, one upper and lowercase character and one special character.");
+
         //Firebase Authenticator
         mAuth = FirebaseAuth.getInstance();
         //Firebase Database
