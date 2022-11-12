@@ -140,7 +140,7 @@ public class FirebaseForAPI implements AsyncResponse{
                         int radius = (int) (stuffParser.convertToSpeed(travelMethod) * travelTime/60);
                         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                                 "location=" + location.latitude + "%2C" + location.longitude +
-                                "&radius=" + radius +
+                                "&radius=27000" +
                                 "&type=restaurant" +
                                 "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
@@ -416,11 +416,8 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
         protected void onPostExecute(ArrayList<String> strings) {
-            if (strings.size() == 0)
-            {
-                cancel(true);
-            }
-            else{new GetPlaceDetails().execute(strings);}
+            System.out.println("ajsdhjkashd" + strings.size());
+           new GetPlaceDetails().execute(strings);
         }
     }
 
