@@ -657,10 +657,13 @@ public class FirebaseForAPI implements AsyncResponse{
                         result.add(responseObject.getJSONObject("route_summary").getDouble("total_time") / 60);
                     }
                 } catch (IOException e) {
-                    System.out.println("cccccccccccccccccccccccccc");
+                    Double error = 9999999999.0;
+                    result.add(error);
+                    e.printStackTrace();
                     e.printStackTrace();
                 } catch (JSONException e) {
-                    System.out.println("dddddddddddddddddddddddddddddddd");
+                    Double error = 9999999999.0;
+                    result.add(error);
                     e.printStackTrace();
                 }
 
