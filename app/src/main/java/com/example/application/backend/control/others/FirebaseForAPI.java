@@ -416,7 +416,11 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
         protected void onPostExecute(ArrayList<String> strings) {
-            new GetPlaceDetails().execute(strings);
+            if (strings.size() == 0)
+            {
+                cancel(true);
+            }
+            else{new GetPlaceDetails().execute(strings);}
         }
     }
 
