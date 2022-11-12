@@ -1,4 +1,4 @@
 0=MaximumTravelTime
 1=PriceLevel
 2=TakeOut
-3=OpenClose
+3=Open\Close
