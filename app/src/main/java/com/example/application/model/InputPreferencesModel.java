@@ -16,12 +16,30 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * This class extends the abstract Model class and implements its service() method to get the user's preferences at registration.
+ * @author Pratham
+ * @version 1.0
+ * @since 2022-11-10
+ */
+
 public class InputPreferencesModel extends Model{
+
+    /**
+     * Constructor to initialize database references.
+     * @param mAuth The firebase authentication reference.
+     * @param mDatabase A reference to the Firebase database.
+     * @param context The InputPreferencesUI activity page.
+     */
 
     public InputPreferencesModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }
     @Override
+    /**
+     * This method implements the service() method from its super class to allow the user to input their preferences at account creation.
+     * The Account object with these preferences is then stored on the database.
+     */
     public void service(){
         //Get current profile
         Profile currentProfile = new Profile();
