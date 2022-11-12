@@ -43,7 +43,7 @@ public class FirebaseRetrieval {
      * @param mDatabase refers to the reference to our Firebase realtime database
      * @param context refers to the current activity of the application when the function is called
      * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
-     * @param singlePosition refers to the position of the user's selected sorting crietria in sortingCriteriaArray
+     * @param singlePosition refers to the position of the user's selected sorting criteria in sortingCriteriaArray
      * @param sortingListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen sorting criteria
      */
     public static void pureSorting(
@@ -96,20 +96,20 @@ public class FirebaseRetrieval {
 
     /**
      * This static method is called whenever a user selects one or more filtering criteria and confirms the selection
-     * The process involves retreiving the full restaurant list from the database,
-     * filtering the full restaurant list according to the user's selected filtering criteria and their associated fitlering sub criteria followed by
+     * The process involves retrieving the full restaurant list from the database,
+     * filtering the full restaurant list according to the user's selected filtering criteria and their associated filtering sub criteria followed by
      * sorting the filtered list according to the user's last selected sorting criteria by MVC architecture pathway,
-     * pushing the filtered and sorted restarant list back to the database (as the recommended restaurant list),
+     * pushing the filtered and sorted restaurant list back to the database (as the recommended restaurant list),
      * notifying UI elements on the display restaurant list page via the observer pattern,
      * which leads to the updating of the UI elements.
-     * @param mAuth refers to the Firebase authetication reference
+     * @param mAuth refers to the Firebase authentication reference
      * @param mDatabase refers to our Firebase realtime database reference
      * @param context refers to the current activity of the application when the function is called
      * @param filteringCriteriaArray refers to the array containing the String selections of all our different filtering criteria
      * @param sortingCriteriaArray refers to the array containing the String selections of all our different sorting criteria
      * @param selectedSubCriteria refers to the array containing the selected sub criteria for the type of filtering represented by each index in the array
      * @param selectedFilteringCriteria refers to the array containing the String selections of all our different filtering criteria
-     * @param singlePosition refers to the position of the user's selected sorting crietria in sortingCriteriaArray
+     * @param singlePosition refers to the position of the user's selected sorting criteria in sortingCriteriaArray
      * @param filteringListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen filtering criteria
      * @param sortingListModel refers to the model object in MVC architecture that will invoke its service() method to sort the restaurant list according to the chosen sorting criteria
      */
@@ -187,7 +187,7 @@ public class FirebaseRetrieval {
     }
 
     /**
-     * This static method is called upon the creation of Display Restaurnt List UI activity to filter and sort the full restaurant list according to default criteria
+     * This static method is called upon the creation of Display Restaurant List UI activity to filter and sort the full restaurant list according to default criteria
      * The process involves retrieving the full restaurant list from the database,
      * filtering the full restaurant list according to the default filtering criteria (which is maximum travel time the user is comfortable with) with the user's preference in his profile (sub criteria for this filtering criteria),
      * and sorting the filtered list according to travel time by MVC architecture pathway.

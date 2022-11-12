@@ -132,8 +132,8 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         locationRequest.setFastestInterval(2000);
 
         //MVC Stuff and Observer Pattern
-        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
         filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
+        sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
         sortingListModel.addObserver(this);
         //filteringListModel.addObserver(this);
 
