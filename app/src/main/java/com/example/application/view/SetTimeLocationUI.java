@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -115,11 +116,12 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
         choseDateTime = false;
         choseLoc = false;
 
-        mDatabase.child(userID).child("Account").child("useCurrentLocation").setValue(false);
-        mDatabase.child(userID).child("Account").child("useCurrentDateTime").setValue(false);
-
+        getCurrentLocation();
         getLocation();
         pickDateTime();
+
+        mDatabase.child(userID).child("Account").child("useCurrentLocation").setValue(false);
+        mDatabase.child(userID).child("Account").child("useCurrentDateTime").setValue(false);
 
         useCurrentLocation.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
@@ -150,59 +152,22 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        if(useCurLoc || choseLoc){
-            System.out.println("useCurLoc: " + useCurLoc);
-            System.out.println("choseLoc: " + choseLoc);
-            if(useCurLoc){
+        System.out.println("useCurLoc: " + useCurLoc);
+        System.out.println("choseLoc: " + choseLoc);
+        System.out.println("useCurDateTime: " + useCurDateTime);
+        System.out.println("choseDateTime: " + choseDateTime);
+        if (useCurLoc || choseLoc) {
+            if (useCurLoc) {
                 getDeviceLocation();
             }
-            if(useCurDateTime || choseDateTime){
-                System.out.println("useCurDateTime: " + useCurDateTime);
-                System.out.println("choseDateTime: " + choseDateTime);
-                if(useCurDateTime){
+            if (useCurDateTime || choseDateTime) {
+                if (useCurDateTime) {
                     getCurrentDateTime();
                 }
-
                 FirebaseForAPI fb = new FirebaseForAPI();
                 fb.getAPIData(mAuth, mDatabase, this);
 
                 startActivity(new Intent(SetTimeLocationUI.this, LoadingPageUI.class));
-
-                /*
-                mDatabase.child(userID).child("Account").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        //progressBar.setVisibility(View.GONE);
-                        //System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE1");
-                        //startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        progressBar.setVisibility(View.GONE);
-                        System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE2");
-
-                        startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                //progressBar.setVisibility(View.GONE);
-
-                //startActivity(new Intent(SetTimeLocation.this, DisplayRestaurantsList.class));*/
             }
             else{
                 showTimeDialog();
@@ -386,28 +351,42 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
     private void getDeviceLocation() {
         System.out.println("getting device location");
         try {
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    userLocation = "lat/lng: (" + latitude + ", " + longitude + ")";
-                    mDatabase.child(userID).child("Account").child("currentLocation").setValue(userLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
+            System.out.println("in here");
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if(location != null){
+                        System.out.println("got the location!");
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        userLocation = "lat/lng: (" + latitude + ", " + longitude + ")";
+                        mDatabase.child(userID).child("Account").child("currentLocation").setValue(userLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SetTimeLocationUI.this, "Unable to store current location", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Log.d(TAG, "Location permission not granted... Exiting the app");
-                    finish();
-                    startActivity(getIntent());
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SetTimeLocationUI.this, "Unable to store current location", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        getDeviceLocation();
+                    }
                 }
             });
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+
+    private void getCurrentLocation() {
+        System.out.println("getting device location");
+        try {
+            System.out.println("in here");
+            fusedLocationClient.getLastLocation();
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage(), e);
         }
