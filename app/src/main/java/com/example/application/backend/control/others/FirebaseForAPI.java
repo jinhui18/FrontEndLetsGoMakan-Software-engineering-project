@@ -89,25 +89,18 @@ public class FirebaseForAPI implements AsyncResponse{
         Profile[] profile = new Profile[1];
         userID = mAuth.getCurrentUser().getUid();
         System.out.println(userID);
-        System.out.println("hereeee");
 
         mDatabase.child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        System.out.println("hiiiii");
-
                         Iterable<DataSnapshot> children = snapshot.getChildren();
 
                         for (DataSnapshot child : children) {
-                            System.out.println("byeeeee");
-
                             Account account = child.getValue(Account.class);
                             System.out.println("chose"+account.getChosenLocation());
                             arrayList.add(account);
                         }
-                        System.out.println("Size of arrayList:" + arrayList.size());
                         //do api stuff herez
                         profile[0] = arrayList.get(0).getProfile();
                         travelMethod = profile[0].getPreferredModeOfTransport();
@@ -138,7 +131,6 @@ public class FirebaseForAPI implements AsyncResponse{
                             date_as_int = cal.get(Calendar.DAY_OF_WEEK);
                             time = arrayList.get(0).getChosenTime();
                         }
-                        System.out.println("DTEASEADW: " + date);
                         if (arrayList.get(0).getUseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
@@ -167,30 +159,6 @@ public class FirebaseForAPI implements AsyncResponse{
                         Toast.makeText(context, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                     }
                 });
-        System.out.println("secondss");
-
-
-
-
-
-
-/*
-        Map<String, Object> map = new HashMap<>();
-        map.put("fullRestaurantList", restaurantList);
-        mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(context, "List created!", Toast.LENGTH_SHORT).show();
-            }
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Failed to push list", Toast.LENGTH_SHORT).show();
-            }
-        });
-
- */
     }
 
     //AsyncTask Responses
@@ -221,23 +189,15 @@ public class FirebaseForAPI implements AsyncResponse{
     public void processFinishPT(ArrayList<ArrayList<JSONArray>> output) {
         popTimeList = output;
         // this is to get the full rest list alr
-        System.out.println("sadasdsadsa size of restaurantDetails is " + restaurantDetails.size());
-        System.out.println("restaurantDetails is " + restaurantDetails);
         try{
             for (int i = 0; i < restaurantDetails.size(); i++)
             {
-                //System.out.println("rest details in index "+ i + " " + restaurantDetails.get(i));
-                //System.out.println("size of rest details at index " + i + " is " + restaurantDetails.get(i).names().length());
-                //System.out.println("travelTimeList at index " + i + " is " + travelTimeList.get(i));
-
-                // original code  in if bracket is restaurantDetails.get(i).names().length() != 10 || popTimeList.get(i).size() != 7
                 try {
                     if (popTimeList.get(i).size() != 7) {
                         System.out.println("Mistake");
                         continue;
 
                     } else {
-                        System.out.println("THIS IS ALL THE ACCEPTED ONES ");
                         System.out.println(restaurantDetails.get(i));
                         Double lat = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                         Double lng = Double.valueOf(restaurantDetails.get(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
@@ -259,10 +219,6 @@ public class FirebaseForAPI implements AsyncResponse{
 
                         int currentDay = date_as_int;
 
-                        System.out.println(time);
-                        System.out.println("Before and");
-
-
                         int currentHour = Integer.valueOf(time.substring(0, 2));
 
                         int popTimeIndex = currentHour - 6;
@@ -277,8 +233,6 @@ public class FirebaseForAPI implements AsyncResponse{
                         } catch (Exception e) {
                             popTime = "No Data";
                         }
-
-                        System.out.println("hellllllllooooooooooooooooo" + popTime);
 
 
                         int crowdLevel = stuffParser.getCrowdLevelFromPT(popTime);
@@ -308,15 +262,6 @@ public class FirebaseForAPI implements AsyncResponse{
 
                         }
 
-                        /*
-                        if (currentTime < 2200 && restaurantDetails.get(i).getJSONObject("opening_hours").getBoolean("open_now")) {
-                            openNow = true;
-                        } else {
-                            openNow = false;
-                        }
-
-                         */
-
 
                         boolean takeout = restaurantDetails.get(i).getBoolean("takeout");
 
@@ -335,7 +280,6 @@ public class FirebaseForAPI implements AsyncResponse{
                             website = null;
 
                         }
-                        //String website = restaurantDetails.get(i).getString("website");
 
                         int pl = 1;
                         try{
@@ -344,18 +288,14 @@ public class FirebaseForAPI implements AsyncResponse{
                         catch(Exception e){
                             pl =1;
                         }
-                        //int pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
 
                         Restaurant restaurant = new Restaurant(crowdLevel, pl, phoneNumber, ratings, travelTime, name, address, lat, lng, photo, openNow, takeout, website);
-
-                        System.out.println("Name: " + restaurant.getName());
 
                         restaurantList.add(restaurant);
                     }
                 }
                 catch (Exception e){continue;}
             }
-            System.out.println("list sizeeeeee" + restaurantList.size());
             Map<String, Object> map = new HashMap<>();
             map.put("fullRestaurantList", restaurantList);
             mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -372,7 +312,6 @@ public class FirebaseForAPI implements AsyncResponse{
             });
         }
         catch(Exception e){
-            System.out.println("here ah");
             e.printStackTrace();}
 
 
@@ -399,12 +338,8 @@ public class FirebaseForAPI implements AsyncResponse{
                 }
 
                 data = stringBuilder.toString();
-                System.out.println("heeehehehe "+ data);
-
-
                 bufferedReader.close();
             } catch (IOException e) {
-                System.out.println("sheeshhhhhhhhhhhhh");
                 e.printStackTrace();
             }
 
@@ -413,7 +348,6 @@ public class FirebaseForAPI implements AsyncResponse{
 
         @Override
         protected void onPostExecute(String s) {
-            System.out.println("SC20000000000000000000000000000000006");
             new GetPlaceIDs().execute(s);
         }
     }
@@ -431,7 +365,6 @@ public class FirebaseForAPI implements AsyncResponse{
                     placeIDList.add(resultsArray.getJSONObject(i).getString("place_id"));
                 }
             } catch (JSONException e) {
-                System.out.println("sadsadasdsad");
                 e.printStackTrace();
             }
 
@@ -440,7 +373,6 @@ public class FirebaseForAPI implements AsyncResponse{
 
 
         protected void onPostExecute(ArrayList<String> strings) {
-            System.out.println("ajsdhjkashd" + strings.size());
            new GetPlaceDetails().execute(strings);
         }
     }
@@ -454,8 +386,6 @@ public class FirebaseForAPI implements AsyncResponse{
             ArrayList<String> placeIDs = arrayLists[0];
             ArrayList<JSONObject> result = new ArrayList<JSONObject>();
 
-            System.out.println("size of places ids is " + placeIDs.size());
-
             for (int i = 0; i < placeIDs.size(); i++) {
                 String url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + placeIDs.get(i) +
                         "&fields=name%2Crating%2Cformatted_address%2Copening_hours%2Cphotos%2Cgeometry" +
@@ -466,9 +396,6 @@ public class FirebaseForAPI implements AsyncResponse{
                         .build();
                 MediaType mediaType = MediaType.parse("text/plain");
 
-                System.out.println("Google URL: " + url);
-
-
                 Request request = new Request.Builder()
                         .url(url)
                         .build();
@@ -478,15 +405,11 @@ public class FirebaseForAPI implements AsyncResponse{
                     JSONObject resultObject = responseObject.getJSONObject("result");
                     result.add(resultObject);
                 } catch (IOException e) {
-                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
                     e.printStackTrace();
                 } catch (JSONException e) {
-                    System.out.println("bbbbbbbbbbbbbbbbbbbbbbb");
                     e.printStackTrace();
                 }
             }
-            System.out.println("size of result is: " +result.size());
-            System.out.println("Result is: " +result);
             return result;
         }
 
@@ -495,8 +418,6 @@ public class FirebaseForAPI implements AsyncResponse{
             delegate.processFinishPD(jsonObjects);
             ArrayList<ArrayList<String>> restaurantNAList = new ArrayList<ArrayList<String>>();
             ArrayList<ArrayList<String>> latLngList = new ArrayList<ArrayList<String>>();
-            System.out.println("size of json object is " + jsonObjects.size());
-            System.out.println("json object is :" + jsonObjects);
             for (int i = 0; i < jsonObjects.size(); i++) {
                 ArrayList<String> restaurantDets = new ArrayList<String>();
                 ArrayList<String> latLng = new ArrayList<String>();
@@ -509,11 +430,9 @@ public class FirebaseForAPI implements AsyncResponse{
                     restaurantNAList.add(restaurantDets);
                     latLngList.add(latLng);
                 } catch (JSONException e) {
-                    System.out.print("Insanity");
                     e.printStackTrace();
                 }
             }
-            System.out.println("restaurantNAList size is " + restaurantNAList.size());
             new GetTotalTime().execute(latLngList);
 
             new GetPopularTimes().execute(restaurantNAList);
@@ -593,7 +512,6 @@ public class FirebaseForAPI implements AsyncResponse{
                     }
                 }catch(Exception e)
                 {
-                    System.out.println("hello world");
                     JSONObject jo = new JSONObject();
                     JSONArray ja = new JSONArray();
                     ja.put(jo);
@@ -602,8 +520,6 @@ public class FirebaseForAPI implements AsyncResponse{
                     result.add(a);
                 }
             }
-            System.out.println("result is :" + result);
-            System.out.println("result size is :" + result.size());
             return result;
         }
 

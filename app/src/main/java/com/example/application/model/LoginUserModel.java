@@ -17,8 +17,28 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
+
+/**
+ * LoginUserModel is the model child class that inherits from the abstract Model parent class
+ * It inherits and implements the service() method with the logic to log in the user with their inputted details.
+ * To perform its service logic, LoginUserModel needs an attribute list containing the user's email, password, and references to the fields for our application to check the validity of the inputs by calling the FormatChecker class.
+ * It will check with our DataBase (Firebase) to see if there is a registered account with that email address with the correct corresponding password.
+ * If there is not such user, error message will be displayed.
+ * Thereafter, it will check if the email address is verified.
+ * If email address is not verified, error message will be displayed.
+ * Else, user will be redirected to the home page (ShowMap class) of our application.
+ * @author Jin Hui
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class LoginUserModel extends Model{
 
+    /**
+     * This is the overridden constructor for StoreAccountModel
+     * @param mAuth
+     * @param mDatabase
+     * @param context
+     */
     public LoginUserModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }

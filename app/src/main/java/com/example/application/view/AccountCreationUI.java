@@ -19,6 +19,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+
+/**
+ * @author Jin Hui
+ * This class display the page to create an account after user clicked on the "Create new account" text in LoginUI class.
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class AccountCreationUI extends AppCompatActivity implements View.OnClickListener {
 
     //Widgets
@@ -39,7 +46,10 @@ public class AccountCreationUI extends AppCompatActivity implements View.OnClick
     private Model storeAccountModel;
 
 
-
+    /**
+     * This method is called after the activity has launched but before it starts running.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
+     */
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_new_account);
@@ -69,7 +79,13 @@ public class AccountCreationUI extends AppCompatActivity implements View.OnClick
 
     }
 
-
+    /**
+     * This method is called when user clicks on the "CONFIRM" button.
+     * This method will first check that the input of the name is not empty.
+     * If that is true, this method will read the input of the email address and password entered by the user and calls the handleEvent() method in the Controller class.
+     * If that is not true, an error message will be displayed.
+     * @param view is the ID of the button that user selects.
+     */
     @Override
     public void onClick(View view) {
 

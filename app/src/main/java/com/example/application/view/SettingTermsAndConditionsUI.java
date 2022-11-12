@@ -7,10 +7,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.R;
 
+
+
+/**
+ * @author Jin Hui
+ * This class display the Terms of Service page for our application.
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class SettingTermsAndConditionsUI extends AppCompatActivity {
 
     private TextView textView_terms_and_conditions;
 
+    /**
+     * This method is called after the activity has launched but before it starts running.
+     * When this method is called, it will set the text for the Terms of Service page.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

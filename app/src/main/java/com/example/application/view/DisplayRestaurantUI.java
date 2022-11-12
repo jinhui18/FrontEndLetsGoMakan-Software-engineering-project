@@ -1,5 +1,7 @@
 package com.example.application.view;
 
+import static java.lang.Math.floor;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +28,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
+/**
+ * @author Jin Hui
+ * This class display the restaurant details of a selected restaurant from DisplayRestaurntListUI.
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReadyCallback {
 
     private ImageView imageView_restaurant;
@@ -50,11 +58,19 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
 
     private static final int DEFAULT_ZOOM = 15;
 
+    /**
+     * This method is called after the activity has launched but before it starts running.
+     * This method will initialise all widgets in display_restaurant activity.
+     * This method will start another a new activity in DisplayRestaurantListUI class when the system successfully push Restaurant into our DataBase.
+     * Else, it will continue to show a loading page with a progress bar running.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_restaurant);
 
+        //Initialise all widgets
         imageView_restaurant = findViewById(R.id.imageView_restaurant);
         textView_restaurant_opening_hours_time = findViewById(R.id.textView_restaurant_opening_hours_text);
         textView_restaurant_crowd_level_value = findViewById(R.id.textView_restaurant_crowd_level_text);
@@ -70,10 +86,6 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
         textView_price_level = findViewById(R.id.textView_price_level);
         textView_takeout = findViewById(R.id.textView_takeout);
 
-
-
-        // all of the things below i cant get yet
-
         // this function sets the back button on top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -81,6 +93,7 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapRestaurant);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
+        //Getting the intent and extracting all values stored in the intent
         Intent intent = getIntent();
         restaurant_image_url = intent.getExtras().getString("restaurant_url");
         restaurant_name = intent.getExtras().getString("restaurant_name");
@@ -102,10 +115,16 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
                 .load(restaurant_image_url)
                 .into(imageView_restaurant);
 
+        //Setting travelling time
         textView_restaurant_travelling_time.setText(restaurant_travelling_time + " mins away");
+
+        //Setting restaurant name
         textView_restaurant_name.setText(restaurant_name);
+
+        //Setting restaurant address
         textView_restaurant_address.setText(restaurant_address);
 
+        //Setting price level of restaurant
         int price_level = restaurant_price_level;
         String price_level_text = "$";
         switch(price_level){
@@ -122,23 +141,26 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
                 break;
         }
         textView_price_level.setText("Price: " + price_level_text);
-        ratingBar.setRating(ratings);
+
+        //Setting price level of restaurant
+        ratingBar.setRating((float) floor(ratings));
         if (restaurant_takeout){
             textView_takeout.setText("Take out: Available" );
         }else{
             textView_takeout.setText("Take out: Not available" );
         }
 
-        // need to modify the string, i need to see what format opening hours is stored in database first
-        // all three data below is the same, need change formatting
+        //Setting open/closed status hours of restaurant
         if (restaurant_opening_hours_time == true){
             textView_restaurant_opening_hours_time.setText("Open/Closed: " + "Open");
         }else{
             textView_restaurant_opening_hours_time.setText("Open/Closed: " + "Closed");
         }
+
+        //Setting crowd level of restaurant
         textView_restaurant_crowd_level_value.setText("Crowd Level :" + restaurant_crowd_level_value + "/5");
 
-
+        //Setting phone number of restaurant and allowing it to redirect to phone app with number keyed in
         textView_phone_number.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,9 +174,7 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
                 }
             });
 
-
-
-
+        //Setting redirection of user to the website of the restaurant
         buttonWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,17 +183,17 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
                     Uri uri = Uri.parse(restaurant_website_url); // missing 'http://' will cause crashed
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
+                }else{
+                    Toast.makeText(DisplayRestaurantUI.this, "Restaurant does not have a website.", Toast.LENGTH_SHORT).show();
                 }
-                /*
-                Uri uri = Uri.parse(restaurant_website_url); // missing 'http://' will cause crashed
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-
-                 */
             }
         });
     }
-
+    /**
+     * This hook is called whenever an item in your options menu is selected.
+     * The purpose of this method is to not restart the activity in DisplayRestaurantListUI when pressing the back button from DisplayRestaurantUI
+     * @param item If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
+     */
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
@@ -184,7 +204,11 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
         return super.onOptionsItemSelected(item);
     }
 
-
+    /**
+     * This method obtains the map object when map is loaded.
+     * It displays the current location of user and the pin of the location of restaurant chosen.
+     * @param googleMap A non-null instance of a GoogleMap associated with the MapFragment or MapView that defines the callback.
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;

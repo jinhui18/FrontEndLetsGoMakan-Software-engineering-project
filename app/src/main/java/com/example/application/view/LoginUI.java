@@ -22,8 +22,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class LoginUI extends AppCompatActivity {
 
+/**
+ * @author Jin Hui
+ * This class display the login page of our application.
+ * @version 1.0
+ * @since 2022-11-11
+ */
+public class LoginUI extends AppCompatActivity {
     //Widgets
     private TextView textView_hp1, textView_hp2, textView_hp3, textView_hp4,textView_hp5 ,textView_hp6, textView_hp7;
     private ImageView imageView_hp1, imageView_hp2, imageView_hp3, imageView_hp4;
@@ -38,8 +44,15 @@ public class LoginUI extends AppCompatActivity {
     //MVC
     private Model loginUserModel;
 
-
-
+    /**
+     * This method is called after the activity has launched but before it starts running.
+     * This method contains the logic for the clickable buttons and text in this activity class.
+     * The clickable buttons "LOGIN" and the text are "Forgot Password" and "Create new account"
+     * When "LOGIN" button is pressed, it will initialise the Controller class with the email address and password that the user inputs and calls the handleEvent() method.
+     * When "Forgot Password" text is pressed, it will redirect user to ResetPasswordUI class.
+     * When "Create new account" text is pressed, it will redirect user to AccountCreationUI class.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,16 +114,18 @@ public class LoginUI extends AppCompatActivity {
         });
 
     }
-    // end the top part
 
+    /**
+     * This method is called after onCreate method.
+     * This method will check if there is a currently a user that is signed in, if there is it will redirect the user to our home page.
+     * This prevents the user from signing in everytime they start the application.
+     */
     protected void onStart() {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            //FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(LoginUI.this, ShowMap.class);
             startActivity(intent);
-            //startActivity(new Intent(MainActivity.this, HomePage.class));
         }
     }
 

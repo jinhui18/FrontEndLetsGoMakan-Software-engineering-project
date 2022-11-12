@@ -43,7 +43,7 @@ public class FormatChecker {
      * The password must contain at least 8 characters, with at least 1 capital letter, 1 non-capital letter, 1 number and 1 special character
      * @param password refers to the password that needs to be format checked
      * @param textInputPassword refers to the UI field widget where users enter their email address on the UI activity page
-     * @returna boolean value indicating whether the format of the password is valid or not
+     * @return a boolean value indicating whether the format of the password is valid or not
      */
     public static boolean isValidPassword(String password, TextInputLayout textInputPassword)
     {
