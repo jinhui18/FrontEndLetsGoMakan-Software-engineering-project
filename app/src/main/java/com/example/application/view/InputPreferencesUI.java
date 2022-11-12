@@ -14,6 +14,7 @@ import com.example.application.backend.entity.Profile;
 import com.example.application.backend.enums.PreferredModeOfTransport;
 import com.example.application.controller.Controller;
 import com.example.application.model.ChangePreferencesModel;
+import com.example.application.model.InputPreferencesModel;
 import com.example.application.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -68,7 +69,7 @@ public class InputPreferencesUI extends AppCompatActivity implements View.OnClic
         travelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         travelTime.setAdapter(travelAdapter);
 
-        inputPreferencesModel = new ChangePreferencesModel(mAuth, mDatabase, InputPreferencesUI.this);
+        inputPreferencesModel = new InputPreferencesModel(mAuth, mDatabase, InputPreferencesUI.this);
     }
 
     @Override
