@@ -217,6 +217,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                             LatLng location = new LatLng(latitude, longitude);
                             gMap.setMyLocationEnabled(true);
                             gMap.getUiSettings().setMyLocationButtonEnabled(true);
+                            gMap.addMarker(new MarkerOptions().position(location).title("Current location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     location, DEFAULT_ZOOM));
                         }
@@ -280,26 +281,6 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                 intent.putExtra("ratings", restaurant.getRatings());
                 startActivity(intent);
         }});
-    }
-
-    public void retrieve(){
-        mDatabase.child(userID).child("Account").child("recommendedList").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> children = snapshot.getChildren();
-
-                for (DataSnapshot child : children) {
-                    Restaurant restaurant = child.getValue(Restaurant.class);
-                    restList.add(restaurant);
-                }
-                showOnMap(restList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void showAlertDialog(){

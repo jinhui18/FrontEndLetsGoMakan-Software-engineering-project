@@ -1,3 +1,6 @@
+/*
+test
+ */
 package com.example.application.view;
 
 import android.Manifest;
@@ -31,82 +34,89 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
+/**
+ * ShowMap is a class that displays a map with the user's current location.
+ * <p> This class first checks for location permissions and requests for permission if not granted.
+ * <p> It also checks if the user's GPS has been enabled and prompts the user to turn on if it is off.
+ * <p> This class acts as the homepage of our application and users can get their restaurant reccomendations by clicking the "Get Recommendations" button.
+ * @author celest
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
+    //Initialising all widgets
     private Button getRecommendations;
     private ImageView settings;
 
+    //Initialising variables needed to check user's location permission
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int DEFAULT_ZOOM = 15;
-    private boolean locationPermissionGranted;
-
-    private String userID;
-
     private LocationRequest locationRequest;
-    private static final String TAG = ShowMap.class.getSimpleName();
-    private GoogleMap gMap;
-
-    ArrayList<String> userLocation = new ArrayList<>();
-    ArrayList<JSONObject>restaurantDetails = new ArrayList<JSONObject>();
-
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
-
+    private boolean locationPermissionGranted;
     private LocationManager locationManager;
 
+    //Initialising a map variable and setting the default zoom
+    private GoogleMap gMap;
+    private static final int DEFAULT_ZOOM = 15;
+
+    /**
+     * All variables are set with values in this method.
+     * <p>The InstanceState of this activity is saved.
+     * @param savedInstanceState    The instance state of the current activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //we use the activity_show_map layout
         setContentView(R.layout.activity_show_map);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
-
-        userID = mAuth.getCurrentUser().getUid();
-
+        //create a locationRequest to be passed in as a parameter for the fused location provider client
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(2000);
 
+        //links the app to the phone's settings
         locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
-        getRecommendations = (Button) findViewById(R.id.mapToRec);
+        getRecommendations = findViewById(R.id.mapToRec);
         getRecommendations.setOnClickListener(this);
 
-        settings = (ImageView) findViewById(R.id.settings);
+        settings = findViewById(R.id.settings);
         settings.setOnClickListener(this);
-
-
     }
 
+    /**
+     * Gets the Google Map object.
+     * @param googleMap The generated map fragment
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        //check if user has turned on GPS and ask to turn it on if it is off
         isGPSEnabled();
+        //check if user has allowed location permissions and request permission if not allowed.
         getLocationPermission();
     }
 
+    /**
+     * Links to a new event.
+     * @param v The activity_show_map layout
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
+            //user clicks on the "Get Recommendations" button
             case R.id.mapToRec: {
                 startActivity(new Intent(this, SetTimeLocationUI.class));
-                //startActivity(new Intent(this, SetTimeLocation.class));
                 break;
             }
+            //user clicks on the "Settings" button
             case R.id.settings: {
                 startActivity(new Intent(this, SettingsPageUI.class));
                 break;
@@ -114,17 +124,31 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
+    /**
+     * Checks if the user has granted location permissions to the app.
+     * <p> Requests for permission if user has not granted.
+     */
     private void getLocationPermission() {
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             locationPermissionGranted = true;
             Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show();
+            //update map
             updateLocationUI();
         }
         else{
+            //display a popup to get user's permission
             ActivityCompat.requestPermissions(ShowMap.this, new String [] {Manifest.permission.ACCESS_FINE_LOCATION},PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
 
+    /**
+     * Gets the user's chosen permission decision.
+     * <p>If permission is not granted, an alert message pops up.
+     * <p>This method is invoked for every call of requestPermissions.
+     * @param requestCode   The request code passed in requestPermissions
+     * @param permissions   The requested permissions
+     * @param grantResults  The grant results for the corresponding permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -144,6 +168,10 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
+    /**
+     * Updates the map by turning on or off the "Get Recommendations" button
+     * and "MyLocationButton" and the user's current location in the map.
+     */
     private void updateLocationUI(){
         if (gMap == null){
             return;
@@ -155,6 +183,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                 getRecommendations.setEnabled(true);
                 getDeviceLocation();
             } else {
+                //permission not granted so users cannot continue using the app
                 gMap.setMyLocationEnabled(false);
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
                 getRecommendations.setEnabled(false);
@@ -164,6 +193,10 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         }
     }
 
+    /**
+     * Shows an alert to the user by explaining the rationale behind requiring their location permission.
+     * <p>Prompts the user to allow location permission in their phone settings and closes the app.
+     */
     private void showLocationDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ShowMap.this);
         builder.setTitle("Need Location Permission!");
@@ -176,6 +209,11 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         permissionAlert.show();
     }
 
+    /**
+     * Checks if the user has turned on their GPS.
+     * Alerts the user if their GPS is not on.
+     * @return  Gps is enabled or not
+     */
     private boolean isGPSEnabled()
     {
         boolean isEnabled = false;
@@ -191,6 +229,11 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         return isEnabled;
     }
 
+    /**
+     * Shows an alert to the user that their GPS is off.
+     * Requests for the user to turn it on by linking to the location settings in their phone.
+     * Shows another alert to explain the rationale of requiring GPS services if user still keeps their GPS off.
+     */
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -211,6 +254,9 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         alert.show();
     }
 
+    /**
+     * Shows an alert by explaining the rationale behind requiring the user to turn on their GPS.
+     */
     private void buildAlertMessageNeedGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Location services are required to continue using the app. Do you want to enable it?")
@@ -231,6 +277,9 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         alert.show();
     }
 
+    /**
+     * Gets the user's current location and moves the camera on the map to this location.
+     */
     private void getDeviceLocation(){
         try{
             LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
@@ -245,10 +294,12 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                         double latitude = locationResult.getLocations().get(index).getLatitude();
                         double longitude = locationResult.getLocations().get(index).getLongitude();
                         LatLng location = new LatLng(latitude, longitude);
+                        //zoom into the user's current location
                         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 location, DEFAULT_ZOOM));
                     }
                     else{
+                        //permission is not granted, so an alert must be shown
                         showLocationDialog();
                     }
                 }

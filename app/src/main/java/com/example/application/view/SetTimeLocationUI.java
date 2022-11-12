@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,8 @@ import com.example.application.backend.control.others.FirebaseForAPI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputLayout;
@@ -83,7 +86,6 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
         imageView_3 = findViewById(R.id.greyBox2);
         imageView_4 = findViewById(R.id.orangeBox);
 
-        progressBar = findViewById(R.id.progressBar);
         useCurrentLocation = findViewById(R.id.useCurrentLocation);
         useCurrentDateTime = findViewById(R.id.useCurrentDateTime);
 
@@ -228,7 +230,17 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 coordinates = String.valueOf(place.getLatLng());
-                mDatabase.child(userID).child("Account").child("chosenLocation").setValue(coordinates);
+                mDatabase.child(userID).child("Account").child("chosenLocation").setValue(coordinates).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SetTimeLocationUI.this, "Unable to store chosen location", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 choseLoc = true;
             }
 
@@ -236,6 +248,7 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
                 Log.i(TAG, "An error occurred: " + status);
+                Toast.makeText(SetTimeLocationUI.this, "Error getting place selected, please try again!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -253,7 +266,17 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
                     month = "0"+(selectedMonth+1);
                 }
                 String date = day+"-"+month+"-"+year;
-                mDatabase.child(userID).child("Account").child("chosenDate").setValue(date);
+
+                mDatabase.child(userID).child("Account").child("chosenDate").setValue(date).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {}
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SetTimeLocationUI.this, "Unable to store chosen date", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 TimePickerDialog.OnTimeSetListener onTimeSetListener = (view1, selectedHour, selectedMinute) -> {
                     hour = Integer.toString(selectedHour);
                     minute = Integer.toString(selectedMinute);
@@ -263,13 +286,25 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
                     if(selectedMinute<10){
                         minute = "0"+selectedMinute;
                     }
-                    mDatabase.child(userID).child("Account").child("chosenTime").setValue(hour+":"+minute);
+                    mDatabase.child(userID).child("Account").child("chosenTime").setValue(hour+":"+minute).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SetTimeLocationUI.this, "Unable to store chosen time", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     choseDateTime = true;
                     changeDateTimeButton.setText(String.format(Locale.getDefault(), "%s-%s-%s %s:%s", day, month, year, hour, minute));
                 };
+
                 int style = AlertDialog.THEME_HOLO_DARK;
                 TimePickerDialog timePickerDialog = new TimePickerDialog(SetTimeLocationUI.this, style, onTimeSetListener, Calendar.HOUR_OF_DAY, Calendar.MINUTE, true);
                 timePickerDialog.setTitle("Select Time");
+                timePickerDialog.updateTime(Calendar.HOUR_OF_DAY, Calendar.MINUTE);
                 timePickerDialog.show();
             };
             DatePickerDialog datePickerDialog = new DatePickerDialog(SetTimeLocationUI.this, onDateSetListener, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
@@ -283,8 +318,11 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
     }
 
     public void getCurrentDateTime(){
-        System.out.println("getting current time");
+        System.out.println("getting current date and time");
         Time today = new Time(Time.getCurrentTimezone());
+        if(today == null){
+            Toast.makeText(this, "Unable to obtain current date and time", Toast.LENGTH_SHORT).show();
+        }
         today.setToNow();
 
         currentYear = Integer.toString(today.year);
@@ -316,7 +354,17 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
         System.out.println(currentDay);
         System.out.println(dateTime);
 
-        mDatabase.child(userID).child("Account").child("currentDateTime").setValue(dateTime);
+        mDatabase.child(userID).child("Account").child("currentDateTime").setValue(dateTime).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SetTimeLocationUI.this, "Unable to store current date and time", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showTimeDialog(){
@@ -343,7 +391,17 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     userLocation = "lat/lng: (" + latitude + ", " + longitude + ")";
-                    mDatabase.child(userID).child("Account").child("currentLocation").setValue(userLocation);
+                    mDatabase.child(userID).child("Account").child("currentLocation").setValue(userLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SetTimeLocationUI.this, "Unable to store current location", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Log.d(TAG, "Location permission not granted... Exiting the app");
                     finish();
