@@ -5,7 +5,7 @@ import com.example.application.backend.entity.Restaurant;
 import java.util.ArrayList;
 /**
  * Ratings is a sorting criteria sub class that inherits from the abstract parent class SortingCriteria
- * It implements and overrides its sort(ArrayList<Restaurant>) method to sort the provided restaurant list according to the ratings of the restaurant
+ * It implements and overrides its sort method to sort the provided restaurant list according to the ratings of the restaurant
  * @author Isaac
  * @version 1.0
  * @since 2022-11-10

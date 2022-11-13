@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * OpenClose is our filtering child class that filters the full restaurant list according to operational status of the restaurant (open or close)
- * This class inherits from FilteringCriteria and implements its filter(ArrayList<Restaurant>) function.
+ * This class inherits from FilteringCriteria and implements its filter function.
  * @author Isaac
  * @version 1.0
  * @since 2022-11-12

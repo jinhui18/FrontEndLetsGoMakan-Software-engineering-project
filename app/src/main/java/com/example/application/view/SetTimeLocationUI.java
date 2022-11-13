@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.format.Time;
@@ -25,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.application.R;
 import com.example.application.backend.control.others.FirebaseForAPI;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -32,6 +32,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputLayout;
@@ -39,19 +41,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
 /**
  * SetTimeLocationUI is the View class that displays the UI elements to allow users to set their date, time and location for the restaurant search.
- * It contains four clickable boxes, "Search", "Use current location" are two of them, which gets users to set a location for the restaurant search.
- * The next two are "Enter a different Date & Time" and "Use current Date and Time", which gets users to set a date and time for the restaurant search.
- * It also contains a button, "Lets Go Makan" to start the search once the system detects an input location and date and time.
+ * It contains four clickable boxes, Search, Use current location are two of them, which gets users to set a location for the restaurant search.
+ * The next two are Enter a different Date and Time and Use current Date and Time, which gets users to set a date and time for the restaurant search.
+ * It also contains a button, Let's Go Makan! to start the search once the system detects an input location and date and time.
  * @author Celest
  * @version 1.0
  * @since 2022-11-13
@@ -177,12 +175,12 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * This method contains the logic for the clickable buttons and text in this activity class.The clickable buttons "Lets Go Makan!" and boxes are "Search", "Use current location", "Enter a different Date & Time" and "Use current Date and Time".
-     * When "Search" box is pressed, a google search box opens to allow users to input their chosen location.
-     * When "Use current location" box is pressed, the checkbox is ticked and the user has chosen to use their current location for the search.
-     * When "Enter a different Date & Time" box is pressed, a date picker opens to allow users to choose a date and then a time picker opens to allow users to choose a time for the search.
-     * When "Use current Date and Time" box is pressed, the checkbox is ticked and the user has chosen to use their current date and time for the search.
-     * When "Lets Go Makan!" button is pressed, it will call this method.
+     * This method contains the logic for the clickable buttons and text in this activity class.The clickable buttons Lets Go Makan! and boxes are Search, Use current location, Enter a different Date and Time and Use current Date and Time.
+     * When Search box is pressed, a google search box opens to allow users to input their chosen location.
+     * When Use current location box is pressed, the checkbox is ticked and the user has chosen to use their current location for the search.
+     * When Enter a different Date and Time box is pressed, a date picker opens to allow users to choose a date and then a time picker opens to allow users to choose a time for the search.
+     * When Use current Date and Time box is pressed, the checkbox is ticked and the user has chosen to use their current date and time for the search.
+     * When Lets Go Makan! button is pressed, it will call this method.
      * This method will first check if the user has set a location, either by choosing in the google search box or by ticking the "Use current location" checkbox.
      * If that is not true, an error message will be displayed to alert the user to input a location.
      * Then, if the user chose to use their current location, this method will call the getDeviceLocation() method to retrieve the user's current location
@@ -416,7 +414,7 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
 
     /**
      * This method builds an alert dialog to alert users that they have not set a time
-     * by either choosing in the "Enter a different Date & Time" widget or ticking the "Use current Date and Time" checkbox
+     * by either choosing in the Enter a different Date and Time widget or ticking the Use current Date and Time checkbox
      */
     private void showTimeDialog(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SetTimeLocationUI.this);

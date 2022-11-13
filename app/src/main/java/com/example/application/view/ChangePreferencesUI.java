@@ -29,7 +29,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class provides an interface for users to change their preferences.
+ * @author Pratham
+ * @version 1.0
+ * @since 2022-11-10
+ */
 public class ChangePreferencesUI extends AppCompatActivity implements View.OnClickListener{
     //Widgets
     private Spinner transportMode;
@@ -43,6 +48,11 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
     private Profile newProfile;
     private Model changePreferencesModel;
 
+    /**
+     * This method is called after the activity is launched. It initializes all the widgets in the activity.
+     * It also sends the user's account details to the ChangePreferencesModel class to be stored into the database.
+     * @param savedInstanceState Saves the current instance of the activity so that this data is not lost if the activity has to be recreated.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +74,12 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
 
         initialiseDropDown(mAuth, mDatabase);
     }
-
+    /**
+     * Called immediately after the user inputs all the required information to change their preferences.
+     * Calls the Controller class method to change user's input preferences.
+     * After method is done, it goes back to SettingPageUI class.
+     * @param view The button that the user clicks to create their account after they input their email and password.
+     */
     @Override
     public void onClick(View view) {
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -78,6 +93,11 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
         startActivity(new Intent(this, SettingsPageUI.class));
     }
 
+    /**
+     * This method is called to obtain the input preferences that the user set previously and initialise the dropdown box in this class.
+     * @param mAuth The firebase authentication reference.
+     * @param mDatabase A reference to the Firebase database.
+     */
     public void initialiseDropDown(FirebaseAuth mAuth, DatabaseReference mDatabase){
         final ArrayList<Account> arrayList = new ArrayList<>();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -134,10 +154,10 @@ public class ChangePreferencesUI extends AppCompatActivity implements View.OnCli
                 });
     }
 
-
-
-
-
+    /**
+     * This method is called after the user creates their account. It allows them to set their preferences
+     * for the maximum travel time and the mode of transport.
+     */
     private void createProfile() {
         String transport = transportMode.getSelectedItem().toString().trim();
         String travel = travelTime.getSelectedItem().toString().trim();

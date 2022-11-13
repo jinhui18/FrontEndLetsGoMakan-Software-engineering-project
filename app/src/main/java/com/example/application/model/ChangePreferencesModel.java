@@ -15,12 +15,28 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * This class extends the abstract Model class and implements its service() method to change the user's preferences.
+ * @author Jin Hui
+ * @version 1.0
+ * @since 2022-11-10
+ */
 public class ChangePreferencesModel extends Model {
 
+    /**
+     * Constructor to initialize database references.
+     * @param mAuth The firebase authentication reference.
+     * @param mDatabase A reference to the Firebase database.
+     * @param context The InputPreferencesUI activity page.
+     */
     public ChangePreferencesModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);
     }
 
+    /**
+     * This method implements the service() method from its super class to allow the user to change their input preferences.
+     * The Account object with these preferences is then stored on the database.
+     */
     @Override
     public void service() {
         //Get newly changed profile

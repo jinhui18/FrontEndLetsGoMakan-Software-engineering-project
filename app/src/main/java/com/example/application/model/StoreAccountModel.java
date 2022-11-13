@@ -36,9 +36,9 @@ public class StoreAccountModel extends Model{
 
     /**
      * This is the overridden constructor for StoreAccountModel
-     * @param mAuth
-     * @param mDatabase
-     * @param context
+     * @param mAuth The firebase authentication reference.
+     * @param mDatabase A reference to the Firebase database.
+     * @param context The InputPreferencesUI activity page.
      */
     public StoreAccountModel(FirebaseAuth mAuth, DatabaseReference mDatabase, Context context) {
         super(mAuth, mDatabase, context);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * CrowdLevel is a class that facilitates the sorting of restaurants.
- * This class overrides the sort(ArrayList<Restaurant>) method in the parent SortingCriterias class
+ * This class overrides the sort method in the parent SortingCriterias class
  * to sort restaurants based on their real-time crowd level.
  * @author celest
  * @version 1.0

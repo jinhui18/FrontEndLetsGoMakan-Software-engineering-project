@@ -72,6 +72,7 @@ public class Restaurant {
      *
      * @param cl refers to the crowd level at the restaurant
      * @param pl refers to the price level of the restaurant
+     * @param phoneNumber refers to the phone number of the restaurant
      * @param rtngs refers ot the restaurant's ratings
      * @param tt refers to the travelling time to the restaurant from user's location
      * @param name refers to the name of the restaurant
@@ -81,6 +82,7 @@ public class Restaurant {
      * @param img refers to the image url of the restaurant
      * @param openNow refers to the open close status of the restaurant
      * @param takeOut refers to the availability of take outs at the restaurant
+     * @param website refers to the website of the restaurant
      */
     public Restaurant(int cl, int pl, String phoneNumber, float rtngs, double tt, String name, String adrs, double lati, double longi, String img, boolean openNow, boolean takeOut, String website) {
         this.crowdLevel = cl;

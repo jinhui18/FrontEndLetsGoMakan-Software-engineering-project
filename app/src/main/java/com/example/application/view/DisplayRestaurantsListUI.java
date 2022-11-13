@@ -102,7 +102,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
 
     /**
      * This is the onCreate() method that is called when the application first displays this activity class
-     * @param savedInstanceState
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
      */
     @SuppressLint("MissingInflatedId")
     @Override
@@ -360,7 +360,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
     /**
      * update() method is used in the Observer pattern when the Model clas notifies this class when it completes any changes in the database
      * @param observable is the reference to the Model class (Observable)
-     * @param o
+     * @param o Object class
      */
     @Override
     public void update(Observable observable, Object o) {
