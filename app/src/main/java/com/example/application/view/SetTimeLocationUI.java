@@ -132,6 +132,7 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
                 textInputLocation.setEnabled(false);
                 useCurLoc = true;
                 mDatabase.child(userID).child("Account").child("useCurrentLocation").setValue(true);
+                getDeviceLocation();
             }
             else{
                 textInputLocation.setEnabled(true);
