@@ -2,12 +2,14 @@ package com.example.application.view;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.application.R;
 import com.example.application.backend.control.others.FirebaseForAPI;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -349,9 +353,39 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
         builder2.show();
     }
 
+    @SuppressLint("MissingPermission")
     private void getDeviceLocation() {
         System.out.println("getting device location");
-        try {
+
+        LocationServices.getFusedLocationProviderClient(SetTimeLocationUI.this).requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+
+                LocationServices.getFusedLocationProviderClient(SetTimeLocationUI.this).removeLocationUpdates(this);
+
+                if(locationResult != null && locationResult.getLocations().size() > 0)
+                {
+                    int index = locationResult.getLocations().size() - 1;
+                    double latitude = locationResult.getLocations().get(index).getLatitude();
+                    double longitude = locationResult.getLocations().get(index).getLongitude();
+                    userLocation = "lat/lng: (" + latitude + ", " + longitude + ")";
+                    mDatabase.child(userID).child("Account").child("currentLocation").setValue(userLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SetTimeLocationUI.this, "Unable to store current location", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }, Looper.getMainLooper());
+
+        /*try {
             System.out.println("in here");
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
@@ -380,7 +414,7 @@ public class SetTimeLocationUI extends AppCompatActivity implements View.OnClick
             });
         } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage(), e);
-        }
+        }*/
     }
 
     private void getCurrentLocation() {
