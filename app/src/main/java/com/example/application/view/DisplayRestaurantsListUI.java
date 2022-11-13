@@ -126,6 +126,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapRestaurantList);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
+        //Sets up a location request to pass into the location provider object as a parameter
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);
@@ -135,7 +136,6 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         filteringListModel = new FilteringListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
         sortingListModel = new SortingListModel(mAuth, mDatabase, DisplayRestaurantsListUI.this);
         sortingListModel.addObserver(this);
-        //filteringListModel.addObserver(this);
 
         //Widgets and Associated stuff
         buttonSortBy = findViewById(R.id.buttonSortBy);
@@ -166,21 +166,24 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         myAdapter = new MyAdapter(DisplayRestaurantsListUI.this,null);
         recyclerView.setAdapter(myAdapter);
 
-
         FirebaseRetrieval.defaultFilterAndSort(mAuth, mDatabase, DisplayRestaurantsListUI.this, filteringCriteriaArray, sortingCriteriaArray, selectedFilteringCriteria, singlePosition, profileSubCriteriaChoice, selectedSubCriteria, numberOfDefaultCriteria, subCriteria2D, filteringListModel, sortingListModel);
-
-        //add subcriteria2D in as well
-        //need to update profileSubCriteriaChoice (for initial dot and selectedSubCriteria (mb optional as it gets overwritten)
-
-        //for future filtering binaries, null criteria must be considered in .filter() function
     }
 
+    /**
+     * Gets the Google Map object.
+     * <p>Then, this method retrieves the user's location using the "getUserLocation" method.</p>
+     * @param googleMap The generated map fragment
+     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
         getUserLocation();
     }
 
+    /**
+     * This method retrieves the boolean value of useCurrentLocation from Firebase.
+     * <p>Then, it will pass in this value as a parameter into showLocation() to show the location, be it chosen or current.
+     */
     public void getUserLocation() {
         mDatabase.child(userID).child("Account").child("useCurrentLocation")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -197,15 +200,24 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                 });
     }
 
+    /**
+     * This method displays the selected location of the user.
+     * <p>If users chose to use current location, a purple pin will show that location on the map.</p>
+     * <p>If users chose a location, a blue pin will show that location on the map.</p>
+     * @param useCurLoc     The value of useCurrentLocation retrieved from Firebase
+     */
     public void showLocation(boolean useCurLoc) {
+        //User chose to use their current location
         if (useCurLoc == true) {
             System.out.println("using current location");
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 showAlertDialog();
                 return;
             }
+            //show user current location on map using Google Map method
             gMap.setMyLocationEnabled(true);
 
+            //Retrieve the user's current location from Firebase
             mDatabase.child(userID).child("Account").child("currentLocation")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @SuppressLint("MissingPermission")
@@ -215,6 +227,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                             double latitude = Double.parseDouble(data.substring(data.indexOf("(") + 1, data.indexOf(",")));
                             double longitude = Double.parseDouble(data.substring(data.indexOf(",") + 1, data.indexOf(")")));
                             LatLng location = new LatLng(latitude, longitude);
+                            //Display location on map
                             gMap.setMyLocationEnabled(true);
                             gMap.getUiSettings().setMyLocationButtonEnabled(true);
                             gMap.addMarker(new MarkerOptions().position(location).title("Current location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
@@ -227,7 +240,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                             Toast.makeText(DisplayRestaurantsListUI.this, "Failed to retrieve account", Toast.LENGTH_SHORT).show();
                         }
                     });
-        } else {
+        }
+        //User chose a location
+        else {
             System.out.println("use chosen location");
             mDatabase.child(userID).child("Account").child("chosenLocation")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,6 +253,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                             double latitude = Double.parseDouble(data.substring(data.indexOf("(") + 1, data.indexOf(",")));
                             double longitude = Double.parseDouble(data.substring(data.indexOf(",") + 1, data.indexOf(")")));
                             LatLng location = new LatLng(latitude, longitude);
+                            //Display location on map
                             gMap.setMyLocationEnabled(true);
                             gMap.getUiSettings().setMyLocationButtonEnabled(true);
                             gMap.addMarker(new MarkerOptions().position(location).title("Chosen Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
@@ -252,6 +268,12 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         }
     }
 
+    /**
+     * This method adds pins to the map based on the location of restaurants in the recommended list.
+     * <p>This method also allows users to click on the pin to view an information window. Then, they can click on the "See more details" text to
+     * view the restaurant in detail. Once the user clicks on the information window, the system will redirect the user to the DisplayRestaurantUI class.</p>
+     * @param restList  The list of recommended restaurants
+     */
     public void showOnMap(ArrayList<Restaurant> restList) {
         //gMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter getApplicationContext());
         System.out.println("size " + restList.size());
@@ -261,6 +283,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
             LatLng restaurant_location = new LatLng(restList.get(index).getLatitude(), restList.get(index).getLongitude());
             gMap.addMarker(new MarkerOptions().position(restaurant_location).title(restList.get(index).getName()));
         }
+        //Allow users to click on the info window
         gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(@NonNull Marker marker) {
@@ -270,6 +293,7 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                         restaurant = restList.get(index);
                     }
                 }
+                //Redirect users to the DisplayRestaurantUI class
                 Intent intent = new Intent(DisplayRestaurantsListUI.this, DisplayRestaurantUI.class);
                 intent.putExtra("restaurant_url", restaurant.getImage());
                 intent.putExtra("restaurant_name", restaurant.getName());
@@ -289,6 +313,9 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         }});
     }
 
+    /**
+     * This method shows an alert to the user when they turned off location permissions for the app.
+     */
     public void showAlertDialog(){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DisplayRestaurantsListUI.this);
         builder.setTitle("Need Location Permission!");
@@ -407,23 +434,6 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
         for (int i=0; i<filteringConfiguration.size(); i++){
             selectedSubCriteria[i] = null;
         }
-
-                                //Testing
-                                for (int i=0; i<sortingConfiguration.size(); i++){
-                                    System.out.println("Testing: "+ sortingCriteriaArray[i]);
-                                }
-                                //Testing
-                                for (int i=0; i<filteringConfiguration.size(); i++){
-                                    System.out.println("TestingB: "+ filteringCriteriaArray[i]);
-                                }
-                                //Testing
-                                for (int i=0; i<subCriteria2D.size(); i++){
-                                    Map<String,String> hashy = (Map<String, String>) subCriteria2D.get(i);
-                                    for (int j=0; j<hashy.size();j++){
-                                        System.out.println("hashy value: "+ hashy.get(String.valueOf(j)));
-                                    }
-                                    System.out.println();
-                                }
     }
 
     /**
@@ -438,14 +448,12 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 singlePosition = i;
-                //Toast.makeText(DisplayRestaurantsList.this, "Selected position: "+String.valueOf(i), Toast.LENGTH_SHORT).show();
             }
         });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("Hello I am Isaac");
                 FirebaseRetrieval.pureSorting(mAuth, mDatabase, DisplayRestaurantsListUI.this, sortingCriteriaArray, singlePosition, sortingListModel);
             }
         });

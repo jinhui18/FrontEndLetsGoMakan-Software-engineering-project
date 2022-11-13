@@ -36,17 +36,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * ShowMap is a class that displays a map with the user's current location.
+ * ShowMap is a View class that displays a map with the user's current location.
  * <p> This class first checks for location permissions and requests for permission if not granted.
  * <p> It also checks if the user's GPS has been enabled and prompts the user to turn on if it is off.
- * <p> This class acts as the homepage of our application and users can get their restaurant reccomendations by clicking the "Get Recommendations" button.
+ * <p> This class acts as the homepage of our application and users can get their restaurant recommendations by clicking the "Get Recommendations" button.
  * @author celest
  * @version 1.0
  * @since 2022-11-11
  */
 public class ShowMap extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback {
 
-    //Initialising all widgets
+    //Widgets
     private Button getRecommendations;
     private ImageView settings;
 
@@ -56,20 +56,23 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     private boolean locationPermissionGranted;
     private LocationManager locationManager;
 
-    //Initialising a map variable and setting the default zoom
+    //Map variable and setting the default zoom
     private GoogleMap gMap;
     private static final int DEFAULT_ZOOM = 15;
 
     /**
-     * All variables are set with values in this method.
-     * <p>The InstanceState of this activity is saved.
-     * @param savedInstanceState    The instance state of the current activity.
+     * This method is called after the activity has launched but before it starts running.
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in #onSaveInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //we use the activity_show_map layout
         setContentView(R.layout.activity_show_map);
+
+        //Instantiating widgets
+        getRecommendations = findViewById(R.id.mapToRec);
+        settings = findViewById(R.id.settings);
 
         //create a locationRequest to be passed in as a parameter for the fused location provider client
         locationRequest = LocationRequest.create();
@@ -84,15 +87,18 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
-        getRecommendations = findViewById(R.id.mapToRec);
+        //Allow users to click on the "Get Recommendations" button
         getRecommendations.setOnClickListener(this);
 
-        settings = findViewById(R.id.settings);
+        //Allow users to click on the "Settings" icon
         settings.setOnClickListener(this);
     }
 
     /**
      * Gets the Google Map object.
+     * <p>Then, this method checks if the user has enabled their GPS. If not, the system will prompt the user to turn it on
+     * by redirecting the user to their phone settings app if they decide to turn it on.
+     * <p>This method also checks if location permission has been granted by the user. If not, the system will request for permission using an alert dialog.
      * @param googleMap The generated map fragment
      */
     @Override
@@ -105,8 +111,10 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
     }
 
     /**
-     * Links to a new event.
-     * @param v The activity_show_map layout
+     * This method contains the logic for the clickable buttons in this activity class. The clickable buttons are "Get Recommendations" and "Settings" icon.
+     * <p>When "Settings" icon is pressed, the system redirects the user to the SettingsPageUI class.
+     * <p>When "Get Recommendations" button is pressed, the system redirects the user to the SetTimeLocationUI class.
+     * @param v  is the ID of the button that user selects.
      */
     @Override
     public void onClick(View v) {
@@ -126,7 +134,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     /**
      * Checks if the user has granted location permissions to the app.
-     * <p> Requests for permission if user has not granted.
+     * <p>Requests for permission if user has not granted.
      */
     private void getLocationPermission() {
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -161,6 +169,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
                     Toast.makeText(this, "Location permission not granted", Toast.LENGTH_SHORT).show();
                     showLocationDialog();
                 }
+                //Location permissions have been checked so the map needs to be updated
                 updateLocationUI();
                 break;
             default:
@@ -177,12 +186,15 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
             return;
         }
         try {
+            //When location permission is granted, the map will show the user's current location and allow users to click the "Get Recommendations" button.
             if (locationPermissionGranted) {
                 gMap.setMyLocationEnabled(true);
                 gMap.getUiSettings().setMyLocationButtonEnabled(true);
                 getRecommendations.setEnabled(true);
                 getDeviceLocation();
-            } else {
+            }
+            //When location permission is not granted, the map will not show the user's current location and disable the "Get Recommendations" button.
+            else {
                 //permission not granted so users cannot continue using the app
                 gMap.setMyLocationEnabled(false);
                 gMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -219,6 +231,7 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
         boolean isEnabled = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            //GPs is turned on
             if(isEnabled == true) {
                 Toast.makeText(this, "GPS is on", Toast.LENGTH_SHORT).show();
             }
@@ -231,8 +244,8 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
 
     /**
      * Shows an alert to the user that their GPS is off.
-     * Requests for the user to turn it on by linking to the location settings in their phone.
-     * Shows another alert to explain the rationale of requiring GPS services if user still keeps their GPS off.
+     * <p>Requests for the user to turn it on by linking to the location settings in their phone.
+     * <p>Shows another alert to explain the rationale of requiring GPS services if user still keeps their GPS off.
      */
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -282,12 +295,13 @@ public class ShowMap extends AppCompatActivity implements View.OnClickListener,O
      */
     private void getDeviceLocation(){
         try{
+            //Links to the Google Play Services Fused Location Provider API
             LocationServices.getFusedLocationProviderClient(ShowMap.this).requestLocationUpdates(locationRequest, new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     super.onLocationResult(locationResult);
                     LocationServices.getFusedLocationProviderClient(ShowMap.this).removeLocationUpdates(this);
-
+                    //Check if the system retrieved the user's current location
                     if(locationResult != null && locationResult.getLocations().size() > 0)
                     {
                         int index = locationResult.getLocations().size() - 1;
