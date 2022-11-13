@@ -276,9 +276,15 @@ public class DisplayRestaurantsListUI extends AppCompatActivity implements Obser
                 intent.putExtra("restaurant_address", restaurant.getAddress());
                 intent.putExtra("restaurant_latitude", restaurant.getLatitude());
                 intent.putExtra("restaurant_longitude", restaurant.getLongitude());
-                //intent.putExtra("restaurant_opening_hours_time", restaurant.getOpenCloseTimings());
+                intent.putExtra("restaurant_opening_hours_time", restaurant.isOpenNow());
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel());
                 intent.putExtra("ratings", restaurant.getRatings());
+                intent.putExtra("restaurant_travelling_time", String.format( "%.2f", restaurant.getTravellingTime()));
+                System.out.println("travelling time for " + restaurant.getName() + " is " + restaurant.getTravellingTime());
+                intent.putExtra("restaurant_website", restaurant.getWebsite());
+                intent.putExtra("restaurant_price_level", restaurant.getPriceLevel());
+                intent.putExtra("restaurant_takeout", restaurant.isTakeOut());
+                intent.putExtra("restaurant_phone_number", restaurant.getPhoneNumber());
                 startActivity(intent);
         }});
     }

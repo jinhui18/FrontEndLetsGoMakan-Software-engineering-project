@@ -87,12 +87,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             holder.textView_restaurant_takeout.setText("Take out: Available ");
         }
         else{
-            holder.textView_restaurant_takeout.setText("Take out: Not available");
+            holder.textView_restaurant_takeout.setText("Take out:\nNot available");
         }
 
         //setting price level
         int price_level = restaurant.getPriceLevel();
-        String price_level_text = "$";
+        String price_level_text = "Price: $";
         switch(price_level){
             case 0:
             case 1:
@@ -103,7 +103,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 break;
             case 3:
                 price_level_text = "Price: $$$";
-                //
+                break;
+            case 4:
+                price_level_text = "Price: $$$$";
                 break;
         }
         holder.textView_price_level.setText(price_level_text);
@@ -128,6 +130,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 intent.putExtra("restaurant_crowd_level_value", restaurant.getCrowdLevel() );
                 intent.putExtra("ratings", restaurant.getRatings() );
                 intent.putExtra("restaurant_travelling_time", String.format( "%.2f", restaurant.getTravellingTime()));
+                System.out.println("travelling time for " + restaurant.getName() + " is " + restaurant.getTravellingTime());
                 intent.putExtra("restaurant_website", restaurant.getWebsite());
                 intent.putExtra("restaurant_price_level", restaurant.getPriceLevel());
                 intent.putExtra("restaurant_takeout", restaurant.isTakeOut());

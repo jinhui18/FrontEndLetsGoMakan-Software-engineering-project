@@ -117,6 +117,8 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
 
         //Setting travelling time
         textView_restaurant_travelling_time.setText(restaurant_travelling_time + " mins away");
+        System.out.println("travelling time in disy rest ui for " + restaurant_name+ " is " + restaurant_travelling_time);
+
 
         //Setting restaurant name
         textView_restaurant_name.setText(restaurant_name);
@@ -137,7 +139,9 @@ public class DisplayRestaurantUI extends AppCompatActivity implements OnMapReady
                 break;
             case 3:
                 price_level_text = "Price: $$$";
-                //
+                break;
+            case 4:
+                price_level_text = "Price: $$$$";
                 break;
         }
         textView_price_level.setText("Price: " + price_level_text);

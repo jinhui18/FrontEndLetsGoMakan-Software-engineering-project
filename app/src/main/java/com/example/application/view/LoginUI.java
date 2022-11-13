@@ -13,8 +13,6 @@ import com.example.application.R;
 import com.example.application.controller.Controller;
 import com.example.application.model.LoginUserModel;
 import com.example.application.model.Model;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -126,8 +124,17 @@ public class LoginUI extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Intent intent = new Intent(LoginUI.this, ShowMap.class);
-            startActivity(intent);
+            try{
+                if (user.isEmailVerified()){
+                    Intent intent = new Intent(LoginUI.this, ShowMap.class);
+                    startActivity(intent);
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+
         }
     }
 

@@ -285,6 +285,8 @@ public class FirebaseForAPI implements AsyncResponse{
                         int pl = 1;
                         try{
                             pl = Integer.valueOf(restaurantDetails.get(i).getString("price_level"));
+                            System.out.println("name is :" + name);
+                            System.out.println("price level is " + pl);
                         }
                         catch(Exception e){
                             pl =1;
