@@ -47,18 +47,22 @@ public class LoadingPageUI extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
 
-        mDatabase.child(userID).child("Account").addChildEventListener(new ChildEventListener() {
+
+        mDatabase.child(userID).child("Account").child("fullRestaurantList").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
+
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 progressBar.setVisibility(View.GONE);
                 startActivity(new Intent(LoadingPageUI.this, DisplayRestaurantsListUI.class));
-                mDatabase.child(userID).child("Account").removeEventListener(this);
+                mDatabase.child(userID).child("Account").child("fullRestaurantList").removeEventListener(this);
             }
+
+
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
@@ -75,6 +79,7 @@ public class LoadingPageUI extends AppCompatActivity {
 
             }
         });
+
 
     }
 }

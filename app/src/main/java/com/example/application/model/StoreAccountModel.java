@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.application.backend.control.others.FormatChecker;
 import com.example.application.backend.entity.Account;
+import com.example.application.backend.entity.Restaurant;
 import com.example.application.view.InputPreferencesUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 /**
  * StoreAccountModel is the model child class that inherits from the abstract Model parent class
@@ -64,15 +67,18 @@ public class StoreAccountModel extends Model{
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Account account = new Account(name, email, null);
+                                ArrayList<Restaurant> restaurantList = new ArrayList<Restaurant>();
+                                Restaurant restaurant = new Restaurant(0,0,null, 0,9999999.0,null,null,0,0,null,false,false,null);
+                                restaurantList.add(restaurant);
+                                Account account = new Account(name, email, null, restaurantList);
 
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 mDatabase = FirebaseDatabase.getInstance("https://application-5237c-default-rtdb.asia-southeast1.firebasedatabase.app").getReference();
+
                                 mDatabase.child(userID).child("Account").setValue(account).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task1) {
                                         if (task1.isSuccessful()){
-
                                             // send email verification link
                                             mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override

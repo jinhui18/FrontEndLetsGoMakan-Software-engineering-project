@@ -77,6 +77,14 @@ public class Account {
         this.fullRestaurantList = this.recommendedList = null;
     }
 
+    public Account(String name, String email, Profile profile, ArrayList<Restaurant> fullRestaurantList) {
+        this.name = name;
+        this.email = email;
+        this.profile = profile;
+        this.fullRestaurantList = fullRestaurantList;
+        this.recommendedList = null;
+    }
+
     /**
      * this is the get method for the user's name
      * @return user's name

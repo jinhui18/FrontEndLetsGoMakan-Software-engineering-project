@@ -133,6 +133,7 @@ public class FirebaseForAPI implements AsyncResponse{
                         }
                         if (arrayList.get(0).getUseCurrentLocation() == true) {
                             String locdata = arrayList.get(0).getCurrentLocation();
+                            System.out.println("locdata is " + locdata);
                             double latitude = Double.parseDouble(locdata.substring(locdata.indexOf("(") + 1, locdata.indexOf(",")));
                             double longitude = Double.parseDouble(locdata.substring(locdata.indexOf(",") + 1, locdata.indexOf(")")));
                             location = new LatLng(latitude, longitude);
@@ -145,7 +146,7 @@ public class FirebaseForAPI implements AsyncResponse{
                         int radius = (int) (stuffParser.convertToSpeed(travelMethod) * travelTime/60);
                         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                                 "location=" + location.latitude + "%2C" + location.longitude +
-                                "&radius=27000" +
+                                "&radius=" + radius +
                                 "&type=restaurant" +
                                 "&key=AIzaSyBvQjZ15jD__Htt-F3TGvMp_ZWNw79JZv0";
 
@@ -298,10 +299,14 @@ public class FirebaseForAPI implements AsyncResponse{
             }
             Map<String, Object> map = new HashMap<>();
             map.put("fullRestaurantList", restaurantList);
+            System.out.println("size of restaurantList " + restaurantList.size());
+
+
             mDatabase.child(userID).child("Account").updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     //Toast.makeText(context, "List created!", Toast.LENGTH_SHORT).show();
+                    System.out.println("hellooooooooooooo");
                 }
 
             }).addOnFailureListener(new OnFailureListener() {
