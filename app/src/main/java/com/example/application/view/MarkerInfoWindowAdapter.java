@@ -21,6 +21,12 @@ import com.squareup.picasso.Picasso;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * MarkerInfoWindowAdapter is a View class that implements the logic for the display of the information window on each marker in DisplayRestaurantList.
+ * @author Celest
+ * @version 1.0
+ * @since 2022-11-13
+ */
 public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final Context context;
@@ -29,16 +35,31 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     ImageView image;
 
+    /**
+     * Constructor of MarkerInfoWindowAdapter class, this initialises the attributes in MarkerInfoWindowAdapter class.
+     * @param context           This is the current state of current/active state of the application. The context in this case will be DisplayRestaurantList.class
+     * @param restaurant_list   An ArrayList containing objects of type Restaurant.
+     */
     public MarkerInfoWindowAdapter(Context context, ArrayList<Restaurant> restaurant_list) {
         this.context = context.getApplicationContext();
         this.restaurant_list = restaurant_list;
     }
 
+    /**
+     * This method provides a view that will be used for the entire info window.
+     * @param arg0  The clicked marker in DisplayRestaurantList class.
+     * @return null
+     */
     @Override
     public View getInfoWindow(@NonNull Marker arg0) {
         return null;
     }
 
+    /**
+     * This methods customises the contents of the window.
+     * @param arg0  The clicked marker in DisplayRestaurantList class.
+     * @return The view
+     */
     @Override
     public View getInfoContents(Marker arg0) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,13 +76,14 @@ public class MarkerInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         String name = arg0.getTitle();
         System.out.println(name);
 
+        //Find the restaurant that matches the marker.
         for(int index=0; index<restaurant_list.size(); index++){
             if(name.equals(restaurant_list.get(index).getName())){
                 restaurant = restaurant_list.get(index);
             }
         }
-        //System.out.println(restaurant.getName());
 
+        //Get the image using a url
         Picasso.get()
                 .load(restaurant.getImage())
                 .into(image);
